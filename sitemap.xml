@@ -2,12 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://wellphone.me/post/2017/autolayout_demo/</loc>
+    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://wellphone.me/post/2017/airpods_remote_controll/</loc>
     <lastmod>2017-04-24T09:59:57+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://wellphone.me/categories/2017/</loc>
+    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/categories/airpods/</loc>
     <lastmod>2017-04-24T09:59:57+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -19,8 +30,8 @@
   </url>
   
   <url>
-    <loc>https://wellphone.me/categories/airpods/</loc>
-    <lastmod>2017-04-24T09:59:57+08:00</lastmod>
+    <loc>https://wellphone.me/tags/autolayout/</loc>
+    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -31,13 +42,19 @@
   
   <url>
     <loc>https://wellphone.me/tags/ios/</loc>
-    <lastmod>2017-04-24T09:59:57+08:00</lastmod>
+    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/masonry/</loc>
+    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://wellphone.me/post/</loc>
-    <lastmod>2017-04-24T09:59:57+08:00</lastmod>
+    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -47,8 +64,14 @@
   </url>
   
   <url>
+    <loc>https://wellphone.me/categories/ui/</loc>
+    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://wellphone.me/</loc>
-    <lastmod>2017-04-24T09:59:57+08:00</lastmod>
+    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
     <priority>0</priority>
   </url>
   

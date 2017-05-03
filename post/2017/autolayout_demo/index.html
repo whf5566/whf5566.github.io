@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="Hugo 0.19" />
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link href="https://wellphone.me/index.xml" rel="alternate" type="application/rss+xml" title="Wellphone&#39;s Blog" />
+    
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>使用Interface Builder开发界面 | Wellphone&#39;s Blog</title>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+  </head>
+  <body>
+    <div id="wrap">
+      <header class="site-header">
+        <div class="site-header-left">
+          <a class="site-header-title" href="https://wellphone.me">Wellphone&#39;s Blog</a>
+        </div>
+      </header>
+      <div class="container">
+        <div id="main">
+
+<div class="article">
+  <header>
+    <div class="article-header">
+      <h1>使用Interface Builder开发界面</h1>
+      <div class="article-meta">
+        <span class="posttime">2017/05/03</span>
+        
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/autolayout">AutoLayout</a>
+    </li>
+    
+    <li>
+        <a href="/tags/ios">iOS</a>
+    </li>
+    
+    <li>
+        <a href="/tags/masonry">Masonry</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+    
+
+  </header>
+  <div class="content">
+    
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;之前在公司内部分享会上，简单的分享了下如何使用Interface Builder开发iOS界面以及几种界面开发的方式的优缺点。写了一篇文章，现在直接把这篇文章贴到了blog上。</p>
+
+<h2 id="认识ib">认识IB</h2>
+
+<p>IB 即 Interface Builder ，是集成到Xcode上的iOS界面可视化开发工具。</p>
+
+<h3 id="功能面板">功能面板</h3>
+
+<ul>
+<li><p>对象库面板</p>
+
+<p>提供了所有Cocoa Touch 库给我们定义好的界面组件，包括 View 组件和 Controller 组件(所有名字带 xxxxController 的组件)。<br />
+对象库中组件较多，为了查找方便，底部提供了搜索栏，功能强大，一般只要输入关键的几个字母，就能快速找到你需要的组件。</p></li>
+
+<li><p>主界面</p>
+
+<p>主界面提供了一个设计区域，该区域中放入我们设计的所有组件，一般要先放入一个容器组件，如：UIView  视图。然后在视图中放入其他组件。<br />
+为了快速查看主界面中相关信息，可以通过左侧的侧边栏(Desk)查看。</p></li>
+
+<li><p>属性面板</p>
+
+<p>在主界面选中某个组件后，在该区域可以查看并设置组件的属性。</p></li>
+</ul>
+
+<h3 id="示例">示例</h3>
+
+<p><a href="https://github.com/whf5566/AutoLayoutDemo">demo下载</a></p>
+
+<ul>
+<li><p>新增一个按钮</p></li>
+
+<li><p>新增一个table</p></li>
+
+<li><p>IBInspectable / IBDesignable</p></li>
+</ul>
+
+<h2 id="autoresizing">Autoresizing</h2>
+
+<h3 id="技术介绍">技术介绍</h3>
+
+<p>autoresizing是UIView的属性，可以用来做一些简单的自动布局实现。
+<table>
+   <tr>
+      <td>属性</td>
+      <td>描述</td>
+   </tr>
+   <tr>
+      <td>UIViewAutoresizingNone</td>
+      <td>不会随父视图的改变而改变 </td>
+   </tr>
+   <tr>
+      <td>UIViewAutoresizingFlexibleLeftMargin</td>
+      <td>自动调整view与父视图左边距，以保证右边距不变</td>
+   </tr>
+   <tr>
+      <td>UIViewAutoresizingFlexibleWidth</td>
+      <td>自动调整view的宽度，保证左边距和右边距不变 </td>
+   </tr>
+   <tr>
+      <td>UIViewAutoresizingFlexibleRightMargin</td>
+      <td>自动调整view与父视图右边距，以保证左边距不变 </td>
+   </tr>
+   <tr>
+      <td>UIViewAutoresizingFlexibleTopMargin</td>
+      <td>自动调整view与父视图上边距，以保证下边距不变</td>
+   </tr>
+   <tr>
+      <td>UIViewAutoresizingFlexibleHeight</td>
+      <td>自动调整view的高度，以保证上边距和下边距不变</td>
+   </tr>
+   <tr>
+      <td>UIViewAutoresizingFlexibleBottomMargin</td>
+      <td>动调整view与父视图的下边距，以保证上边距不变</td>
+   </tr>
+</table></p>
+
+<h3 id="示例-1">示例</h3>
+
+<p>见demo。<a href="https://github.com/whf5566/AutoLayoutDemo">demo下载</a></p>
+
+<h3 id="autoresizing小结">Autoresizing小结</h3>
+
+<p>当父视图发生变化时，通过每个子视图的autoresizingMask即可自动得出新的位置，而无需开发者提供。<br />
+autoresizingMask的问题在于:</p>
+
+<ul>
+<li><p>其描述界面变化规则不够灵活，很多变化规则根本无法精确描述。autoresizingMask缩放比例是UIKit内部计算的，开发者无法指定缩放比例的精确值。</p></li>
+
+<li><p>在以前，很多时候开发者还不得不硬着头皮使用显式坐标定位方式来解决转屏（例如重写layoutSubviews方法），或者分别做横屏与竖屏两套界面。</p></li>
+
+<li><p>只能对有父子关系的控件进行屏幕适配，不能进行兄弟(属于同一父控件的)控件进行适配</p></li>
+</ul>
+
+<h2 id="auto-layout">Auto Layout</h2>
+
+<h3 id="技术介绍-1">技术介绍</h3>
+
+<p>自动布局是对autoresizingMask的进一步改进，它允许开发者在界面上的任意两个视图之间建立精确的线性变化规则。所谓线性变化就是数学中的一次函数，即：</p>
+
+<blockquote>
+<p>y = m*x + c
+  其中x和y是界面中任意两个视图的某个布局属性，m为比例系数，c为常量。</p>
+</blockquote>
+
+<p>每个线性变化规则称之为布局约束（Layout Constraint）。由于每个视图需要确定4个布局属性才能准确定位，因此一般来说都需要建立4个布局约束。</p>
+
+<blockquote>
+<p>(x,y,w,h) 即 坐标点 和 长宽</p>
+</blockquote>
+
+<p>在设置好view的约束后，由系统的Autolayout引擎计算每个view的位置，并自动布局，所以在开启Auto Layout后，不需要设置view的frame，设置后也没有效果。</p>
+
+<p>添加约束有三种方式：</p>
+
+<ul>
+<li>使用Xcode的Interface Builder界面设计器添加并设置约束</li>
+<li>通过代码逐条添加约束</li>
+<li>通过可视化格式语言VFL添加约束</li>
+</ul>
+
+<p>除了这三种官方的方法添加约束外，还可以使用开源库来添加约束。使用官方的Autolayout的API进行布局非常繁琐，有时一个非常简单的界面要写上几百行的代码来设置约束，所以出现了许多优秀的的开源库来帮助我们来简化约束的设置。比如Masonry、PureLayout等。</p>
+
+<h3 id="ib示例-使用可视化编辑器设置约束">IB示例（使用可视化编辑器设置约束）</h3>
+
+<p>这里我们示例一个使用Autoresizing无法完成的例子。
+有viewA、viewB、viewC三个视图，他们顶部距父视图80pt，高度是父视图的1/2，并且宽度是父视图的1/3，在水平方向上均匀分布。</p>
+
+<p>通过分析，我们需要添加这几个约束</p>
+
+<pre><code>// A top 距 superview top 80pt
+// A left 距 superview left 0pt
+// A 高度 是 superview 的 0.5
+
+// B top 同 A
+// B left 距 A 的right 0pt
+// B 高度 同 A
+// B 宽度 同 A
+
+// C top 同 A
+// C left 距 B 的right 0pt
+// C 高度 同 A
+// C 宽度 同 A
+
+// C 的right 同superview 的right
+</code></pre>
+
+<h3 id="代码示例-纯代码设置view的约束">代码示例（纯代码设置view的约束）</h3>
+
+<ul>
+<li><p>第一步 新建view，并add到父视图上</p>
+
+<pre><code>    // 添加view
+    UIView *viewA = [[UIView alloc] init];
+    viewA.translatesAutoresizingMaskIntoConstraints = NO;
+    viewA.backgroundColor = [UIColor redColor];
+    [self.view addSubview:viewA];
+
+    UIView *viewB = [[UIView alloc] init];
+    viewB.translatesAutoresizingMaskIntoConstraints = NO;
+    viewB.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:viewB];
+
+    UIView *viewC = [[UIView alloc] init];
+    viewC.translatesAutoresizingMaskIntoConstraints = NO;
+    viewC.backgroundColor = [UIColor blueColor];
+    [self.view addSubview:viewC];
+</code></pre></li>
+
+<li><p>第二步 设置约束</p>
+
+<pre><code>    // 设置A的约束
+    NSLayoutConstraint *a_top = [NSLayoutConstraint constraintWithItem:viewA attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:80.0];
+
+    NSLayoutConstraint *a_leading =[NSLayoutConstraint constraintWithItem:viewA attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0];
+
+    NSLayoutConstraint *a_height =[NSLayoutConstraint constraintWithItem:viewA attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:0.5 constant:0.0];
+
+    [self.view addConstraints:@[a_top,a_leading,a_height]];
+
+    // 设置B的约束
+    NSLayoutConstraint *b_top = [NSLayoutConstraint constraintWithItem:viewB attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:viewA attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
+
+    NSLayoutConstraint *b_leading =[NSLayoutConstraint constraintWithItem:viewB attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:viewA attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0];
+
+    NSLayoutConstraint *b_height =[NSLayoutConstraint constraintWithItem:viewB attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:viewA attribute:NSLayoutAttributeHeight multiplier:1 constant:0.0];
+
+    NSLayoutConstraint *b_width =[NSLayoutConstraint constraintWithItem:viewB attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:viewA attribute:NSLayoutAttributeWidth multiplier:1 constant:0.0];
+
+    [self.view addConstraints:@[b_top,b_leading,b_height,b_width]];
+
+
+    // 设置C的约束
+    NSLayoutConstraint *c_top = [NSLayoutConstraint constraintWithItem:viewC attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:viewA attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
+
+    NSLayoutConstraint *c_leading =[NSLayoutConstraint constraintWithItem:viewC attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:viewB attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0];
+
+    NSLayoutConstraint *c_height =[NSLayoutConstraint constraintWithItem:viewC attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:viewA attribute:NSLayoutAttributeHeight multiplier:1 constant:0.0];
+
+    NSLayoutConstraint *c_width =[NSLayoutConstraint constraintWithItem:viewC attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:viewA attribute:NSLayoutAttributeWidth multiplier:1 constant:0.0];
+
+    NSLayoutConstraint *c_trailing =[NSLayoutConstraint constraintWithItem:viewC attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:0.0];
+    [self.view addConstraints:@[c_top,c_leading,c_height,c_width,c_trailing]];
+</code></pre></li>
+</ul>
+
+<p><a href="https://github.com/whf5566/AutoLayoutDemo">demo下载</a></p>
+
+<h3 id="auto-layout小结">Auto Layout小结</h3>
+
+<p>前面的例子只是从入门角度介绍了Autolayout，读文千百遍，不如动手实践。建议自己动手先用xib添加约束，而后使用代码再添加一遍，这样可以非常快速的熟悉Autolayout，此外还可以进一步学习Autolayout约束的优先级属性、如何使用Autolayout设置动画等。</p>
+
+<h2 id="总结">总结</h2>
+
+<h3 id="autoresizing和autolayout的区别">Autoresizing和AutoLayout的区别</h3>
+
+<p>Autoresizing和AutoLayout是苹果公司为适配不同iphone屏幕先后推出的视图自动适配的技术。均能在一定程度上帮助我们完成视图在不同大小屏幕上的布局。<br />
+在iOS6之前，关于屏幕旋转的适配和iPhone，iPad屏幕的自动适配，基本都是由Autoresizing来完成的。但是随着大家对iOS app的要求越来越高，以及已经以及今后可能出现的多种屏幕和分辨率的设备来说，Autoresizing显得有些力不从心。<br />
+在iOS6时，苹果公司推出了AutoLayout。<br />
+AutoLayout可以完成所有原来Autoresizing能完成的工作，同时还能够胜任一些原来无法完成的任务。<br />
+Autoresizing只能通过设置父子视图间的对齐关系，缩放关系来进行布局；AutoLayout可以设置父子、兄弟视图间的约束来进行布局。</p>
+
+<h3 id="xib-or-纯代码">xib or 纯代码</h3>
+
+<p>在我们写UI界面时会面临这样的选择，是使用xib来进行可视化视图编辑呢，还是使用纯代码来构建UI界面呢？其实各有各的优点和缺点，在熟悉了各自的优缺点后可以更好的帮助我们提高效率。</p>
+
+<h4 id="xib-优点">xib 优点：</h4>
+
+<ul>
+<li>可视化，简单静态界面编辑快，效率非常高。</li>
+</ul>
+
+<h4 id="xib-缺点">xib 缺点：</h4>
+
+<ul>
+<li>同一个xib文件不利于团队人员共同编辑，在不同编辑人员同时有修改时，合并xib文件将会是灾难。</li>
+<li>维护、复用、迁移困难</li>
+</ul>
+
+<h4 id="纯代码优点">纯代码优点</h4>
+
+<ul>
+<li>代码清晰， 便于复用</li>
+<li>便于团队协作</li>
+</ul>
+
+<h4 id="纯代码缺点">纯代码缺点</h4>
+
+<ul>
+<li>代码量大、无法即时看见效果</li>
+<li>界面编写效率较低，需要较多的时间</li>
+</ul>
+
+<h3 id="frame-or-autolayout">frame or AutoLayout</h3>
+
+<p>在我们使用代码布局时也会遇到这样的选择，是设置frame直接来确定view的位置及大小，还是使用AutoLayout设置约束来自动化布局。</p>
+
+<h4 id="frame优点">frame优点</h4>
+
+<ul>
+<li>不论是什么UI界面，均可使用frame布局。</li>
+<li>在App运行内存、速度方面直接使用frame效果要好些。</li>
+</ul>
+
+<h4 id="frame缺点">frame缺点</h4>
+
+<ul>
+<li>UI变化后，需要重新计算并设置新的frame。如，UILabel 和 UITableViewCell 的内容自适应。</li>
+</ul>
+
+<h4 id="autolayout-优点">AutoLayout 优点</h4>
+
+<ul>
+<li>设置好约束后，可以很方便的适配不同的屏幕</li>
+<li>像 UILabel 和 UITableViewCell 的内容自适应可以很方便解决。</li>
+</ul>
+
+<h4 id="autolayout-缺点">AutoLayout 缺点</h4>
+
+<ul>
+<li>复杂的UI界面设置过多的约束，不便于调试</li>
+</ul>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+<li>[1]  iOS 8 Auto Layout界面自动布局系列1-自动布局的基本原理 <a href="http://blog.csdn.net/pucker/article/details/41832939">http://blog.csdn.net/pucker/article/details/41832939</a></li>
+<li>[2] AutoLayout（自动布局）入门 <a href="http://blog.csdn.net/sxfcct/article/details/8776928">http://blog.csdn.net/sxfcct/article/details/8776928</a></li>
+<li>[3] Auto Layout 使用心得 <a href="https://github.com/johnlui/AutoLayout">https://github.com/johnlui/AutoLayout</a></li>
+<li>[4] AutoLayout之纯代码布局 <a href="http://jixuqianxing.github.io/blog/2014/12/11/20141212/">http://jixuqianxing.github.io/blog/2014/12/11/20141212/</a></li>
+</ul>
+
+  </div>
+  <footer>
+    <div class="article-footer">
+      
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/autolayout">AutoLayout</a>
+    </li>
+    
+    <li>
+        <a href="/tags/ios">iOS</a>
+    </li>
+    
+    <li>
+        <a href="/tags/masonry">Masonry</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      
+      
+
+      
+      <div id="pagenavigation-next-prev">
+        
+        <div id="pagenavigation-next">
+          <span class="pagenav-label">Previous</span>
+          <a href="https://wellphone.me/post/2017/airpods_remote_controll/">AirPods远程控制适配</a>
+        </div>
+        
+        
+      </div>
+      
+    </div>
+  </footer>
+  
+<div id="SOHUCS" sid="autolayout_demo" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cyso3GYYu'; 
+var conf = 'prod_fa6a31665b4b269e716ec23d4ce3de3a'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+</div>
+        </div>
+        <div class="sidebar">
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Author</span>
+    </div>
+    <div id="author">
+      <span>Wellphone</span>
+      <div>
+        
+        
+        <a href="https://github.com/whf5566"><i class="fa fa-github-square fa-2x" aria-hidden="true"></i></a>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Categories</span>
+    </div>
+    <div class="categories">
+      <ul>
+        
+        <li>
+          <a href="/categories/2017"><span></span>2017 (2)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/airpods"><span></span>airpods (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ui"><span></span>ui (1)</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>RSS</span>
+    </div>
+    <div id="rss">
+      <a href="https://wellphone.me/index.xml" type="application/rss+xml" target="_blank">
+        <i class="fa fa-rss-square fa-2x" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <footer>
+        <div id="site-footer-wrap">
+          <div id="site-footer">
+            <span>Powered by <a href="https://gohugo.io/">Hugo</a>.</span>
+            <span>
+              
+              Copyright (c) 2017, <a href="https://wellphone.me">Wellphone&#39;s Blog</a>
+              
+            </span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+

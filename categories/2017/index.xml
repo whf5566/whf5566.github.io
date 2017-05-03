@@ -9,6 +9,29 @@
     <atom:link href="/categories/2017/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>使用Interface Builder开发界面</title>
+      <link>https://wellphone.me/post/2017/autolayout_demo/</link>
+      <pubDate>Wed, 03 May 2017 09:51:08 +0800</pubDate>
+      
+      <guid>https://wellphone.me/post/2017/autolayout_demo/</guid>
+      <description>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;之前在公司内部分享会上，简单的分享了下如何使用Interface Builder开发iOS界面以及几种界面开发的方式的优缺点。写了一篇文章，现在直接把这篇文章贴到了blog上。
+认识IB IB 即 Interface Builder ，是集成到Xcode上的iOS界面可视化开发工具。
+功能面板  对象库面板
+提供了所有Cocoa Touch 库给我们定义好的界面组件，包括 View 组件和 Controller 组件(所有名字带 xxxxController 的组件)。
+对象库中组件较多，为了查找方便，底部提供了搜索栏，功能强大，一般只要输入关键的几个字母，就能快速找到你需要的组件。
+ 主界面
+主界面提供了一个设计区域，该区域中放入我们设计的所有组件，一般要先放入一个容器组件，如：UIView 视图。然后在视图中放入其他组件。
+为了快速查看主界面中相关信息，可以通过左侧的侧边栏(Desk)查看。
+ 属性面板
+在主界面选中某个组件后，在该区域可以查看并设置组件的属性。
+  示例 demo下载
+ 新增一个按钮
+ 新增一个table
+ IBInspectable / IBDesignable
+  Autoresizing 技术介绍 autoresizing是UIView的属性，可以用来做一些简单的自动布局实现。   属性 描述   UIViewAutoresizingNone 不会随父视图的改变而改变    UIViewAutoresizingFlexibleLeftMargin 自动调整view与父视图左边距，以保证右边距不变   UIViewAutoresizingFlexibleWidth 自动调整view的宽度，保证左边距和右边距不变    UIViewAutoresizingFlexibleRightMargin 自动调整view与父视图右边距，以保证左边距不变    UIViewAutoresizingFlexibleTopMargin 自动调整view与父视图上边距，以保证下边距不变   UIViewAutoresizingFlexibleHeight 自动调整view的高度，以保证上边距和下边距不变   UIViewAutoresizingFlexibleBottomMargin 动调整view与父视图的下边距，以保证上边距不变</description>
+    </item>
+    
+    <item>
       <title>AirPods远程控制适配</title>
       <link>https://wellphone.me/post/2017/airpods_remote_controll/</link>
       <pubDate>Mon, 24 Apr 2017 09:59:57 +0800</pubDate>
