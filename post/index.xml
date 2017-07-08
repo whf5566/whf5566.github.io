@@ -6,8 +6,41 @@
     <description>Recent content in Posts on Wellphone&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-Hans</language>
-    <lastBuildDate>Wed, 03 May 2017 09:51:08 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 08 Jun 2017 09:58:10 +0800</lastBuildDate>
     <atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>iOS自带悬浮窗调试工具使用详解</title>
+      <link>https://wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/</link>
+      <pubDate>Thu, 08 Jun 2017 09:58:10 +0800</pubDate>
+      
+      <guid>https://wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/</guid>
+      <description>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前几天在博客上看到一篇文章《震惊！iOS 系统居然自带悬浮窗口调试工具》,看完之后笔者真就震惊了，有这样好的UI调试工具，苹果为什么不公开呢？笔者按照博文中的描述，在app中试了一下，感觉非常好用。
+如何开启 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在 AppDelegate 的 didFinishLaunchingWithOptions 方法中加入以下代码就可以了。
+#if DEBUG id overlayClass = NSClassFromString(@&amp;quot;UIDebuggingInformationOverlay&amp;quot;); [overlayClass performSelector:NSSelectorFromString(@&amp;quot;prepareDebuggingOverlay&amp;quot;)]; #endif  运行后，用两个手指头在状态栏上同时点击下就可以显示出这个调试的悬浮层。
+悬浮窗主界面 可以看到大概有这样几个选项，
+ View Hierarchy（查看View的层级关系）
+ VC Hierarchy（查看ViewController层级关系）
+ Ivar Explorer（查看UIApplication 的成员属性）
+ Measure （测量View的尺寸）
+ Spec Compare （对比设计图）
+  View Hierarchy &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 进入到这个页面后，可以看见整个view的层级结构。悬浮窗右上角有个Inspect，点击这个可以高亮显示当前选择的View。如图所示：
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+当前选中的是 SettingSwitchItemView。
+我们在页面上选择一个swicth按钮，这时会定位到该view的条目，如图所示：
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+我们点击右侧的“！”图标，进入到swicth的详情页面，这里展示了view的详西信息，并且可以修改一些属性，比如我们修改这个button的透明度，如图所示：
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+VC Hierarchy &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们回到悬浮窗的主界面，进入到VC Hierarchy界面看看。
+这里是所有的VC的层级关系，一目了然。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+Ivar Explorer &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;接下来我们去Ivar Explorer页面看一下。进到页面后，对里面的一些值不是很熟悉，不知道是哪里的一些值，不过里面，看见了我们熟悉的 AppDelegate 。
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;</description>
+    </item>
     
     <item>
       <title>使用Interface Builder开发界面</title>

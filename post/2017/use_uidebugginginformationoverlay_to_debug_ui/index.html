@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="Hugo 0.19" />
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link href="https://wellphone.me/index.xml" rel="alternate" type="application/rss+xml" title="Wellphone&#39;s Blog" />
+    
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>iOS自带悬浮窗调试工具使用详解 | Wellphone&#39;s Blog</title>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+  </head>
+  <body>
+    <div id="wrap">
+      <header class="site-header">
+        <div class="site-header-left">
+          <a class="site-header-title" href="https://wellphone.me">Wellphone&#39;s Blog</a>
+        </div>
+      </header>
+      <div class="container">
+        <div id="main">
+
+<div class="article">
+  <header>
+    <div class="article-header">
+      <h1>iOS自带悬浮窗调试工具使用详解</h1>
+      <div class="article-meta">
+        <span class="posttime">2017/06/08</span>
+        
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/uidebugginginformationoverlay">UIDebuggingInformationOverlay</a>
+    </li>
+    
+    <li>
+        <a href="/tags/ui">UI</a>
+    </li>
+    
+    <li>
+        <a href="/tags/%E7%95%8C%E9%9D%A2%E8%B0%83%E8%AF%95">界面调试</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+    
+
+  </header>
+  <div class="content">
+    
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;前几天在博客上看到一篇文章<a href="http://www.tuicool.com/articles/J3ENFfI">《震惊！iOS 系统居然自带悬浮窗口调试工具》</a>,看完之后笔者真就震惊了，有这样好的UI调试工具，苹果为什么不公开呢？笔者按照博文中的描述，在app中试了一下，感觉非常好用。</p>
+
+<h2 id="如何开启">如何开启</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在 AppDelegate 的 didFinishLaunchingWithOptions 方法中加入以下代码就可以了。</p>
+
+<pre><code class="language-objectivec">#if DEBUG
+    id overlayClass = NSClassFromString(@&quot;UIDebuggingInformationOverlay&quot;);
+    [overlayClass performSelector:NSSelectorFromString(@&quot;prepareDebuggingOverlay&quot;)];
+#endif
+</code></pre>
+
+<p>运行后，用两个手指头在状态栏上同时点击下就可以显示出这个调试的悬浮层。</p>
+
+<h2 id="悬浮窗主界面">悬浮窗主界面</h2>
+
+<p><img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_1.jpeg" alt="悬浮窗主界面" /><br />
+可以看到大概有这样几个选项，</p>
+
+<ul>
+<li>View Hierarchy（查看View的层级关系）<br /></li>
+<li>VC Hierarchy（查看ViewController层级关系）<br /></li>
+<li>Ivar Explorer（查看UIApplication 的成员属性）<br /></li>
+<li>Measure （测量View的尺寸）<br /></li>
+<li>Spec Compare （对比设计图）<br /></li>
+</ul>
+
+<h2 id="view-hierarchy">View Hierarchy</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp; 进入到这个页面后，可以看见整个view的层级结构。悬浮窗右上角有个Inspect，点击这个可以高亮显示当前选择的View。如图所示：<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_2.jpeg" alt="View Hierarchy" /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+当前选中的是 SettingSwitchItemView。<br />
+我们在页面上选择一个swicth按钮，这时会定位到该view的条目，如图所示：<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_3.jpeg" alt="View Hierarchy" /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+我们点击右侧的“！”图标，进入到swicth的详情页面，这里展示了view的详西信息，并且可以修改一些属性，比如我们修改这个button的透明度，如图所示：<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_4.jpeg" alt="View Hierarchy" /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+<h2 id="vc-hierarchy">VC Hierarchy</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;我们回到悬浮窗的主界面，进入到VC Hierarchy界面看看。<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_5.jpeg" alt="VC Hierarchy" /><br />
+这里是所有的VC的层级关系，一目了然。
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+<h2 id="ivar-explorer">Ivar Explorer</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;接下来我们去Ivar Explorer页面看一下。进到页面后，对里面的一些值不是很熟悉，不知道是哪里的一些值，不过里面，看见了我们熟悉的 AppDelegate 。<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_8.jpeg" alt="Ivar Explorer" /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+点击去看看，有我们更加熟悉的值了，是Appdelegate里我们的一些值。<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_6.jpeg" alt="Ivar Explorer" /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_7.jpeg" alt="Ivar Explorer" /></p>
+
+<h2 id="measure">Measure</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;笔者认为最实用的就是这个测量功能了，它可以帮助我们测量view的大小。进入这个页面是这个样子的<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_12.jpeg" alt="Measure" />
+上面有三个tab选项，None， Vertical， Horizontal，选择Vertical可以测量垂直方向上的距离或者view的高度，选择Horizontal是在水平方向上进行测量。在悬浮窗上还有一个 View Mode的选项开关，开启时，会以View为单位，来测量view的大小宽高；关闭时是以非空白像素为起始端和结束端进行更宽泛的测量。如图所示：<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+<ul>
+<li><p>测量headerview高度<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_9.jpeg" alt="Measure" /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</p></li>
+
+<li><p>测量switch的高度<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_11.jpeg" alt="Measure" /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</p></li>
+
+<li><p>测量switch的宽度<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_10.jpeg" alt="Measure" /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;</p></li>
+
+<li><p>关闭ViewMode后的测量<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_13.jpeg" alt="Measure" /><br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_12.jpeg" alt="Measure" /></p></li>
+</ul>
+
+<h2 id="spec-compare">Spec Compare</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这个功能是比较spec图片和我们辛苦完成的view的，也比较实用，直接可以看出我们我们扣代码出来的界面和UI给出的设计图的差别。进入到这个页面后，点击右上角的Add进入相册把UI设计师给出的设计图添加进来，如图：<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_14.jpeg" alt="Spec Compare" /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+然后点击一下图片，这时会把UI设计图覆盖在界面上，然后，我们用手指从上到下滑动，就可以让UI设计图变得透明， 双击退出。如图：<br />
+<img src="./../../../images/use_uidebugginginformationoverlay_to_debug_ui_15.jpeg" alt="Spec Compare" /><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<br />
+大家可以看见重影，这个是笔者专门准备了一张尺寸不对的UI设计图</p>
+
+<h2 id="总结">总结</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这个工具很实用，大家赶紧在自己项目中试试吧！</p>
+
+  </div>
+  <footer>
+    <div class="article-footer">
+      
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/uidebugginginformationoverlay">UIDebuggingInformationOverlay</a>
+    </li>
+    
+    <li>
+        <a href="/tags/ui">UI</a>
+    </li>
+    
+    <li>
+        <a href="/tags/%E7%95%8C%E9%9D%A2%E8%B0%83%E8%AF%95">界面调试</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      
+      
+
+      
+      <div id="pagenavigation-next-prev">
+        
+        <div id="pagenavigation-next">
+          <span class="pagenav-label">Previous</span>
+          <a href="https://wellphone.me/post/2017/autolayout_demo/">使用Interface Builder开发界面</a>
+        </div>
+        
+        
+      </div>
+      
+    </div>
+  </footer>
+  
+<div id="SOHUCS" sid="use_uidebugginginformationoverlay_to_debug_ui" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cyso3GYYu'; 
+var conf = 'prod_fa6a31665b4b269e716ec23d4ce3de3a'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+</div>
+        </div>
+        <div class="sidebar">
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Author</span>
+    </div>
+    <div id="author">
+      <span>Wellphone</span>
+      <div>
+        
+        
+        <a href="https://github.com/whf5566"><i class="fa fa-github-square fa-2x" aria-hidden="true"></i></a>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Categories</span>
+    </div>
+    <div class="categories">
+      <ul>
+        
+        <li>
+          <a href="/categories/2017"><span></span>2017 (3)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/airpods"><span></span>airpods (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/debug"><span></span>debug (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ui"><span></span>ui (2)</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>RSS</span>
+    </div>
+    <div id="rss">
+      <a href="https://wellphone.me/index.xml" type="application/rss+xml" target="_blank">
+        <i class="fa fa-rss-square fa-2x" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <footer>
+        <div id="site-footer-wrap">
+          <div id="site-footer">
+            <span>Powered by <a href="https://gohugo.io/">Hugo</a>.</span>
+            <span>
+              
+              Copyright (c) 2017, <a href="https://wellphone.me">Wellphone&#39;s Blog</a>
+              
+            </span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+

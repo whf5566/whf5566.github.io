@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/</loc>
+    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://wellphone.me/post/2017/autolayout_demo/</loc>
     <lastmod>2017-05-03T09:51:08+08:00</lastmod>
   </url>
@@ -13,18 +18,18 @@
   
   <url>
     <loc>https://wellphone.me/categories/2017/</loc>
-    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://wellphone.me/categories/airpods/</loc>
-    <lastmod>2017-04-24T09:59:57+08:00</lastmod>
+    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://wellphone.me/tags/airpods/</loc>
+    <lastmod>2017-04-24T09:59:57+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/categories/airpods/</loc>
     <lastmod>2017-04-24T09:59:57+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -37,6 +42,12 @@
   
   <url>
     <loc>https://wellphone.me/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/categories/debug/</loc>
+    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -54,7 +65,7 @@
   
   <url>
     <loc>https://wellphone.me/post/</loc>
-    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
+    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -64,14 +75,32 @@
   </url>
   
   <url>
+    <loc>https://wellphone.me/tags/ui/</loc>
+    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://wellphone.me/categories/ui/</loc>
-    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
+    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/uidebugginginformationoverlay/</loc>
+    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://wellphone.me/</loc>
-    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
+    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/%E7%95%8C%E9%9D%A2%E8%B0%83%E8%AF%95/</loc>
+    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
     <priority>0</priority>
   </url>
   
