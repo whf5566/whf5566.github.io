@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="Hugo 0.19" />
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link href="https://wellphone.me/index.xml" rel="alternate" type="application/rss+xml" title="Wellphone&#39;s Blog" />
+    
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>iOS如何正确的监听手机侧边音量键 | Wellphone&#39;s Blog</title>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+  </head>
+  <body>
+    <div id="wrap">
+      <header class="site-header">
+        <div class="site-header-left">
+          <a class="site-header-title" href="https://wellphone.me">Wellphone&#39;s Blog</a>
+        </div>
+      </header>
+      <div class="container">
+        <div id="main">
+
+<div class="article">
+  <header>
+    <div class="article-header">
+      <h1>iOS如何正确的监听手机侧边音量键</h1>
+      <div class="article-meta">
+        <span class="posttime">2017/07/08</span>
+        
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/volume">Volume</a>
+    </li>
+    
+    <li>
+        <a href="/tags/avaudiosession">AVAudioSession</a>
+    </li>
+    
+    <li>
+        <a href="/tags/%E9%9F%B3%E9%87%8F%E9%94%AE">音量键</a>
+    </li>
+    
+    <li>
+        <a href="/tags/%E7%9B%91%E5%90%AC">监听</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+    
+
+  </header>
+  <div class="content">
+    
+
+<h2 id="如何监听手机侧边音量键">如何监听手机侧边音量键</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;我们的App有这样一个Feature，用户通过音量键调节到最大音量时，会弹出一个Toast，提示
+用户当前音量已经最大了，继续按音量上键可以设置为超大音量模式（通过调节音频文件的音量）。刚开始，我们在App中是监听名称为“AVSystemController_SystemVolumeDidChangeNotification”的系统通知来获知用户通过侧边音量键调节手机音量的事件。</p>
+
+<pre><code class="language-objectivec">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onVolumeChanged:) name:@&quot;AVSystemController_SystemVolumeDidChangeNotification&quot; object:nil];
+</code></pre>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;处理该通知的方法如下：</p>
+
+<pre><code class="language-objectivec">- (void)onVolumeChanged:(NSNotification *)notification {
+    if ([[notification.userInfo objectForKey:@&quot;AVSystemController_AudioCategoryNotificationParameter&quot;] isEqualToString:@&quot;Audio/Video&quot;]) {
+        if ([[notification.userInfo objectForKey:@&quot;AVSystemController_AudioVolumeChangeReasonNotificationParameter&quot;] isEqualToString:@&quot;ExplicitVolumeChange&quot;]) {
+            CGFloat volume = [[notification.userInfo objectForKey:@&quot;AVSystemController_AudioVolumeNotificationParameter&quot;] floatValue];
+            if (volume != MAX_VOLUME) {
+                // todo
+            } else {
+                // todo
+            }
+        }
+    }
+}
+</code></pre>
+
+<h2 id="发现问题">发现问题</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这段代码在我们这个App中工作的一直很好。但是最近一段时间，测试人员编译版本，有时音量调节到最大后，没有弹出Toast提示，而有时又会弹出来。经调试，发现有时候能监听到“AVSystemController_SystemVolumeDidChangeNotification”系统通知，有时候又没有，很飘忽不定。一时间大家都不知道怎么回事，很是头疼。因为这个代码在之前发布出去的正式版本中，从来没有出现过这样的问题。</p>
+
+<h2 id="定位问题">定位问题</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;以前版本没有，而现在的版本有，说明肯定是改出来的问题。只有checkout到之前的commit，逐一测试找出是哪次提交造成这样的问题。但是这样折腾了好久也没能定位到是哪次提交造成的。最后，折腾了一天，我们这边的一位美女同事Sharon最后解决了这个问题，她在stackoverflow上找到了类似的问题，发现是我们删除之前通过耳机线控App的一个Feature时，把这段代码删掉了造成的。而这段代码是开始监听远程控制事件。</p>
+
+<pre><code class="language-objectivec">[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+</code></pre>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Fuck！NSNotificationCenter监听的通知“AVSystemController_SystemVolumeDidChangeNotification”居然和RemoteControlEvents有关系，是因为耳机线上也有音量调节按键的原因？？？</p>
+
+  </div>
+  <footer>
+    <div class="article-footer">
+      
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/volume">Volume</a>
+    </li>
+    
+    <li>
+        <a href="/tags/avaudiosession">AVAudioSession</a>
+    </li>
+    
+    <li>
+        <a href="/tags/%E9%9F%B3%E9%87%8F%E9%94%AE">音量键</a>
+    </li>
+    
+    <li>
+        <a href="/tags/%E7%9B%91%E5%90%AC">监听</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      
+      
+
+      
+      <div id="pagenavigation-next-prev">
+        
+        <div id="pagenavigation-next">
+          <span class="pagenav-label">Previous</span>
+          <a href="https://wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/">iOS自带悬浮窗调试工具使用详解</a>
+        </div>
+        
+        
+      </div>
+      
+    </div>
+  </footer>
+  
+<div id="SOHUCS" sid="how_to_monitor_volume_changes" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cyso3GYYu'; 
+var conf = 'prod_fa6a31665b4b269e716ec23d4ce3de3a'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+</div>
+        </div>
+        <div class="sidebar">
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Author</span>
+    </div>
+    <div id="author">
+      <span>Wellphone</span>
+      <div>
+        
+        
+        <a href="https://github.com/whf5566"><i class="fa fa-github-square fa-2x" aria-hidden="true"></i></a>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Categories</span>
+    </div>
+    <div class="categories">
+      <ul>
+        
+        <li>
+          <a href="/categories/2017"><span></span>2017 (4)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/airpods"><span></span>airpods (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/debug"><span></span>debug (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/trouble-shooting"><span></span>trouble-shooting (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ui"><span></span>ui (2)</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>RSS</span>
+    </div>
+    <div id="rss">
+      <a href="https://wellphone.me/index.xml" type="application/rss+xml" target="_blank">
+        <i class="fa fa-rss-square fa-2x" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <footer>
+        <div id="site-footer-wrap">
+          <div id="site-footer">
+            <span>Powered by <a href="https://gohugo.io/">Hugo</a>.</span>
+            <span>
+              
+              Copyright (c) 2017, <a href="https://wellphone.me">Wellphone&#39;s Blog</a>
+              
+            </span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+
