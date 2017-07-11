@@ -111,7 +111,7 @@ var _hmt = _hmt || [];
 
 <p><img src="./../../../images/why_can_not_open_alipay_h5_webview_2.jpeg" alt="悬浮窗主界面" /></p>
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;我们的App居然有两个window，选择另外一个window查看了一下，我靠，h5页面中在这里：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;我们的App居然有两个window，选择另外一个window查看了一下，我靠，h5页面居然在这里：</p>
 
 <p><img src="./../../../images/why_can_not_open_alipay_h5_webview_3.jpeg" alt="悬浮窗主界面" /></p>
 
@@ -119,7 +119,7 @@ var _hmt = _hmt || [];
 
 <h2 id="问题定位">问题定位</h2>
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;找到了消失的H5支付页面后，问题变得清晰起来，可以确定的是支付宝SDK集成没有问题，我们web页面调用的nativa支付接口没有问题，问题出在集成聊天SDK后，出现了两个window，而支付宝SDK在显示H5支付页面时，把页面添加到另外一个window上了。在查看聊天SDK源码后发现了问题所在：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;找到了消失的H5支付页面后，问题变得清晰起来，可以确定的是支付宝SDK集成没有问题，我们web页面调用的native支付接口没有问题，问题出在集成聊天SDK后，出现了两个window，而支付宝SDK在显示H5支付页面时，把页面添加到另外一个window上了。在查看聊天SDK源码后发现了问题所在：</p>
 
 <pre><code class="language-objectivec">    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = [NavigationController rootViewController];;
