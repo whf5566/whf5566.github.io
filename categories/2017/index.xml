@@ -9,6 +9,23 @@
     <atom:link href="/categories/2017/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>为什么支付宝SDK不显示H5支付页面</title>
+      <link>https://wellphone.me/post/2017/why_can_not_open_alipay_h5_webview/</link>
+      <pubDate>Tue, 11 Jul 2017 11:16:30 +0800</pubDate>
+      
+      <guid>https://wellphone.me/post/2017/why_can_not_open_alipay_h5_webview/</guid>
+      <description>问题描述 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们的App集成有微信支付、支付宝支付，前段时间一直工作的很好。但是最近我们测试组发现支付宝支付就不能打开H5的支付页面了，会一直在如下界面等待：
+问题排查 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;首先想到的是支付宝SDK集成出了问题。但是试了下，如果手机上安装有支付宝，会跳转到支付宝应用，支付成功或者手动取消返回都能正常的跳回我们的App。安装有支付宝应用的手机的支付流程是没有问题，能正常工作。可以排除支付宝SDK集成应该没有问题，但是为什么在没有安装支付宝应用的手机上，H5的支付页面显示不出来呢？
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;是不是我们自己的页面上调用方法的原因？我们的支付下单页面也是一个web页面，native代码通过&amp;rdquo;WebViewJavascriptBridge&amp;rdquo; 这个库开了一个支付的接口给web页面调用。web页面调用alipay接口代码如下：
+[bridge registerHandler:@&amp;quot;alipay&amp;quot; handler:^(id data, WVJBResponseCallback responseCallback) { NSLog(@&amp;quot;alipay called: %@&amp;quot;, data); // 调用支付宝接口支付 [AlipayUtil pay:data competion:^(PayResult reslut) { // 支付结果返回 responseCallback(@(result)); }]; }];  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们详细比对了整个流程中打印出的日志，完全看不出任何问题，但H5的支付页面就是不能显示出来。怎么办？现在只有查找提交记录，看是哪次提交引起的。最后发现是在合入我们自己的聊天SDK后，H5的支付页面就不能正常工作了。到这里，笔者开始怀疑人生了，我们的聊天SDK完全没有和支付宝相关的东西啊，为什么会这样？
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;支付宝的H5支付页面也是一个webview，添加到我们的window之上的，会不会是没有显示，或者被挪到我们的view下面被盖住了？我们使用iOS自带悬浮窗调试工具使用详解中的View调试工具查看了一下，果然还是有些异常的：
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们的App居然有两个window，选择另外一个window查看了一下，我靠，h5页面中在这里：
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;总算找到这个消失的H5支付页面了，那么问题来了，为什么集成聊天的SDK后，会有两个window？
+问题定位 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;找到了消失的H5支付页面后，问题变得清晰起来，可以确定的是支付宝SDK集成没有问题，我们web页面调用的nativa支付接口没有问题，问题出在集成聊天SDK后，出现了两个window，而支付宝SDK在显示H5支付页面时，把页面添加到另外一个window上了。在查看聊天SDK源码后发现了问题所在：
+self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]]; self.window.rootViewController = [NavigationController rootViewController];; [self.window makeKeyAndVisible];  在聊天SDK初始化时，有这几行代码，然后就有两个window了~~~~~</description>
+    </item>
+    
+    <item>
       <title>iOS如何正确的监听手机侧边音量键</title>
       <link>https://wellphone.me/post/2017/how_to_monitor_volume_changes/</link>
       <pubDate>Sat, 08 Jul 2017 22:28:48 +0800</pubDate>

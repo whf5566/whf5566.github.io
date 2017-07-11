@@ -14,7 +14,7 @@
     <script>hljs.initHighlightingOnLoad();</script>
     
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <title>iOS如何正确的监听手机侧边音量键 | Wellphone&#39;s Blog</title>
+    <title>为什么支付宝SDK不显示H5支付页面 | Wellphone&#39;s Blog</title>
     <script>
 var _hmt = _hmt || [];
 (function() {
@@ -54,27 +54,23 @@ var _hmt = _hmt || [];
 <div class="article">
   <header>
     <div class="article-header">
-      <h1>iOS如何正确的监听手机侧边音量键</h1>
+      <h1>为什么支付宝SDK不显示H5支付页面</h1>
       <div class="article-meta">
-        <span class="posttime">2017/07/08</span>
+        <span class="posttime">2017/07/11</span>
         
 <div class="tags">
   <ul>
     
     <li>
-        <a href="/tags/volume">Volume</a>
+        <a href="/tags/alipay">Alipay</a>
     </li>
     
     <li>
-        <a href="/tags/avaudiosession">AVAudioSession</a>
+        <a href="/tags/%E6%94%AF%E4%BB%98">支付</a>
     </li>
     
     <li>
-        <a href="/tags/%E9%9F%B3%E9%87%8F%E9%94%AE">音量键</a>
-    </li>
-    
-    <li>
-        <a href="/tags/%E7%9B%91%E5%90%AC">监听</a>
+        <a href="/tags/%E7%95%8C%E9%9D%A2%E8%B0%83%E8%AF%95">界面调试</a>
     </li>
     
   </ul>
@@ -89,42 +85,48 @@ var _hmt = _hmt || [];
   <div class="content">
     
 
-<h2 id="如何监听手机侧边音量键">如何监听手机侧边音量键</h2>
+<h2 id="问题描述">问题描述</h2>
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;我们的App有这样一个Feature，用户通过音量键调节到最大音量时，会弹出一个Toast，提示
-用户当前音量已经最大了，继续按音量上键可以设置为超大音量模式（通过调节音频文件的音量）。刚开始，我们在App中是监听名称为“AVSystemController_SystemVolumeDidChangeNotification”的系统通知来获知用户通过侧边音量键调节手机音量的事件。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;我们的App集成有微信支付、支付宝支付，前段时间一直工作的很好。但是最近我们测试组发现支付宝支付就不能打开H5的支付页面了，会一直在如下界面等待：</p>
 
-<pre><code class="language-objectivec">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onVolumeChanged:) name:@&quot;AVSystemController_SystemVolumeDidChangeNotification&quot; object:nil];
+<p><img src="./../../../images/why_can_not_open_alipay_h5_webview_1.jpeg" alt="悬浮窗主界面" /></p>
+
+<h2 id="问题排查">问题排查</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;首先想到的是支付宝SDK集成出了问题。但是试了下，如果手机上安装有支付宝，会跳转到支付宝应用，支付成功或者手动取消返回都能正常的跳回我们的App。安装有支付宝应用的手机的支付流程是没有问题，能正常工作。可以排除支付宝SDK集成应该没有问题，但是为什么在没有安装支付宝应用的手机上，H5的支付页面显示不出来呢？<br />
+&nbsp;&nbsp;&nbsp;&nbsp;是不是我们自己的页面上调用方法的原因？我们的支付下单页面也是一个web页面，native代码通过&rdquo;WebViewJavascriptBridge&rdquo; 这个库开了一个支付的接口给web页面调用。web页面调用alipay接口代码如下：</p>
+
+<pre><code class="language-objectivec">[bridge registerHandler:@&quot;alipay&quot; handler:^(id data, WVJBResponseCallback responseCallback) {
+        NSLog(@&quot;alipay called: %@&quot;, data);
+        // 调用支付宝接口支付
+        [AlipayUtil  pay:data competion:^(PayResult reslut) {
+            // 支付结果返回
+            responseCallback(@(result));
+        }];
+}];
 </code></pre>
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;处理该通知的方法如下：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;我们详细比对了整个流程中打印出的日志，完全看不出任何问题，但H5的支付页面就是不能显示出来。怎么办？现在只有查找提交记录，看是哪次提交引起的。最后发现是在合入我们自己的聊天SDK后，H5的支付页面就不能正常工作了。到这里，笔者开始怀疑人生了，我们的聊天SDK完全没有和支付宝相关的东西啊，为什么会这样？<br />
+&nbsp;&nbsp;&nbsp;&nbsp;支付宝的H5支付页面也是一个webview，添加到我们的window之上的，会不会是没有显示，或者被挪到我们的view下面被盖住了？我们使用<a href="https://wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/">iOS自带悬浮窗调试工具使用详解</a>中的View调试工具查看了一下，果然还是有些异常的：</p>
 
-<pre><code class="language-objectivec">- (void)onVolumeChanged:(NSNotification *)notification {
-    if ([[notification.userInfo objectForKey:@&quot;AVSystemController_AudioCategoryNotificationParameter&quot;] isEqualToString:@&quot;Audio/Video&quot;]) {
-        if ([[notification.userInfo objectForKey:@&quot;AVSystemController_AudioVolumeChangeReasonNotificationParameter&quot;] isEqualToString:@&quot;ExplicitVolumeChange&quot;]) {
-            CGFloat volume = [[notification.userInfo objectForKey:@&quot;AVSystemController_AudioVolumeNotificationParameter&quot;] floatValue];
-            if (volume != MAX_VOLUME) {
-                // todo
-            } else {
-                // todo
-            }
-        }
-    }
-}
+<p><img src="./../../../images/why_can_not_open_alipay_h5_webview_2.jpeg" alt="悬浮窗主界面" /></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;我们的App居然有两个window，选择另外一个window查看了一下，我靠，h5页面中在这里：</p>
+
+<p><img src="./../../../images/why_can_not_open_alipay_h5_webview_3.jpeg" alt="悬浮窗主界面" /></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;总算找到这个消失的H5支付页面了，那么问题来了，为什么集成聊天的SDK后，会有两个window？</p>
+
+<h2 id="问题定位">问题定位</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;找到了消失的H5支付页面后，问题变得清晰起来，可以确定的是支付宝SDK集成没有问题，我们web页面调用的nativa支付接口没有问题，问题出在集成聊天SDK后，出现了两个window，而支付宝SDK在显示H5支付页面时，把页面添加到另外一个window上了。在查看聊天SDK源码后发现了问题所在：</p>
+
+<pre><code class="language-objectivec">    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = [NavigationController rootViewController];;
+    [self.window makeKeyAndVisible];
 </code></pre>
 
-<h2 id="发现问题">发现问题</h2>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;这段代码在我们这个App中工作的一直很好。但是最近一段时间，测试人员编译版本，有时音量调节到最大后，没有弹出Toast提示，而有时又会弹出来。经调试，发现有时候能监听到“AVSystemController_SystemVolumeDidChangeNotification”系统通知，有时候又没有，很飘忽不定。一时间大家都不知道怎么回事，很是头疼。因为这个代码在之前发布出去的正式版本中，从来没有出现过这样的问题。</p>
-
-<h2 id="定位问题">定位问题</h2>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;以前版本没有，而现在的版本有，说明肯定是改出来的问题。只有checkout到之前的commit，逐一测试找出是哪次提交造成这样的问题。但是这样折腾了好久也没能定位到是哪次提交造成的。最后，折腾了一天，我们这边的一位美女同事Sharon最后解决了这个问题，她在stackoverflow上找到了类似的问题，发现是我们删除之前通过耳机线控App的一个Feature时，把这段代码删掉了造成的。而这段代码是开始监听远程控制事件。</p>
-
-<pre><code class="language-objectivec">[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-</code></pre>
-
-<p>&nbsp;&nbsp;&nbsp;&nbsp;Fuck！NSNotificationCenter监听的通知“AVSystemController_SystemVolumeDidChangeNotification”居然和RemoteControlEvents有关系，是因为耳机线上也有音量调节按键的原因？？？</p>
+<p>在聊天SDK初始化时，有这几行代码，然后就有两个window了~~~~~</p>
 
   </div>
   <footer>
@@ -134,19 +136,15 @@ var _hmt = _hmt || [];
   <ul>
     
     <li>
-        <a href="/tags/volume">Volume</a>
+        <a href="/tags/alipay">Alipay</a>
     </li>
     
     <li>
-        <a href="/tags/avaudiosession">AVAudioSession</a>
+        <a href="/tags/%E6%94%AF%E4%BB%98">支付</a>
     </li>
     
     <li>
-        <a href="/tags/%E9%9F%B3%E9%87%8F%E9%94%AE">音量键</a>
-    </li>
-    
-    <li>
-        <a href="/tags/%E7%9B%91%E5%90%AC">监听</a>
+        <a href="/tags/%E7%95%8C%E9%9D%A2%E8%B0%83%E8%AF%95">界面调试</a>
     </li>
     
   </ul>
@@ -161,21 +159,16 @@ var _hmt = _hmt || [];
         
         <div id="pagenavigation-next">
           <span class="pagenav-label">Previous</span>
-          <a href="https://wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/">iOS自带悬浮窗调试工具使用详解</a>
+          <a href="https://wellphone.me/post/2017/how_to_monitor_volume_changes/">iOS如何正确的监听手机侧边音量键</a>
         </div>
         
-        
-        <div id="pagenavigation-prev">
-          <span class="pagenav-label">Next</span>
-          <a href="https://wellphone.me/post/2017/why_can_not_open_alipay_h5_webview/">为什么支付宝SDK不显示H5支付页面</a>
-        </div>
         
       </div>
       
     </div>
   </footer>
   
-<div id="SOHUCS" sid="how_to_monitor_volume_changes" ></div> 
+<div id="SOHUCS" sid="why_can_not_open_alipay_h5_webview" ></div> 
 <script type="text/javascript"> 
 (function(){ 
 var appid = 'cyso3GYYu'; 
