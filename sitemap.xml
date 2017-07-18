@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://wellphone.me/post/2017/how_to_view_app_log_on_mac/</loc>
+    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://wellphone.me/post/2017/why_can_not_open_alipay_h5_webview/</loc>
     <lastmod>2017-07-11T11:16:30+08:00</lastmod>
   </url>
@@ -28,7 +33,7 @@
   
   <url>
     <loc>https://wellphone.me/categories/2017/</loc>
-    <lastmod>2017-07-11T11:16:30+08:00</lastmod>
+    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -68,14 +73,26 @@
   </url>
   
   <url>
+    <loc>https://wellphone.me/tags/debug/</loc>
+    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://wellphone.me/categories/debug/</loc>
-    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
+    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://wellphone.me/tags/ios/</loc>
-    <lastmod>2017-05-03T09:51:08+08:00</lastmod>
+    <lastmod>2017-07-08T22:28:48+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/categories/ios/</loc>
+    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -87,7 +104,7 @@
   
   <url>
     <loc>https://wellphone.me/post/</loc>
-    <lastmod>2017-07-11T11:16:30+08:00</lastmod>
+    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -128,13 +145,19 @@
   
   <url>
     <loc>https://wellphone.me/</loc>
-    <lastmod>2017-07-11T11:16:30+08:00</lastmod>
+    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://wellphone.me/tags/%E6%94%AF%E4%BB%98/</loc>
     <lastmod>2017-07-11T11:16:30+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/%E6%97%A5%E5%BF%97/</loc>
+    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
     <priority>0</priority>
   </url>
   

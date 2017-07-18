@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="Hugo 0.19" />
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link href="https://wellphone.me/index.xml" rel="alternate" type="application/rss+xml" title="Wellphone&#39;s Blog" />
+    
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>iOS如何实时查看App运行日志 | Wellphone&#39;s Blog</title>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  </head>
+  <body>
+    <div id="wrap">
+      <header class="site-header">
+        <div class="site-header-left">
+          <a class="site-header-title" href="https://wellphone.me">Wellphone&#39;s Blog</a>
+        </div>
+      </header>
+      <div class="container">
+        <div id="main">
+
+<div class="article">
+  <header>
+    <div class="article-header">
+      <h1>iOS如何实时查看App运行日志</h1>
+      <div class="article-meta">
+        <span class="posttime">2017/07/13</span>
+        
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/debug">DEBUG</a>
+    </li>
+    
+    <li>
+        <a href="/tags/%E6%97%A5%E5%BF%97">日志</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+    
+
+  </header>
+  <div class="content">
+    
+
+<h2 id="前言">前言</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp; 可能大数人看到这个标题觉得DEBUG时在Xcode里就能看到App运行时的打印在控制台里的日志，这还需要专门写篇文章介绍下吗？其实不然，有些场景下我们还是需要实时查看App运行时的日志的，比如测试人员拿着测试机发现问题了过来找你，这时候要看运行时日志，又不能重新DEBUG安装版本，怎么办？再比如，收到并点击推送的通知后启动App，这时候要查看我们打印的日志，怎么办？还有，弄过VoIP推送同学的都知道，这个推送可以直接启动我们的App，如果要观察启动过程中的日志，这该怎么办？总不能只能连着Xcode运行时，我们才能看到日志吧。有同学可能会说，把日志写入文件，启动完成后，再把文件拷贝出来看不就完了，好了，这篇文章你一定要认真看完。</p>
+
+<h2 id="查看日志的几种方式">查看日志的几种方式</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;这里我们说的日志是输出到控制台的日志，就是我们常用的NSLog输出的日志。其实大部分App会集成日志模块，比如<a href="https://github.com/CocoaLumberjack/CocoaLumberjack">CocoaLumberjack</a>，还有以前笔者学习Runloop时也造过这样的轮子<a href="https://github.com/whf5566/SSLogger">SSLogger</a>。利用第三方日志模块查看日志不在本文讨论范围内，本文只讨论如何实时查看输出在console控制台的日志。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;大致有以前几种方式查看日志，一种是连着Xcode调试时，可以直接在Xcode下面的控制台输出面板上看到我们App的日志。如图:</p>
+
+<p><img src="./../../../images/how_to_view_app_log_1.png" alt="Xcode查看log" /></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;还一种也是Xcode，通过Window-&gt;Devices打开devices界面，选择我们的手机，也能看到手机中运行的进程输出的日志。如图：</p>
+
+<p><img src="./../../../images/how_to_view_app_log_2.png" alt="Devices查看log" /></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;上面这两种方式大部分iOS开发应该都知道，不知道的就该检讨下了。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;本文重点介绍另外两种查看运行时日志的方式： libimobiledevice  和 Console.app(控制台应用)</p>
+
+<h3 id="使用libimobiledevice工具查看日志">使用libimobiledevice工具查看日志</h3>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://github.com/libimobiledevice/libimobiledevice">libimobiledevice</a> 是一系列工具集，有很多实用的工具，截屏，安装ipa文件等等。我们要介绍的是idevicesyslog这个工具，这个工具可以把手机中的日志输出到我们指定的文件里。</p>
+
+<ul>
+<li>如何安装libimobiledevice<br /></li>
+</ul>
+
+<p>安装libimobiledevice很简单，在命令行输入：</p>
+
+<pre><code class="language-shellscript">brew instll libimobiledevice --HEAD  
+</code></pre>
+
+<p>注意，需要加上 &ndash;HEAD 选项，如果不加，安装是老版本，不支持iOS10的手机，所以安装时，需要加上 &ndash;HEAD 选项, 如图:</p>
+
+<p><img src="./../../../images/how_to_view_app_log_3.png" alt="libimobiledevice安装" /></p>
+
+<p>如果电脑上没有brew，请看这里:<a href="http://jingyan.baidu.com/article/fec7a1e5ec30341190b4e7e5.html">brew安装传送门</a></p>
+
+<ul>
+<li><p>如何使用idevicesyslog<br />
+很简单，在命令行输入：</p>
+
+<pre><code class="language-shellscript">idevicesyslog 
+</code></pre>
+
+<p>就可以在屏幕上看见手机上所有的日志了。
+<img src="./../../../images/how_to_view_app_log_4.png" alt="idevicesyslog" /></p></li>
+
+<li><p>如何查看我们想要的日志</p></li>
+</ul>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;1）将设备日志重定向到文件</p>
+
+<pre><code class="language-shellscript">idevicesyslog &gt;&gt; iphone.log &amp; 
+</code></pre>
+
+<p>该命令是将日志导入到iphone.log这个文件，并且是在后台执行。</p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;2）用tail -f和grep查看log</p>
+
+<pre><code class="language-shellscript">tail -f iphone.log
+tail -f iphone.log | grep 'QQ’  # 查看包含QQ的行
+</code></pre>
+
+<p>如图：</p>
+
+<p><img src="./../../../images/how_to_view_app_log_5.png" alt="idevicesyslog使用" /></p>
+
+<h3 id="使用mac自带的控制台应用查看ios日志">使用Mac自带的控制台应用查看iOS日志</h3>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;在用过各种办法查看App日志后，还是觉得苹果系统自带的工具用起来最方便，不用安装，不用命令行，傻瓜式操作，非常方便。但是还有好多同学不知道怎么用，这里简单的给大家介绍下。<br />
+&nbsp;&nbsp;&nbsp;&nbsp;连上手机，在LaunchPad其他文件中打开控制台应用，或者搜索Console.app打开控制台应用，可以看到左侧一栏中有我们的手机设备，选择就可以，如图</p>
+
+<p><img src="./../../../images/how_to_view_app_log_6.png" alt="控制台应用" /></p>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;右侧输出的日志不仅有我们自己的App还有其他进程的日志，怎么过滤？非常简单，选中一条我们的日志，在进程名字上右键，选择显示进程名，然后就只会显示我们App的日志。如果显示的列名中没有进程名，我们可以在其他列名上右键，在弹出的菜单中勾选上进程就可以了。如图显示QQ打印出的日志：</p>
+
+<p><img src="./../../../images/how_to_view_app_log_7.png" alt="控制台应用" /></p>
+
+<p>日志还是有点多，看不清，怎么办，在右上方输入自己想要过滤出的日志，然后就会只显示你想要的，如图显示QQ打印出的日志中所有带有“***”的行</p>
+
+<p><img src="./../../../images/how_to_view_app_log_8.png" alt="控制台应用" /></p>
+
+<p>是不是很简单方便<br />
+其实这个控制台应用功能还是很多的，本文只是介绍下简单用法，大家快去试试其他功能吧。</p>
+
+<h2 id="总结">总结</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;本文介绍的两种实时查看日志的方法能让我们在一些不能连上Xcode调试的场景下查看日志，对于定位解决问题很有帮助。idevicesyslog 工具使用方法更灵活，可以用grep查找更符合自己想要的日志；控制台应用查看日志更方便一点。</p>
+
+  </div>
+  <footer>
+    <div class="article-footer">
+      
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/debug">DEBUG</a>
+    </li>
+    
+    <li>
+        <a href="/tags/%E6%97%A5%E5%BF%97">日志</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      
+      
+
+      
+      <div id="pagenavigation-next-prev">
+        
+        <div id="pagenavigation-next">
+          <span class="pagenav-label">Previous</span>
+          <a href="https://wellphone.me/post/2017/why_can_not_open_alipay_h5_webview/">为什么支付宝SDK不显示H5支付页面</a>
+        </div>
+        
+        
+      </div>
+      
+    </div>
+  </footer>
+  
+<div id="SOHUCS" sid="how_to_view_app_log_on_mac" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cyso3GYYu'; 
+var conf = 'prod_fa6a31665b4b269e716ec23d4ce3de3a'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+</div>
+        </div>
+        <div class="sidebar">
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Author</span>
+    </div>
+    <div id="author">
+      <span>Wellphone</span>
+      <div>
+        
+        
+        <a href="https://github.com/whf5566"><i class="fa fa-github-square fa-2x" aria-hidden="true"></i></a>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Categories</span>
+    </div>
+    <div class="categories">
+      <ul>
+        
+        <li>
+          <a href="/categories/2017"><span></span>2017 (6)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/airpods"><span></span>airpods (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/debug"><span></span>debug (2)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ios"><span></span>ios (6)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/trouble-shooting"><span></span>trouble-shooting (2)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ui"><span></span>ui (2)</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>RSS</span>
+    </div>
+    <div id="rss">
+      <a href="https://wellphone.me/index.xml" type="application/rss+xml" target="_blank">
+        <i class="fa fa-rss-square fa-2x" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <footer>
+        <div id="site-footer-wrap">
+          <div id="site-footer">
+            <span>Powered by <a href="https://gohugo.io/">Hugo</a>.</span>
+            <span>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>. </span>
+            <span>
+              
+              Copyright (c) 2017, <a href="https://wellphone.me">Wellphone&#39;s Blog</a>
+              
+            </span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+
