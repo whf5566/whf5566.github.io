@@ -24,7 +24,7 @@
 使用libimobiledevice工具查看日志 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;libimobiledevice 是一系列工具集，有很多实用的工具，截屏，安装ipa文件等等。我们要介绍的是idevicesyslog这个工具，这个工具可以把手机中的日志输出到我们指定的文件里。
  如何安装libimobiledevice
   安装libimobiledevice很简单，在命令行输入：
-brew instll libimobiledevice --HEAD  注意，需要加上 &amp;ndash;HEAD 选项，如果不加，安装是老版本，不支持iOS10的手机，所以安装时，需要加上 &amp;ndash;HEAD 选项, 如图:
+brew install libimobiledevice --HEAD  注意，需要加上 &amp;ndash;HEAD 选项，如果不加，安装是老版本，不支持iOS10的手机，所以安装时，需要加上 &amp;ndash;HEAD 选项, 如图:
 如果电脑上没有brew，请看这里:brew安装传送门
  如何使用idevicesyslog
 很简单，在命令行输入：
