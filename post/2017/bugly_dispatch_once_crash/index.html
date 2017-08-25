@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="Hugo 0.19" />
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link href="https://wellphone.me/index.xml" rel="alternate" type="application/rss+xml" title="Wellphone&#39;s Blog" />
+    
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>腾讯Bugly的巨坑：使用不当会造成UI界面卡死 | Wellphone&#39;s Blog</title>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  </head>
+  <body>
+    <div id="wrap">
+      <header class="site-header">
+        <div class="site-header-left">
+          <a class="site-header-title" href="https://wellphone.me">Wellphone&#39;s Blog</a>
+        </div>
+      </header>
+      <div class="container">
+        <div id="main">
+
+<div class="article">
+  <header>
+    <div class="article-header">
+      <h1>腾讯Bugly的巨坑：使用不当会造成UI界面卡死</h1>
+      <div class="article-meta">
+        <span class="posttime">2017/08/25</span>
+        
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/bugly">Bugly</a>
+    </li>
+    
+    <li>
+        <a href="/tags/dispatch_once">dispatch_once</a>
+    </li>
+    
+    <li>
+        <a href="/tags/"></a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+    
+
+  </header>
+  <div class="content">
+    
+
+<h2 id="前言">前言</h2>
+
+<p>Bugly和dispatch_once使用不当，会造成UI界面卡死。笔者在前段时间碰见了这样的一个卡死的情况，特意记录下来。<br />
+iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK，用来捕捉App中的crash。对于dispatch_once大家就更熟悉了，现在大部分开发者用这个来创建单例。如：</p>
+
+<pre><code class="language-objectivec">+ (SingletonA *)sharedInstance {
+    static SingletonA *_singleton = nil;
+    static dispatch_once_t once;
+    
+    dispatch_once(&amp;once, ^{
+        _singleton = [[SingletonA alloc] init];
+    });
+    return _singleton;
+}
+</code></pre>
+
+<p>但是这两个在一起怎么会造成UI界面卡死呢？如果笔者不是亲眼所见，也不会相信Bugly会造成界面卡死。</p>
+
+<h2 id="现象">现象</h2>
+
+<p>前几天碰见了这样一个情况，我们的App启动时有时候会卡在启动界面上，过一段时间
+就会被系统杀掉，而且不会有Crash的堆栈。这个现象让我们开发很头疼，一旦出现就只能杀进程，重新启动App，并且还不知道是怎么回事。</p>
+
+<h2 id="调查">调查</h2>
+
+<p>看到界面卡死的第一反应就是，是不是哪个地方死锁导致主线程阻塞了。使用<a href="https://wellphone.me/post/2017/how_to_view_app_log_on_mac/">Console.app查看App启动时的日志</a>，没发现什么异常的情况，并且死锁这个在日志中查找起来比较麻烦。<br />
+好不容易复现这个情况后，赶紧把手机接上Mac，在Xcdoe中Attach我们App的进程，如图：</p>
+
+<p><img src="./../../../images/bugly_dispatch_once_crash_01.png" alt="image" /></p>
+
+<p>然后暂停下App进程，就可以看到当前所有线程的堆栈情况了。如图：<br />
+<img src="./../../../images/bugly_dispatch_once_crash_02.png" alt="image" /></p>
+
+<p>这下，我们才知道是卡在了dispatch_once这个地方。是我们的单例使用有问题吗？我们知道，
+如果dispatch_once递归调用就会产生死锁。示例代码如下：</p>
+
+<pre><code class="language-objectivec">+ (SingletonA *)sharedInstance {
+    static SingletonA *_singleton = nil;
+    static dispatch_once_t once;
+    
+    dispatch_once(&amp;once, ^{
+        _singleton = [[SingletonA alloc] init];
+    });
+    return _singleton;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [self somethingInit];
+        // 这个方法里也调用了[SingletonA sharedInstance]，所以会产生死锁
+    }
+    return self;
+}
+
+- (void)somethingInit {
+    [SingletonA sharedInstance];
+}
+</code></pre>
+
+<p>很有可能就是这个原因导致我们的App启动时卡死。于是我们开始排查dispatch_once的代码里会不会在某个条件下再次调用到相同的dispatch_once，形成递归调用，导致死锁。<br />
+就这样折腾了好久，也没有发现dispatch_once形成递归调用的可能性，就在调查快陷入僵局的时候，笔者在日志中发现了一些信息：</p>
+
+<blockquote>
+<p>*** Assertion failure in -[XXXXXManager XXXXXmethod], /Users/whf/Desktop/WHF/XXXXX/XXXXX/XXXXXManager.m:32</p>
+</blockquote>
+
+<p>怎么会有NSAssert断言日志信息，有NSAssert断言时App不应该早就Crash了吗，为什么会卡住被系统结束运行？笔者把NSAssert断言的地方做了处理，不会再触发断言了，然后重新Debug安装App后试了很多次，果然就不会再卡住了。</p>
+
+<p>到此，启动卡住的触发原因找到了，是因为dispatch_once中的代码有NSAssert断言的Crash，导致主线程卡住。<br />
+但是，为什么会这样，笔者是一个喜欢刨根问底的人，于是有了下面的问题复现。</p>
+
+<h2 id="问题复现">问题复现</h2>
+
+<p>dispatch_once中执行的代码有Crash的话，会造成死锁吗？难道是NSAssert使用的@try{}@catch{}的异常机制改变了代码的执行顺序，致使dispatch_once死锁？<br />
+这个解释太牵强，感觉站不住脚。<br />
+笔者新建了一个demo工程，来测试这种情况。代码大致如下：</p>
+
+<p>SingletonA.m 文件：</p>
+
+<pre><code class="language-objectivec">@implementation SingletonA
+
++ (SingletonA *)sharedInstance {
+    static SingletonA *_singleton = nil;
+    static dispatch_once_t once;
+    
+    dispatch_once(&amp;once, ^{
+        _singleton = [[SingletonA alloc] init];
+    });
+    return _singleton;
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        [self somethingInit];
+    }
+    return self;
+}
+
+- (void)somethingInit {
+    NSAssert(NO, @&quot;not support message type&quot;);
+}
+
+@end
+</code></pre>
+
+<p>使用这个单例的地方MainViewController.m :</p>
+
+<pre><code class="language-objectivec">@implementation MainViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [SingletonA sharedInstance];
+}
+
+@end
+</code></pre>
+
+<p>代码跑起来后，并没有死锁。难道是需要多线程访问[SingletonA sharedInstance]这个方法？<br />
+立马修改了下使用这个单例的地方</p>
+
+<pre><code class="language-objectivec">- (void)viewDidLoad {
+    [super viewDidLoad];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [SingletonA sharedInstance];
+    });
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [SingletonA sharedInstance];
+    });
+
+    [SingletonA sharedInstance];
+}
+</code></pre>
+
+<p>在全局队列里也访问了这个单例，然而，并没有出现死锁的情况。
+太令人失望了，看来，在dispatch_once执行的代码中有crash，并不会造成dispatch_once死锁。<br />
+正当陷入僵局的时候，再次看了下当时我们App卡死时后的堆栈。如图：<br />
+<img src="./../../../images/bugly_dispatch_once_crash_03.png" alt="image" /></p>
+
+<p>发现了Bugly的身影，笔者立刻在Demo工程中加入了Bugly库，然后重新跑了下代码，还是没有死锁啊，怎么回事？
+又仔细端详了上面这张图，这次有新的发现。Bugly是在非主线程捕获到的这次Crash，而主线程也访问了这个出问题的单例，会不会是因为后台线程初始化这个单例的时候crash了，Bugly捕获了这个Crash在这个后台线程处理，然后主线程访问这个单例就在一直等待这个单例初始化完成。好了，笔者改了下调用单例的地方，让主线程休眠1s，方便后台线程提前初始化单例。</p>
+
+<pre><code class="language-objectivec">- (void)viewDidLoad {
+    [super viewDidLoad];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [SingletonA sharedInstance];
+    });
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [SingletonA sharedInstance];
+    });
+    sleep(1); // 让后台线程先去初始化SingletonA
+    [SingletonA sharedInstance];
+}
+</code></pre>
+
+<p>果然，死锁了！！！<br />
+主线程截图：<br />
+<img src="./../../../images/bugly_dispatch_once_crash_04.png" alt="image" /></p>
+
+<p>后台线程截图：<br />
+<img src="./../../../images/bugly_dispatch_once_crash_05.png" alt="image" /></p>
+
+<p>现在明白了，使用dispatch_once的单例初始化的时候抛出异常或者Crash时，Bugly捕获到后进行处理，这时候如果主线程再试图去访问这个单例，就会造成死锁。</p>
+
+<h2 id="总结">总结</h2>
+
+<p>Bugly和dispatch_once在以下条件下造成会死锁:
+&gt; 1.后台线程初始化dispatch_once单例时抛出异常或者crash，<br />
+&gt; 2.主线程也正在访问这个单例。</p>
+
+<h4 id="为什么说这个是bugly的巨坑呢">为什么说这个是Bugly的巨坑呢？</h4>
+
+<p>这种情况下正常的流程就应该Crash了，但是Bugly把这种错误变为了死锁，掩盖了问题，最后被系统杀掉，没有了Crash堆栈。这样就不好查找定位问题了，尤其是当这个Crash不是必现，而且还是线上版本的时候，就更不容易排查问题了。Bugly把我们活生生地往深沟里带，让我们最开始排查问题的方向就错了。<br />
+所以，如果集成了Bugly，App又经常不明情况的卡死可以排查下这类情况。</p>
+
+<h4 id="如何避免">如何避免？</h4>
+
+<p>虽说是Bugly造成的死锁，但其根本原因还是我们自己代码Crash了，Bugly只是掩盖住了这种Crash，让我们不容易排查问题。那要如何避免呢？
+&gt; 1.项目少用单例。笔者一直不太喜欢什么东西都搞个单例来处理。<br />
+&gt; 2.dispatch_once中的代码尽量只做初始化的事情，不要调用很多其他的方法。<br />
+&gt; 3.dispatch_once中的代码尽量不要抛出异常，不要Crash。<br />
+&gt; 4.给Bugly报Bug。</p>
+
+<p>好了，总结完了，成功把自己代码的问题甩锅给Bugly～～～～<br />
+请大家轻拍～～～</p>
+
+  </div>
+  <footer>
+    <div class="article-footer">
+      
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/bugly">Bugly</a>
+    </li>
+    
+    <li>
+        <a href="/tags/dispatch_once">dispatch_once</a>
+    </li>
+    
+    <li>
+        <a href="/tags/"></a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      
+      
+
+      
+      <div id="pagenavigation-next-prev">
+        
+        <div id="pagenavigation-next">
+          <span class="pagenav-label">Previous</span>
+          <a href="https://wellphone.me/post/2017/how_to_view_app_log_on_mac/">iOS如何实时查看App运行日志</a>
+        </div>
+        
+        
+      </div>
+      
+    </div>
+  </footer>
+  
+<div id="SOHUCS" sid="bugly_dispatch_once_crash" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cyso3GYYu'; 
+var conf = 'prod_fa6a31665b4b269e716ec23d4ce3de3a'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+</div>
+        </div>
+        <div class="sidebar">
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Author</span>
+    </div>
+    <div id="author">
+      <span>Wellphone</span>
+      <div>
+        
+        
+        <a href="https://github.com/whf5566"><i class="fa fa-github-square fa-2x" aria-hidden="true"></i></a>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Categories</span>
+    </div>
+    <div class="categories">
+      <ul>
+        
+        <li>
+          <a href="/categories/2017"><span></span>2017 (7)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/airpods"><span></span>airpods (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/debug"><span></span>debug (2)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ios"><span></span>ios (7)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/trouble-shooting"><span></span>trouble-shooting (3)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ui"><span></span>ui (2)</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>RSS</span>
+    </div>
+    <div id="rss">
+      <a href="https://wellphone.me/index.xml" type="application/rss+xml" target="_blank">
+        <i class="fa fa-rss-square fa-2x" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <footer>
+        <div id="site-footer-wrap">
+          <div id="site-footer">
+            <span>Powered by <a href="https://gohugo.io/">Hugo</a>.</span>
+            <span>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>. </span>
+            <span>
+              
+              Copyright (c) 2017, <a href="https://wellphone.me">Wellphone&#39;s Blog</a>
+              
+            </span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+

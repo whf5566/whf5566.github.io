@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://wellphone.me/post/2017/bugly_dispatch_once_crash/</loc>
+    <lastmod>2017-08-25T16:52:20+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://wellphone.me/post/2017/how_to_view_app_log_on_mac/</loc>
     <lastmod>2017-07-13T09:42:08+08:00</lastmod>
   </url>
@@ -32,19 +37,25 @@
   </url>
   
   <url>
-    <loc>https://wellphone.me/categories/2017/</loc>
-    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
+    <loc>https://wellphone.me/tags/</loc>
+    <lastmod>2017-08-25T16:52:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://wellphone.me/tags/airpods/</loc>
-    <lastmod>2017-04-24T09:59:57+08:00</lastmod>
+    <loc>https://wellphone.me/categories/2017/</loc>
+    <lastmod>2017-08-25T16:52:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://wellphone.me/categories/airpods/</loc>
+    <lastmod>2017-04-24T09:59:57+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/airpods/</loc>
     <lastmod>2017-04-24T09:59:57+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -68,13 +79,13 @@
   </url>
   
   <url>
-    <loc>https://wellphone.me/categories/</loc>
+    <loc>https://wellphone.me/tags/bugly/</loc>
+    <lastmod>2017-08-25T16:52:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://wellphone.me/tags/debug/</loc>
-    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
+    <loc>https://wellphone.me/categories/</loc>
     <priority>0</priority>
   </url>
   
@@ -85,14 +96,26 @@
   </url>
   
   <url>
-    <loc>https://wellphone.me/tags/ios/</loc>
-    <lastmod>2017-07-08T22:28:48+08:00</lastmod>
+    <loc>https://wellphone.me/tags/debug/</loc>
+    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/dispatch_once/</loc>
+    <lastmod>2017-08-25T16:52:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://wellphone.me/categories/ios/</loc>
-    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
+    <lastmod>2017-08-25T16:52:20+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/ios/</loc>
+    <lastmod>2017-07-08T22:28:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -104,7 +127,7 @@
   
   <url>
     <loc>https://wellphone.me/post/</loc>
-    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
+    <lastmod>2017-08-25T16:52:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -115,18 +138,18 @@
   
   <url>
     <loc>https://wellphone.me/categories/trouble-shooting/</loc>
-    <lastmod>2017-07-11T11:16:30+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://wellphone.me/tags/ui/</loc>
-    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
+    <lastmod>2017-08-25T16:52:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://wellphone.me/categories/ui/</loc>
+    <lastmod>2017-06-08T09:58:10+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/ui/</loc>
     <lastmod>2017-06-08T09:58:10+08:00</lastmod>
     <priority>0</priority>
   </url>
@@ -145,7 +168,7 @@
   
   <url>
     <loc>https://wellphone.me/</loc>
-    <lastmod>2017-07-13T09:42:08+08:00</lastmod>
+    <lastmod>2017-08-25T16:52:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
