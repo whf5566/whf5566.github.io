@@ -9,6 +9,23 @@
     <atom:link href="/categories/ui/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>腾讯Bugly的巨坑：使用不当会造成UI界面卡死</title>
+      <link>https://wellphone.me/post/2017/bugly_dispatch_once_crash/</link>
+      <pubDate>Fri, 25 Aug 2017 16:52:20 +0800</pubDate>
+      
+      <guid>https://wellphone.me/post/2017/bugly_dispatch_once_crash/</guid>
+      <description>前言 Bugly和dispatch_once使用不当，会造成UI界面卡死。笔者在前段时间碰见了这样的一个卡死的情况，特意记录下来。
+iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK，用来捕捉App中的crash。对于dispatch_once大家就更熟悉了，现在大部分开发者用这个来创建单例。如：
++ (SingletonA *)sharedInstance { static SingletonA *_singleton = nil; static dispatch_once_t once; dispatch_once(&amp;amp;once, ^{ _singleton = [[SingletonA alloc] init]; }); return _singleton; }  但是这两个在一起怎么会造成UI界面卡死呢？如果笔者不是亲眼所见，也不会相信Bugly会造成界面卡死。
+现象 前几天碰见了这样一个情况，我们的App启动时有时候会卡在启动界面上，过一段时间 就会被系统杀掉，而且不会有Crash的堆栈。这个现象让我们开发很头疼，一旦出现就只能杀进程，重新启动App，并且还不知道是怎么回事。
+调查 看到界面卡死的第一反应就是，是不是哪个地方死锁导致主线程阻塞了。使用Console.app查看App启动时的日志，没发现什么异常的情况，并且死锁这个在日志中查找起来比较麻烦。
+好不容易复现这个情况后，赶紧把手机接上Mac，在Xcdoe中Attach我们App的进程，如图：
+然后暂停下App进程，就可以看到当前所有线程的堆栈情况了。如图：
+这下，我们才知道是卡在了dispatch_once这个地方。是我们的单例使用有问题吗？我们知道， 如果dispatch_once递归调用就会产生死锁。示例代码如下：
++ (SingletonA *)sharedInstance { static SingletonA *_singleton = nil; static dispatch_once_t once; dispatch_once(&amp;amp;once, ^{ _singleton = [[SingletonA alloc] init]; }); return _singleton; } - (instancetype)init { self = [super init]; if (self) { [self somethingInit]; // 这个方法里也调用了[SingletonA sharedInstance]，所以会产生死锁 } return self; } - (void)somethingInit { [SingletonA sharedInstance]; }  很有可能就是这个原因导致我们的App启动时卡死。于是我们开始排查dispatch_once的代码里会不会在某个条件下再次调用到相同的dispatch_once，形成递归调用，导致死锁。</description>
+    </item>
+    
+    <item>
       <title>iOS自带悬浮窗调试工具使用详解</title>
       <link>https://wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/</link>
       <pubDate>Thu, 08 Jun 2017 09:58:10 +0800</pubDate>

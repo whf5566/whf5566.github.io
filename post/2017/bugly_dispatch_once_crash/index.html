@@ -70,7 +70,7 @@ var _hmt = _hmt || [];
     </li>
     
     <li>
-        <a href="/tags/"></a>
+        <a href="/tags/%E6%AD%BB%E9%94%81">死锁</a>
     </li>
     
   </ul>
@@ -254,9 +254,12 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
 
 <h2 id="总结">总结</h2>
 
-<p>Bugly和dispatch_once在以下条件下造成会死锁:
-&gt; 1.后台线程初始化dispatch_once单例时抛出异常或者crash，<br />
-&gt; 2.主线程也正在访问这个单例。</p>
+<p>Bugly和dispatch_once在以下条件下造成会死锁:</p>
+
+<blockquote>
+<p>1.后台线程初始化dispatch_once单例时抛出异常或者crash，<br />
+ 2.主线程也正在访问这个单例。</p>
+</blockquote>
 
 <h4 id="为什么说这个是bugly的巨坑呢">为什么说这个是Bugly的巨坑呢？</h4>
 
@@ -265,11 +268,14 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
 
 <h4 id="如何避免">如何避免？</h4>
 
-<p>虽说是Bugly造成的死锁，但其根本原因还是我们自己代码Crash了，Bugly只是掩盖住了这种Crash，让我们不容易排查问题。那要如何避免呢？
-&gt; 1.项目少用单例。笔者一直不太喜欢什么东西都搞个单例来处理。<br />
-&gt; 2.dispatch_once中的代码尽量只做初始化的事情，不要调用很多其他的方法。<br />
-&gt; 3.dispatch_once中的代码尽量不要抛出异常，不要Crash。<br />
-&gt; 4.给Bugly报Bug。</p>
+<p>虽说是Bugly造成的死锁，但其根本原因还是我们自己代码Crash了，Bugly只是掩盖住了这种Crash，让我们不容易排查问题。那要如何避免呢？</p>
+
+<blockquote>
+<p>1.项目少用单例。笔者一直不太喜欢什么东西都搞个单例来处理。<br />
+ 2.dispatch_once中的代码尽量只做初始化的事情，不要调用很多其他的方法。<br />
+ 3.dispatch_once中的代码尽量不要抛出异常，不要Crash。<br />
+ 4.给Bugly报Bug。</p>
+</blockquote>
 
 <p>好了，总结完了，成功把自己代码的问题甩锅给Bugly～～～～<br />
 请大家轻拍～～～</p>
@@ -290,7 +296,7 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
     </li>
     
     <li>
-        <a href="/tags/"></a>
+        <a href="/tags/%E6%AD%BB%E9%94%81">死锁</a>
     </li>
     
   </ul>
@@ -375,7 +381,7 @@ window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="tex
         </li>
         
         <li>
-          <a href="/categories/ui"><span></span>ui (2)</a>
+          <a href="/categories/ui"><span></span>ui (3)</a>
         </li>
         
       </ul>
