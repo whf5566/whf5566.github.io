@@ -6,8 +6,21 @@
     <description>Recent content in Wellphone&#39;s Blog on Wellphone&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-Hans</language>
-    <lastBuildDate>Fri, 25 Aug 2017 16:52:20 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 28 Aug 2017 16:42:12 +0800</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>sqlite的自增长主键</title>
+      <link>https://wellphone.me/post/2017/sqlite3_sql_autoincrement/</link>
+      <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
+      
+      <guid>https://wellphone.me/post/2017/sqlite3_sql_autoincrement/</guid>
+      <description>数据库表的自增长主键，就是每次插入一条数据后，主键的值自动增1。
+sqlite数据库里有个rowid，这个值是自增长，使用的人需要注意了，如果把表里的数据清空后，这个值又会从1开始。
+如果要想在删除表里的数据后，再插入数据，主键的值仍然从最后一次的值开始增1，我们可以使用 AUTOINCREMENT 这个数据库字段属性。
+AUTOINCREMENT 有两种写法：
+CREATE TABLE Message(msgIndex INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT); CREATE TABLE Message(msgIndex INTEGER, content TEXT ,PRIMARY KEY (msgIndex AUTOINCREMENT));  AUTOINCREMENT 的官方文档：http://sqlite.org/autoinc.html</description>
+    </item>
     
     <item>
       <title>腾讯Bugly的巨坑：使用不当会造成UI界面卡死</title>
