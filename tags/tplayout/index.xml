@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tplayout on Wellphone&#39;s Blog</title>
+    <link>https://wellphone.me/tags/tplayout/</link>
+    <description>Recent content in Tplayout on Wellphone&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-Hans</language>
+    <lastBuildDate>Thu, 07 Sep 2017 10:25:12 +0800</lastBuildDate>
+    <atom:link href="/tags/tplayout/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>iOS纯代码编写UI工具介绍：TPLayout</title>
+      <link>https://wellphone.me/post/2017/tplayout_introduce/</link>
+      <pubDate>Thu, 07 Sep 2017 10:25:12 +0800</pubDate>
+      
+      <guid>https://wellphone.me/post/2017/tplayout_introduce/</guid>
+      <description>TPLayout简介 TPLayout是一个类似于Masonry的AutoLayout布局工具库。
+它在github上的简介:
+ TPLayout是一个轻量、快速、方便的使用代码进行UI布局的高效率工具库。TPLayout同时支持两种常见的代码布局方式，提供非常简短的方法来获取和设置Frame值；也提供了类似Masonry的链式语句的方法来设置view的约束。
+ TPLayout vs Masonry, PureLayout 对于Masonry这个库大家应该都比较熟悉，就是它让大家不用去写苹果反人类的AutoLayout布局的API接口，帮助苹果普及了AutoLayout的布局方式。
+对于PureLayout这个库相信应该也有大部分都知道，它将AutoLayout的接口进行了封装，也极大的方便开发者使用AutoLayout进行UI布局。
+但是在使用它们的过程中，或多或少有些不方便地方。比如Masonry：
+UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10); [view1 mas_makeConstraints:^(MASConstraintMaker *make) { make.top.equalTo(superview.mas_top).with.offset(padding.top); //with is an optional semantic filler make.left.equalTo(superview.mas_left).with.offset(padding.left); make.bottom.equalTo(superview.mas_bottom).with.offset(-padding.bottom); make.right.equalTo(superview.mas_right).with.offset(-padding.right); }];  以上代码中，每条make开头语句实际上是一个约束；但是我们怎么获取到生成的约束的NSLayoutConstraint对象呢？完全没有办法，除非自己去遍历view的constraints属性。
+mas_makeConstraints，mas_updateConstraints和mas_remakeConstraints三个方法把NSLayoutConstraint对象全隐藏起来了，开发者不能获取到每一个约束生成的NSLayoutConstraint对象。笔者觉得这个是Masonry库对开发者唯一不友好的地方。
+再比如PureLayout：
+NSLayoutConstraint *constraint = [view autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:otherView withOffset:10];  基本上每个语句返回NSLayoutConstraint对象，但是相对于Masonry来说少了链式语句的可读性。
+TPLayout库结合了两者的优点：每条链式语句返回一个NSLayoutConstraint对象或者NSLayoutConstraint对象的数组。
+总结起来，TPLayout有以下特性：
+- Frame: 提供简短的方法来设置view的Frame值和两个view间的对齐关系
+- AutoLayout: 通过链式语句来设置view的约束
+- AutoLayout: 一条链式语句生成一个NSLayoutConstraint对象或者NSLayoutConstraint对象的数组
+- AutoLayout: 可以重置、更新使用该库生成的约束
+- AutoLayout: 通过NSAssert断言防止X轴Y轴方向上设置错误的约束
+TPLayout使用Demo 详细的Demo
+使用Frame构建UI // 设置大小 viewA.</description>
+    </item>
+    
+  </channel>
+</rss>

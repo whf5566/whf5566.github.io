@@ -1,28 +1,147 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Wellphone&#39;s Blog</title>
-    <link>https://wellphone.me/tags/index.xml</link>
-    <description>Recent content on Wellphone&#39;s Blog</description>
+    <title>Tags on Wellphone&#39;s Blog</title>
+    <link>https://wellphone.me/tags/</link>
+    <description>Recent content in Tags on Wellphone&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-Hans</language>
-    <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 24 Apr 2017 09:59:57 +0800</lastBuildDate>
+    <atom:link href="/tags/" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>腾讯Bugly的巨坑：使用不当会造成UI界面卡死</title>
-      <link>https://wellphone.me/post/2017/bugly_dispatch_once_crash/</link>
+      <title>Airpods</title>
+      <link>https://wellphone.me/tags/airpods/</link>
+      <pubDate>Mon, 24 Apr 2017 09:59:57 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/airpods/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Alipay</title>
+      <link>https://wellphone.me/tags/alipay/</link>
+      <pubDate>Tue, 11 Jul 2017 11:16:30 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/alipay/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Autoincrement</title>
+      <link>https://wellphone.me/tags/autoincrement/</link>
+      <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/autoincrement/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Autolayout</title>
+      <link>https://wellphone.me/tags/autolayout/</link>
+      <pubDate>Thu, 07 Sep 2017 10:25:12 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/autolayout/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Avaudiosession</title>
+      <link>https://wellphone.me/tags/avaudiosession/</link>
+      <pubDate>Sat, 08 Jul 2017 22:28:48 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/avaudiosession/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bugly</title>
+      <link>https://wellphone.me/tags/bugly/</link>
       <pubDate>Fri, 25 Aug 2017 16:52:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/post/2017/bugly_dispatch_once_crash/</guid>
-      <description>前言 Bugly和dispatch_once使用不当，会造成UI界面卡死。笔者在前段时间碰见了这样的一个卡死的情况，特意记录下来。
-iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK，用来捕捉App中的crash。对于dispatch_once大家就更熟悉了，现在大部分开发者用这个来创建单例。如：
-+ (SingletonA *)sharedInstance { static SingletonA *_singleton = nil; static dispatch_once_t once; dispatch_once(&amp;amp;once, ^{ _singleton = [[SingletonA alloc] init]; }); return _singleton; }  但是这两个在一起怎么会造成UI界面卡死呢？如果笔者不是亲眼所见，也不会相信Bugly会造成界面卡死。
-现象 前几天碰见了这样一个情况，我们的App启动时有时候会卡在启动界面上，过一段时间 就会被系统杀掉，而且不会有Crash的堆栈。这个现象让我们开发很头疼，一旦出现就只能杀进程，重新启动App，并且还不知道是怎么回事。
-调查 看到界面卡死的第一反应就是，是不是哪个地方死锁导致主线程阻塞了。使用Console.app查看App启动时的日志，没发现什么异常的情况，并且死锁这个在日志中查找起来比较麻烦。
-好不容易复现这个情况后，赶紧把手机接上Mac，在Xcdoe中Attach我们App的进程，如图：
-然后暂停下App进程，就可以看到当前所有线程的堆栈情况了。如图：
-这下，我们才知道是卡在了dispatch_once这个地方。是我们的单例使用有问题吗？我们知道， 如果dispatch_once递归调用就会产生死锁。示例代码如下：
-+ (SingletonA *)sharedInstance { static SingletonA *_singleton = nil; static dispatch_once_t once; dispatch_once(&amp;amp;once, ^{ _singleton = [[SingletonA alloc] init]; }); return _singleton; } - (instancetype)init { self = [super init]; if (self) { [self somethingInit]; // 这个方法里也调用了[SingletonA sharedInstance]，所以会产生死锁 } return self; } - (void)somethingInit { [SingletonA sharedInstance]; }  很有可能就是这个原因导致我们的App启动时卡死。于是我们开始排查dispatch_once的代码里会不会在某个条件下再次调用到相同的dispatch_once，形成递归调用，导致死锁。</description>
+      <guid>https://wellphone.me/tags/bugly/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Debug</title>
+      <link>https://wellphone.me/tags/debug/</link>
+      <pubDate>Thu, 13 Jul 2017 09:42:08 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/debug/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dispatch_once</title>
+      <link>https://wellphone.me/tags/dispatch_once/</link>
+      <pubDate>Fri, 25 Aug 2017 16:52:20 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/dispatch_once/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Frame</title>
+      <link>https://wellphone.me/tags/frame/</link>
+      <pubDate>Thu, 07 Sep 2017 10:25:12 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/frame/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ios</title>
+      <link>https://wellphone.me/tags/ios/</link>
+      <pubDate>Sat, 08 Jul 2017 22:28:48 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/ios/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Masonry</title>
+      <link>https://wellphone.me/tags/masonry/</link>
+      <pubDate>Wed, 03 May 2017 09:51:08 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/masonry/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sql</title>
+      <link>https://wellphone.me/tags/sql/</link>
+      <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/sql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sqlite</title>
+      <link>https://wellphone.me/tags/sqlite/</link>
+      <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/sqlite/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tplayout</title>
+      <link>https://wellphone.me/tags/tplayout/</link>
+      <pubDate>Thu, 07 Sep 2017 10:25:12 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/tplayout/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ui</title>
+      <link>https://wellphone.me/tags/ui/</link>
+      <pubDate>Thu, 07 Sep 2017 10:25:12 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/ui/</guid>
+      <description></description>
     </item>
     
   </channel>

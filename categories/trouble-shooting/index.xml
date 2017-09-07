@@ -2,11 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Trouble Shooting on Wellphone&#39;s Blog</title>
-    <link>https://wellphone.me/categories/trouble-shooting/index.xml</link>
+    <link>https://wellphone.me/categories/trouble-shooting/</link>
     <description>Recent content in Trouble Shooting on Wellphone&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-Hans</language>
-    <atom:link href="/categories/trouble-shooting/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 25 Aug 2017 16:52:20 +0800</lastBuildDate>
+    <atom:link href="/categories/trouble-shooting/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>腾讯Bugly的巨坑：使用不当会造成UI界面卡死</title>
