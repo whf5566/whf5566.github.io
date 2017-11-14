@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="Hugo 0.29" />
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link href="https://wellphone.me/index.xml" rel="alternate" type="application/rss+xml" title="Wellphone&#39;s Blog" />
+    
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>git命令行工作环境配置 | Wellphone&#39;s Blog</title>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  </head>
+  <body>
+    <div id="wrap">
+      <header class="site-header">
+        <div class="site-header-left">
+          <a class="site-header-title" href="https://wellphone.me">Wellphone&#39;s Blog</a>
+        </div>
+      </header>
+      <div class="container">
+        <div id="main">
+
+<div class="article">
+  <header>
+    <div class="article-header">
+      <h1>git命令行工作环境配置</h1>
+      <div class="article-meta">
+        <span class="posttime">2017/11/14</span>
+        
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/git">git</a>
+    </li>
+    
+    <li>
+        <a href="/tags/git-config">git config</a>
+    </li>
+    
+    <li>
+        <a href="/tags/config">config</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+    
+
+  </header>
+  <div class="content">
+    
+
+<h4 id="转载请注明出处-https-wellphone-me-post-2017-git-config-for-working-with-shell"><a href="https://wellphone.me/post/2017/git_config_for_working_with_shell/">转载请注明出处</a></h4>
+
+<h2 id="前言">前言</h2>
+
+<p>笔者一直使用git的图形化工具sourceTree来管理代码库，日常工作中较少的使用git命令。但最近公司给配了一台旧电脑，配置太低，只有4G内存，Xcode，chrome等应用开多了非常卡顿，于是想到在终端使用git命令来工作。在重新熟悉了git命令，使用命令行工作一段时间后，觉得命令行下的git使用起来不是那么友好，比如没有命令补全功能，查看日志界面不友好等。笔者折腾了一番，总算是弄了个让自己满意的git命令行配置。</p>
+
+<h2 id="git-config-简要介绍">git config 简要介绍</h2>
+
+<p>git的配置选项有三种：&ndash;system，&ndash;global 和 &ndash;local。其中<br />
+system是系统级别的全局设置，对所有电脑用户生效，文件在/etc/gitconfig；<br />
+global是个人用户的全局配置，对所有个人用户的代码库生效，文件在$HOME/.config/git/config或者~/.gitconfig；<br />
+local是代码库的设置，仅对设置的代码库生效，文件在代码库的.git/config。<br />
+git config常用命令</p>
+
+<pre><code class="language-shellscript"># 显示全局配置信息
+git config --global --list
+# 设置全局的用户名和邮箱
+git config --global user.name &quot;wellphone&quot;
+git config --global user.email wellphone@example.com
+# 开启颜色
+git config --global color.ui true
+</code></pre>
+
+<p>更加详细的配置信息见<a href="https://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-%E9%85%8D%E7%BD%AE-Git">Git-配置</a></p>
+
+<h2 id="设置别名">设置别名</h2>
+
+<p>git 命令一般较长，如果想少输入几个字可以设置别名，如下：</p>
+
+<pre><code class="language-shellscript">git config --global alias.st status
+
+git config --global alias.ci commit
+
+git config --global alias.co checkout
+
+git config --global alias.br branch
+
+</code></pre>
+
+<p>经常敲命令的话，可以感受下使用别名带来的高效率。
+除此之外，还可以创造自己的命令。比方说取消暂存文件时的输入比较繁琐，可以自己设置一下：</p>
+
+<pre><code class="language-shellscript">git config --global alias.unstage 'reset HEAD --'
+</code></pre>
+
+<p>然后，取消暂存文件的时候，只需要输入：</p>
+
+<pre><code class="language-shellscript">git unstage file
+</code></pre>
+
+<h2 id="自定义log显示">自定义log显示</h2>
+
+<p>默认不用任何参数的话，git log会按提交时间列出所有的更新，最近的更新排在最上面。每次更新都有一个SHA-1校验和、作者的名字和电子邮件地址、提交时间，最后缩进一个段落显示提交说明。但是没有图形化的分支图表来的直接美观。还好，git给我们提供了一个常用的 &ndash;pretty选项，可以指定使用完全不同于默认格式的方式展示提交历史。比如用 oneline将每个提交放在一行显示，这在提交数很大时非常有用。另外还有 short，full 和 fuller 可以用，展示的信息完全可以按照自己的喜好来。</p>
+
+<p>比如笔者自己配置的这条命令：</p>
+
+<pre><code class="language-shellscript">git log --color --graph --pretty=format:'%C(yellow)%h%Creset%C(cyan)%C(bold)%C(red)%d%Creset %s %C(green)[%cn] %Creset%C(cyan)[%cd]%Creset' --date=format-local:'%m-%d %H:%M'
+</code></pre>
+
+<p>图：<br />
+<img src="./../../../images/git_config_for_working_with_shell_1.png" alt="image" /></p>
+
+<p>当然，我们可以使用别名的方法来使用这条命令：</p>
+
+<pre><code class="language-shellscript">git config --global alias.lg &quot;log --color --graph --pretty=format:'%C(yellow)%h%Creset%C(cyan)%C(bold)%C(red)%d%Creset %s %C(green)[%cn] %Creset%C(cyan)[%cd]%Creset' --date=format-local:'%m-%d %H:%M'&quot;
+</code></pre>
+
+<p>输入上条命令后，以后只需要输入git lg就可以看到自定义显示的log。</p>
+
+<p>更多关于log配置信息可以查看<a href="https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2">Git-基础-查看提交历史</a></p>
+
+<h2 id="设置自动补全命令">设置自动补全命令</h2>
+
+<p>git 命令没有自动补全功能，这个在命令行下让人非常抓狂，尤其是在各个分支间切换的时候，狂按tab键也不能补全分支的名字。还好，有git的资深开发为我等小白准备好了自动补全功能。<br />
+如果用的是Bash shell,到git的官方源码库中的git/contrib/compleion文件夹<a href="https://github.com/git/git/tree/35f6318d44379452d8d33e880d8df0267b4a0cd0/contrib/completion">git compleiton</a>下载git-completion.bash文件。  将该文件复制到你自己的用户主目录中（译注：按照下面的示例，还应改名加上点：cp git-completion.bash ~/.git-completion.bash），并把下面一行内容添加到你的 .bashrc 文件中：</p>
+
+<pre><code class="language-shellscript">source ~/.git-completion.bash
+</code></pre>
+
+<p>在输入 Git 命令的时候可以敲两次跳格键（Tab），就会看到列出所有匹配的可用命令建议。</p>
+
+<p>如图:<br />
+<img src="./../../../images/git_config_for_working_with_shell_2.png" alt="image" /></p>
+
+<h2 id="设置命令prompt提示">设置命令prompt提示</h2>
+
+<p>我们在使用sourceTree的时候可以很方便看见当前工作的分支，work区，stage区的修改情况。但是在命令行下，我们需要执行git status才能知道这些信息，显得不是很方便。这个情况也有资深开发替我们解决了。我们只需要简单配置下就能在命令行的prompt提示中看见当前分支及修改情况。<br />
+同样的我们需要在git官方代码库中下载<a href="https://github.com/git/git/blob/35f6318d44379452d8d33e880d8df0267b4a0cd0/contrib/completion/git-prompt.sh">git-prompt.sh</a>文件。<br />
+1.将下载下来的文件复制到～目录下。（e.g. ~/.git-prompt.sh）
+2.将以下命令加入到~/.bash_profile或者是~/.bashrc文件里</p>
+
+<pre><code class="language-shellscript">source ~/.git-prompt.sh
+</code></pre>
+
+<p>3.修改自己的环境变量中的PS1值，PROMPT_COMMAND值</p>
+
+<pre><code class="language-shellscript">export PS1='[\u@\h \W$(__git_ps1 &quot; (%s)&quot;)]\$ '
+export PROMPT_COMMAND='__git_ps1 &quot;\u@\h:\W&quot; &quot;\\\$ &quot;'
+</code></pre>
+
+<p>这时，在命令行提示符上已经可以显示当前的分支名了。
+4.设置如下环境变量值</p>
+
+<pre><code class="language-shellscript">export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWCOLORHINTS=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
+export GIT_PS1_SHOWUPSTREAM=&quot;auto&quot;
+</code></pre>
+
+<p>如果设置GIT_PS1_SHOWDIRTYSTATE为非空值，则会使用（*）表示有文件未放入暂存区(unstaged files)，（+）表示暂存区有文件(staged files)。<br />
+如果设置GIT_PS1_SHOWUNTRACKEDFILES为非空值，则会使用（%）表示有没有加入到git中的文件（untracked files）。<br />
+如果设置GIT_PS1_SHOWCOLORHINTS为非空值，则会显示颜色。
+如果设置GIT_PS1_SHOWUPSTREAM=&ldquo;auto&rdquo;，则会使用（&lt;）表示当前节点落后远程分支，（&gt;）表示远程分支节点落后当前分支，（=）表示当前分支和远程分支一样，（&lt;&gt;）表示当前分支同远程分支分叉了。
+如图：<br />
+<img src="./../../../images/git_config_for_working_with_shell_3.png" alt="image" /></p>
+
+<h2 id="总结">总结</h2>
+
+<p>以上只是笔者在日常工作中碰见的一些简单git配置方法，如果大家有更好更高效率的git命令使用方法，欢迎留言分享～～～
+附：<a href="https://git-scm.com/book/zh/v1/%E8%B5%B7%E6%AD%A5-Git-%E5%9F%BA%E7%A1%80">git使用手册</a></p>
+
+  </div>
+  <footer>
+    <div class="article-footer">
+      
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/git">git</a>
+    </li>
+    
+    <li>
+        <a href="/tags/git-config">git config</a>
+    </li>
+    
+    <li>
+        <a href="/tags/config">config</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      
+      
+
+      
+      <div id="pagenavigation-next-prev">
+        
+        <div id="pagenavigation-next">
+          <span class="pagenav-label">Previous</span>
+          <a href="https://wellphone.me/post/2017/tplayout_introduce/">iOS纯代码编写UI工具介绍：TPLayout</a>
+        </div>
+        
+        
+      </div>
+      
+    </div>
+  </footer>
+  
+<div id="SOHUCS" sid="git_config_for_working_with_shell" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cyso3GYYu'; 
+var conf = 'prod_fa6a31665b4b269e716ec23d4ce3de3a'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+</div>
+        </div>
+        <div class="sidebar">
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Author</span>
+    </div>
+    <div id="author">
+      <span>Wellphone</span>
+      <div>
+        
+        
+        <a href="https://github.com/whf5566"><i class="fa fa-github-square fa-2x" aria-hidden="true"></i></a>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Categories</span>
+    </div>
+    <div class="categories">
+      <ul>
+        
+        <li>
+          <a href="/categories/2017"><span></span>2017 (10)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/airpods"><span></span>airpods (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/debug"><span></span>debug (2)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/git"><span></span>git (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ios"><span></span>ios (9)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/sqlite"><span></span>sqlite (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/trouble-shooting"><span></span>trouble-shooting (3)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ui"><span></span>ui (4)</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>RSS</span>
+    </div>
+    <div id="rss">
+      <a href="https://wellphone.me/index.xml" type="application/rss+xml" target="_blank">
+        <i class="fa fa-rss-square fa-2x" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <footer>
+        <div id="site-footer-wrap">
+          <div id="site-footer">
+            <span>Powered by <a href="https://gohugo.io/">Hugo</a>.</span>
+            <span>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>. </span>
+            <span>
+              
+              Copyright (c) 2017, <a href="https://wellphone.me">Wellphone&#39;s Blog</a>
+              
+            </span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+

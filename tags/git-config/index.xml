@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Git Config on Wellphone&#39;s Blog</title>
+    <link>https://wellphone.me/tags/git-config/</link>
+    <description>Recent content in Git Config on Wellphone&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-Hans</language>
+    <lastBuildDate>Tue, 14 Nov 2017 17:12:20 +0800</lastBuildDate>
+    <atom:link href="/tags/git-config/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>git命令行工作环境配置</title>
+      <link>https://wellphone.me/post/2017/git_config_for_working_with_shell/</link>
+      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
+      
+      <guid>https://wellphone.me/post/2017/git_config_for_working_with_shell/</guid>
+      <description>转载请注明出处 前言 笔者一直使用git的图形化工具sourceTree来管理代码库，日常工作中较少的使用git命令。但最近公司给配了一台旧电脑，配置太低，只有4G内存，Xcode，chrome等应用开多了非常卡顿，于是想到在终端使用git命令来工作。在重新熟悉了git命令，使用命令行工作一段时间后，觉得命令行下的git使用起来不是那么友好，比如没有命令补全功能，查看日志界面不友好等。笔者折腾了一番，总算是弄了个让自己满意的git命令行配置。
+git config 简要介绍 git的配置选项有三种：&amp;ndash;system，&amp;ndash;global 和 &amp;ndash;local。其中
+system是系统级别的全局设置，对所有电脑用户生效，文件在/etc/gitconfig；
+global是个人用户的全局配置，对所有个人用户的代码库生效，文件在$HOME/.config/git/config或者~/.gitconfig；
+local是代码库的设置，仅对设置的代码库生效，文件在代码库的.git/config。
+git config常用命令
+# 显示全局配置信息 git config --global --list # 设置全局的用户名和邮箱 git config --global user.name &amp;quot;wellphone&amp;quot; git config --global user.email wellphone@example.com # 开启颜色 git config --global color.ui true  更加详细的配置信息见Git-配置
+设置别名 git 命令一般较长，如果想少输入几个字可以设置别名，如下：
+git config --global alias.st status git config --global alias.ci commit git config --global alias.co checkout git config --global alias.br branch  经常敲命令的话，可以感受下使用别名带来的高效率。 除此之外，还可以创造自己的命令。比方说取消暂存文件时的输入比较繁琐，可以自己设置一下：
+git config --global alias.</description>
+    </item>
+    
+  </channel>
+</rss>

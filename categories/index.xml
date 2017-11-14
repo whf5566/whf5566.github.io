@@ -6,13 +6,13 @@
     <description>Recent content in Categories on Wellphone&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-Hans</language>
-    <lastBuildDate>Thu, 07 Sep 2017 10:25:12 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 14 Nov 2017 17:12:20 +0800</lastBuildDate>
     <atom:link href="/categories/" rel="self" type="application/rss+xml" />
     
     <item>
       <title>2017</title>
       <link>https://wellphone.me/categories/2017/</link>
-      <pubDate>Thu, 07 Sep 2017 10:25:12 +0800</pubDate>
+      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
       
       <guid>https://wellphone.me/categories/2017/</guid>
       <description></description>
@@ -33,6 +33,15 @@
       <pubDate>Thu, 13 Jul 2017 09:42:08 +0800</pubDate>
       
       <guid>https://wellphone.me/categories/debug/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Git</title>
+      <link>https://wellphone.me/categories/git/</link>
+      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
+      
+      <guid>https://wellphone.me/categories/git/</guid>
       <description></description>
     </item>
     

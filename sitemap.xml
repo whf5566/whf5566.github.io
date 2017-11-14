@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://wellphone.me/post/2017/git_config_for_working_with_shell/</loc>
+    <lastmod>2017-11-14T17:12:20+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://wellphone.me/post/2017/tplayout_introduce/</loc>
     <lastmod>2017-09-07T10:25:12+08:00</lastmod>
   </url>
@@ -49,7 +54,7 @@
   
   <url>
     <loc>https://wellphone.me/categories/2017/</loc>
-    <lastmod>2017-09-07T10:25:12+08:00</lastmod>
+    <lastmod>2017-11-14T17:12:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -97,7 +102,13 @@
   
   <url>
     <loc>https://wellphone.me/categories/</loc>
-    <lastmod>2017-09-07T10:25:12+08:00</lastmod>
+    <lastmod>2017-11-14T17:12:20+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/config/</loc>
+    <lastmod>2017-11-14T17:12:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -126,6 +137,24 @@
   </url>
   
   <url>
+    <loc>https://wellphone.me/tags/git/</loc>
+    <lastmod>2017-11-14T17:12:20+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/categories/git/</loc>
+    <lastmod>2017-11-14T17:12:20+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/git-config/</loc>
+    <lastmod>2017-11-14T17:12:20+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://wellphone.me/tags/ios/</loc>
     <lastmod>2017-07-08T22:28:48+08:00</lastmod>
     <priority>0</priority>
@@ -145,7 +174,7 @@
   
   <url>
     <loc>https://wellphone.me/post/</loc>
-    <lastmod>2017-09-07T10:25:12+08:00</lastmod>
+    <lastmod>2017-11-14T17:12:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -211,7 +240,7 @@
   
   <url>
     <loc>https://wellphone.me/</loc>
-    <lastmod>2017-09-07T10:25:12+08:00</lastmod>
+    <lastmod>2017-11-14T17:12:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   

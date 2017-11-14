@@ -64,6 +64,15 @@
     </item>
     
     <item>
+      <title>Config</title>
+      <link>https://wellphone.me/tags/config/</link>
+      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/config/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Debug</title>
       <link>https://wellphone.me/tags/debug/</link>
       <pubDate>Thu, 13 Jul 2017 09:42:08 +0800</pubDate>
@@ -91,6 +100,24 @@
     </item>
     
     <item>
+      <title>Git</title>
+      <link>https://wellphone.me/tags/git/</link>
+      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Git Config</title>
+      <link>https://wellphone.me/tags/git-config/</link>
+      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
+      
+      <guid>https://wellphone.me/tags/git-config/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Ios</title>
       <link>https://wellphone.me/tags/ios/</link>
       <pubDate>Sat, 08 Jul 2017 22:28:48 +0800</pubDate>
@@ -114,33 +141,6 @@
       <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
       
       <guid>https://wellphone.me/tags/sql/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Sqlite</title>
-      <link>https://wellphone.me/tags/sqlite/</link>
-      <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
-      
-      <guid>https://wellphone.me/tags/sqlite/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tplayout</title>
-      <link>https://wellphone.me/tags/tplayout/</link>
-      <pubDate>Thu, 07 Sep 2017 10:25:12 +0800</pubDate>
-      
-      <guid>https://wellphone.me/tags/tplayout/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Ui</title>
-      <link>https://wellphone.me/tags/ui/</link>
-      <pubDate>Thu, 07 Sep 2017 10:25:12 +0800</pubDate>
-      
-      <guid>https://wellphone.me/tags/ui/</guid>
       <description></description>
     </item>
     
