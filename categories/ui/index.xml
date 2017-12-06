@@ -15,7 +15,10 @@
       <pubDate>Wed, 06 Dec 2017 17:15:20 +0800</pubDate>
       
       <guid>https://wellphone.me/post/2017/use_uidebugginginformationoverlay_for_ios11/</guid>
-      <description></description>
+      <description>背景介绍 iOS系统从9.0之后就加入了悬浮窗调试小工具来帮助开发者调试UI，很遗憾的是，这个是一个非公开的功能，苹果没有公开它的头文件。（私有API传送门）当然私有API没有阻挡住我们使用这么酷炫的小工具。如何使用可以看看前段时间笔者写过一片文章《iOS自带悬浮窗调试工具使用详解》。可是好景不长，在iOS11中这个小工具没法用了。最近想用这个系统自带的悬浮窗工具来调试UI，毕竟是接入成本最小UI调试工具，于是看到了国外大神的这篇文章 《Swizzling in iOS 11 with UIDebuggingInformationOverlay》。
+原因 国外大神的文章很长，详细介绍了他是如何让悬浮窗调试工具重现在iOS11上的。文章具体内容这里就不展开了，感兴趣的可以去看看他的文章。文章主要内容：
+iOS9 &amp;amp; 10 上 -[UIDebuggingInformationOverlay init] 和 [UIDebuggingInformationOverlay prepareDebuggingOverlay] 是能正常工作的。在iOS11上，上面这两个方法被苹果做了限制，只有苹果内部设备才可以正常使用。对这两个方法逆向后的代码如下：
+@implementation UIDebuggingInformationOverlay - (instancetype)init { static BOOL overlayEnabled = NO; static dispatch_once_t onceToken; dispatch_once(&amp;amp;onceToken, ^{ overlayEnabled = UIDebuggingOverlayIsEnabled(); }); if (!overlayEnabled) { return nil; } if (self = [super init]) { [self _setWindowControlsStatusBarOrientation:NO]; } return self; } + (void)prepareDebuggingOverlay { if (_UIGetDebuggingOverlayEnabled()) { id handler = [UIDebuggingInformationOverlayInvokeGestureHandler mainHandler]; UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:handler action:@selector(_handleActivationGesture:)]; [tapGesture setNumberOfTouchesRequired:2]; [tapGesture setNumberOfTapsRequired:1]; [tapGesture setDelegate:handler]; UIView *statusBarWindow = [UIApp statusBarWindow]; [statusBarWindow addGestureRecognizer:tapGesture]; } } @end  可以很清晰的看到，苹果用UIDebuggingOverlayIsEnabled() 对UIDebuggingInformationOverlay的初始化方法做了检测，如果不是内部设备就返回nil，同时对prepareDebuggingOverlay方法也做了检测。</description>
     </item>
     
     <item>
