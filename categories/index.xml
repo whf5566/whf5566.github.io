@@ -19,6 +19,15 @@
     </item>
     
     <item>
+      <title>2018</title>
+      <link>https://wellphone.me/categories/2018/</link>
+      <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
+      
+      <guid>https://wellphone.me/categories/2018/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Airpods</title>
       <link>https://wellphone.me/categories/airpods/</link>
       <pubDate>Mon, 24 Apr 2017 09:59:57 +0800</pubDate>
@@ -48,9 +57,18 @@
     <item>
       <title>Ios</title>
       <link>https://wellphone.me/categories/ios/</link>
-      <pubDate>Wed, 06 Dec 2017 17:15:20 +0800</pubDate>
+      <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
       
       <guid>https://wellphone.me/categories/ios/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>React Native</title>
+      <link>https://wellphone.me/categories/react-native/</link>
+      <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
+      
+      <guid>https://wellphone.me/categories/react-native/</guid>
       <description></description>
     </item>
     
@@ -75,7 +93,7 @@
     <item>
       <title>Ui</title>
       <link>https://wellphone.me/categories/ui/</link>
-      <pubDate>Wed, 06 Dec 2017 17:15:20 +0800</pubDate>
+      <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
       
       <guid>https://wellphone.me/categories/ui/</guid>
       <description></description>

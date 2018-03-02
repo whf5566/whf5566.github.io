@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="Hugo 0.31.1" />
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link href="https://wellphone.me/index.xml" rel="alternate" type="application/rss+xml" title="Wellphone&#39;s Blog" />
+    
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>搭建React Native开发环境 | Wellphone&#39;s Blog</title>
+    <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  </head>
+  <body>
+    <div id="wrap">
+      <header class="site-header">
+        <div class="site-header-left">
+          <a class="site-header-title" href="https://wellphone.me">Wellphone&#39;s Blog</a>
+        </div>
+      </header>
+      <div class="container">
+        <div id="main">
+
+<div class="article">
+  <header>
+    <div class="article-header">
+      <h1>搭建React Native开发环境</h1>
+      <div class="article-meta">
+        <span class="posttime">2018/03/02</span>
+        
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/rn">RN</a>
+    </li>
+    
+    <li>
+        <a href="/tags/ui">UI</a>
+    </li>
+    
+    <li>
+        <a href="/tags/react-native">React Native</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+    
+
+  </header>
+  <div class="content">
+    
+
+<h2 id="搭建react-native开发环境">搭建React Native开发环境</h2>
+
+<h3 id="前言">前言</h3>
+
+<p>最近公司决定在项目中引入React Native，然后我们就开始入坑React Native。我个人是不看好React Native，觉得React Native除了开发页面快，更新页面方便外，其他坑还是很多的。以下是从<a href="https://reactnative.cn/docs/0.51/getting-started.html#content">React Native中文文档</a>摘抄来的安装步骤。</p>
+
+<h3 id="安装">安装</h3>
+
+<h4 id="homebrew">Homebrew</h4>
+
+<p><a href="http://brew.sh/">Homebrew</a>, Mac系统的包管理器，用于安装NodeJS和一些其他必需的工具软件。</p>
+
+<pre><code class="language-shellscript">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+</code></pre>
+
+<p>在Max OS X 10.11（El Capitan)版本中，homebrew在安装软件时可能会碰到/usr/local目录不可写的权限问题。可以使用下面的命令修复：</p>
+
+<pre><code class="language-shellscript">sudo chown -R `whoami` /usr/local
+</code></pre>
+
+<h4 id="node">Node</h4>
+
+<p>使用Homebrew来安装<a href="https://nodejs.org/">Node.js</a>.</p>
+
+<pre><code class="language-shellscript">brew install node
+</code></pre>
+
+<p>安装完node后建议设置npm镜像以加速后面的过程（或使用科学上网工具）。注意：不要使用cnpm！cnpm安装的模块路径比较奇怪，packager不能正常识别！</p>
+
+<pre><code class="language-shellscript">npm config set registry https://registry.npm.taobao.org --global
+npm config set disturl https://npm.taobao.org/dist --global
+</code></pre>
+
+<h4 id="yarn-react-native的命令行工具-react-native-cli">Yarn、React Native的命令行工具（react-native-cli）</h4>
+
+<p><a href="http://yarnpkg.com/">Yarn</a>是Facebook提供的替代npm的工具，可以加速node模块的下载。React Native的命令行工具用于执行创建、初始化、更新项目、运行打包服务（packager）等任务。</p>
+
+<pre><code class="language-shellscript">npm install -g yarn react-native-cli
+</code></pre>
+
+<p>安装完yarn后同理也要设置镜像源：</p>
+
+<pre><code class="language-shellscript">yarn config set registry https://registry.npm.taobao.org --global
+yarn config set disturl https://npm.taobao.org/dist --global
+</code></pre>
+
+<p>如果你看到EACCES: permission denied这样的权限报错，那么请参照上文的homebrew译注，修复/usr/local目录的所有权：</p>
+
+<pre><code class="language-shellscript">sudo chown -R `whoami` /usr/local
+</code></pre>
+
+<p>安装完yarn之后就可以用yarn代替npm了，例如用yarn代替npm install命令，用yarn add 某第三方库名代替npm install &ndash;save 某第三方库名。</p>
+
+<h4 id="xcode">Xcode</h4>
+
+<p>React Native目前需要Xcode 8.0 或更高版本。你可以通过App Store或是到Apple开发者官网上下载。这一步骤会同时安装Xcode IDE和Xcode的命令行工具。</p>
+
+<p>虽然一般来说命令行工具都是默认安装了，但你最好还是启动Xcode，并在Xcode | Preferences | Locations菜单中检查一下是否装有某个版本的Command Line Tools。Xcode的命令行工具中也包含一些必须的工具，比如git等。</p>
+
+<h3 id="推荐安装的工具">推荐安装的工具</h3>
+
+<h4 id="watchman">Watchman</h4>
+
+<p><a href="https://facebook.github.io/watchman/docs/install.html">Watchman</a>是由Facebook提供的监视文件系统变更的工具。安装此工具可以提高开发时的性能（packager可以快速捕捉文件的变化从而实现实时刷新）。译注：此工具官方虽然是推荐安装，但在实践中，我们认为此工具是必须安装，否则可能无法正常开发。</p>
+
+<h3 id="测试安装">测试安装</h3>
+
+<p>！！！注意！！！：init命令默认会创建最新的版本，而目前最新的0.45及以上版本需要下载boost等几个第三方库编译。这些库在国内即便翻墙也很难下载成功，导致很多人无法运行iOS项目！！！中文网在论坛中提供了这些库的国内下载链接。如果你嫌麻烦，又没有对新版本的需求，那么可以暂时创建0.44.3的版本。
+&gt; 提示：你可以使用&ndash;version参数（注意是两个杠）创建指定版本的项目。例如react-native init MyApp &ndash;version 0.44.3。注意版本号必须精确到两个小数点。</p>
+
+<pre><code class="language-shellscript">react-native init AwesomeProject
+cd AwesomeProject
+react-native run-ios
+</code></pre>
+
+<blockquote>
+<p>提示：如果run-ios无法正常运行，请使用Xcode运行来查看具体错误（run-ios的报错没有任何具体信息）。</p>
+</blockquote>
+
+  </div>
+  <footer>
+    <div class="article-footer">
+      
+<div class="tags">
+  <ul>
+    
+    <li>
+        <a href="/tags/rn">RN</a>
+    </li>
+    
+    <li>
+        <a href="/tags/ui">UI</a>
+    </li>
+    
+    <li>
+        <a href="/tags/react-native">React Native</a>
+    </li>
+    
+  </ul>
+</div>
+
+
+      
+      
+
+      
+      <div id="pagenavigation-next-prev">
+        
+        <div id="pagenavigation-next">
+          <span class="pagenav-label">Previous</span>
+          <a href="https://wellphone.me/post/2017/use_uidebugginginformationoverlay_for_ios11/">在iOS11上使用自带悬浮窗工具调试UI</a>
+        </div>
+        
+        
+      </div>
+      
+    </div>
+  </footer>
+  
+<div id="SOHUCS" sid="setup_rn_dev_env" ></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = 'cyso3GYYu'; 
+var conf = 'prod_fa6a31665b4b269e716ec23d4ce3de3a'; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+
+
+</div>
+        </div>
+        <div class="sidebar">
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Author</span>
+    </div>
+    <div id="author">
+      <span>Wellphone</span>
+      <div>
+        
+        
+        <a href="https://github.com/whf5566"><i class="fa fa-github-square fa-2x" aria-hidden="true"></i></a>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>Categories</span>
+    </div>
+    <div class="categories">
+      <ul>
+        
+        <li>
+          <a href="/categories/2017"><span></span>2017 (11)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/2018"><span></span>2018 (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/airpods"><span></span>airpods (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/debug"><span></span>debug (2)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/git"><span></span>git (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ios"><span></span>ios (11)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/react-native"><span></span>react-native (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/sqlite"><span></span>sqlite (1)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/trouble-shooting"><span></span>trouble-shooting (3)</a>
+        </li>
+        
+        <li>
+          <a href="/categories/ui"><span></span>ui (6)</a>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <span>RSS</span>
+    </div>
+    <div id="rss">
+      <a href="https://wellphone.me/index.xml" type="application/rss+xml" target="_blank">
+        <i class="fa fa-rss-square fa-2x" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+      </div>
+      <footer>
+        <div id="site-footer-wrap">
+          <div id="site-footer">
+            <span>Powered by <a href="https://gohugo.io/">Hugo</a>.</span>
+            <span>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>. </span>
+            <span>
+              
+              Copyright (c) 2018, <a href="https://wellphone.me">Wellphone&#39;s Blog</a>
+              
+            </span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+

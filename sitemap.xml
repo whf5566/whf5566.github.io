@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://wellphone.me/post/2018/setup_rn_dev_env/</loc>
+    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://wellphone.me/post/2017/use_uidebugginginformationoverlay_for_ios11/</loc>
     <lastmod>2017-12-06T17:15:20+08:00</lastmod>
   </url>
@@ -60,6 +65,12 @@
   <url>
     <loc>https://wellphone.me/categories/2017/</loc>
     <lastmod>2017-12-06T17:15:20+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/categories/2018/</loc>
+    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -167,7 +178,7 @@
   
   <url>
     <loc>https://wellphone.me/categories/ios/</loc>
-    <lastmod>2017-12-06T17:15:20+08:00</lastmod>
+    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -179,7 +190,25 @@
   
   <url>
     <loc>https://wellphone.me/post/</loc>
-    <lastmod>2017-12-06T17:15:20+08:00</lastmod>
+    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/react-native/</loc>
+    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/categories/react-native/</loc>
+    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://wellphone.me/tags/rn/</loc>
+    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -221,13 +250,13 @@
   
   <url>
     <loc>https://wellphone.me/tags/ui/</loc>
-    <lastmod>2017-12-06T17:15:20+08:00</lastmod>
+    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://wellphone.me/categories/ui/</loc>
-    <lastmod>2017-12-06T17:15:20+08:00</lastmod>
+    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -245,7 +274,7 @@
   
   <url>
     <loc>https://wellphone.me/</loc>
-    <lastmod>2017-12-06T17:15:20+08:00</lastmod>
+    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
     <priority>0</priority>
   </url>
   
