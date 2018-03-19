@@ -21,7 +21,7 @@
     <item>
       <title>2018</title>
       <link>https://wellphone.me/categories/2018/</link>
-      <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
+      <pubDate>Mon, 19 Mar 2018 19:35:20 +0800</pubDate>
       
       <guid>https://wellphone.me/categories/2018/</guid>
       <description></description>
@@ -64,9 +64,18 @@
     </item>
     
     <item>
+      <title>Javascript</title>
+      <link>https://wellphone.me/categories/javascript/</link>
+      <pubDate>Mon, 19 Mar 2018 19:35:20 +0800</pubDate>
+      
+      <guid>https://wellphone.me/categories/javascript/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>React Native</title>
       <link>https://wellphone.me/categories/react-native/</link>
-      <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
+      <pubDate>Mon, 19 Mar 2018 19:35:20 +0800</pubDate>
       
       <guid>https://wellphone.me/categories/react-native/</guid>
       <description></description>
