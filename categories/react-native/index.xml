@@ -1,39 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>React Native on Wellphone&#39;s Blog</title>
-    <link>https://wellphone.me/categories/react-native/</link>
-    <description>Recent content in React Native on Wellphone&#39;s Blog</description>
+    <title>React Native on Wellphone - blog</title>
+    <link>https://www.wellphone.me/categories/react-native/</link>
+    <description>Recent content in React Native on Wellphone - blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-Hans</language>
+    <language>en</language>
+    <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://pages.coding.me/&#39; target=&#39;_blank&#39;&gt;Coding Pages&lt;/a&gt;</copyright>
     <lastBuildDate>Mon, 19 Mar 2018 19:35:20 +0800</lastBuildDate>
-    <atom:link href="/categories/react-native/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://www.wellphone.me/categories/react-native/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>JavaScript的特性与坑</title>
-      <link>https://wellphone.me/post/2018/javascript_features_and_pits/</link>
+      <link>https://www.wellphone.me/post/2018/javascript_features_and_pits/</link>
       <pubDate>Mon, 19 Mar 2018 19:35:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/post/2018/javascript_features_and_pits/</guid>
-      <description>前言 最近要入坑React Native，在廖雪峰的博客上找到一篇非常好的JavaScript入门教程。这篇文章是笔者在阅读廖老师的教程时做的笔记，摘抄了一些JavaScript区别与其他语言的特性和新手容易跳入的大坑。想详细阅读JavaScript入门教程的话，请访问JavaScript入门教程。
-自动加分号  JavaScript的语法和Java语言类似，每个语句以;结束，语句块用{&amp;hellip;}。但是，JavaScript并不强制要求在每个语句的结尾加;，浏览器中负责执行JavaScript代码的引擎会自动在每个语句的结尾补上;。
-让JavaScript引擎自动加分号在某些情况下会改变程序的语义，导致运行结果与期望不一致。 比如：  function foo() { return { name: &#39;foo&#39; }; } foo(); // undefined // 上面的代码等同于 function foo() { return; // 自动添加了分号，相当于return undefined; { name: &#39;foo&#39; }; // 这行语句已经没法执行到了 } // 正确的写法 function foo() { return { // 这里不会自动加分号，因为{表示语句尚未结束 name: &#39;foo&#39; }; }  Number  JavaScript不区分整数和浮点数，统一用Number表示，以下都是合法的Number类型  123; // 整数123 0.456; // 浮点数0.456 1.2345e3; // 科学计数法表示1.2345x1000，等同于1234.5 -99; // 负数 NaN; // NaN表示Not a Number，当无法计算结果时用NaN表示 Infinity; // Infinity表示无限大，当数值超过了JavaScript的Number所能表示的最大值时，就表示为Infinity  == 和 === &amp;rdquo;==&amp;rdquo; 比较，它会自动转换数据类型再比较，很多时候，会得到非常诡异的结果；</description>
+      <guid>https://www.wellphone.me/post/2018/javascript_features_and_pits/</guid>
+      <description>前言 最近要入坑React Native，在廖雪峰的博客上找到一篇非常好的JavaScript入门教程。这篇文章是笔者在阅读廖老师的教程时做的笔</description>
     </item>
     
     <item>
       <title>搭建React Native开发环境</title>
-      <link>https://wellphone.me/post/2018/setup_rn_dev_env/</link>
+      <link>https://www.wellphone.me/post/2018/setup_rn_dev_env/</link>
       <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/post/2018/setup_rn_dev_env/</guid>
-      <description>搭建React Native开发环境 前言 最近公司决定在项目中引入React Native，然后我们就开始入坑React Native。我个人是不看好React Native，觉得React Native除了开发页面快，更新页面方便外，其他坑还是很多的。以下是从React Native中文文档摘抄来的安装步骤。
-安装 Homebrew Homebrew, Mac系统的包管理器，用于安装NodeJS和一些其他必需的工具软件。
-/usr/bin/ruby -e &amp;quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&amp;quot;  在Max OS X 10.11（El Capitan)版本中，homebrew在安装软件时可能会碰到/usr/local目录不可写的权限问题。可以使用下面的命令修复：
-sudo chown -R `whoami` /usr/local  Node 使用Homebrew来安装Node.js.
-brew install node  安装完node后建议设置npm镜像以加速后面的过程（或使用科学上网工具）。注意：不要使用cnpm！cnpm安装的模块路径比较奇怪，packager不能正常识别！
-npm config set registry https://registry.npm.taobao.org --global npm config set disturl https://npm.taobao.org/dist --global  Yarn、React Native的命令行工具（react-native-cli） Yarn是Facebook提供的替代npm的工具，可以加速node模块的下载。React Native的命令行工具用于执行创建、初始化、更新项目、运行打包服务（packager）等任务。
-npm install -g yarn react-native-cli  安装完yarn后同理也要设置镜像源：
-yarn config set registry https://registry.npm.taobao.org --global yarn config set disturl https://npm.</description>
+      <guid>https://www.wellphone.me/post/2018/setup_rn_dev_env/</guid>
+      <description>搭建React Native开发环境 前言 最近公司决定在项目中引入React Native，然后我们就开始入坑React Native。我个人是不看</description>
     </item>
     
   </channel>

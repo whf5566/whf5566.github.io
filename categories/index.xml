@@ -1,110 +1,113 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on Wellphone&#39;s Blog</title>
-    <link>https://wellphone.me/categories/</link>
-    <description>Recent content in Categories on Wellphone&#39;s Blog</description>
+    <title>Categories on Wellphone - blog</title>
+    <link>https://www.wellphone.me/categories/</link>
+    <description>Recent content in Categories on Wellphone - blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-Hans</language>
+    <language>en</language>
+    <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://pages.coding.me/&#39; target=&#39;_blank&#39;&gt;Coding Pages&lt;/a&gt;</copyright>
     <lastBuildDate>Wed, 06 Dec 2017 17:15:20 +0800</lastBuildDate>
-    <atom:link href="/categories/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://www.wellphone.me/categories/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>2017</title>
-      <link>https://wellphone.me/categories/2017/</link>
+      <link>https://www.wellphone.me/categories/2017/</link>
       <pubDate>Wed, 06 Dec 2017 17:15:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/2017/</guid>
+      <guid>https://www.wellphone.me/categories/2017/</guid>
       <description></description>
     </item>
     
     <item>
       <title>2018</title>
-      <link>https://wellphone.me/categories/2018/</link>
+      <link>https://www.wellphone.me/categories/2018/</link>
       <pubDate>Mon, 19 Mar 2018 19:35:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/2018/</guid>
+      <guid>https://www.wellphone.me/categories/2018/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Airpods</title>
-      <link>https://wellphone.me/categories/airpods/</link>
+      <title>AirPods</title>
+      <link>https://www.wellphone.me/categories/airpods/</link>
       <pubDate>Mon, 24 Apr 2017 09:59:57 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/airpods/</guid>
+      <guid>https://www.wellphone.me/categories/airpods/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Debug</title>
-      <link>https://wellphone.me/categories/debug/</link>
+      <title>DEBUG</title>
+      <link>https://www.wellphone.me/categories/debug/</link>
       <pubDate>Thu, 13 Jul 2017 09:42:08 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/debug/</guid>
+      <guid>https://www.wellphone.me/categories/debug/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Git</title>
-      <link>https://wellphone.me/categories/git/</link>
+      <link>https://www.wellphone.me/categories/git/</link>
       <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/git/</guid>
+      <guid>https://www.wellphone.me/categories/git/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Ios</title>
-      <link>https://wellphone.me/categories/ios/</link>
+      <title>IOS</title>
+      <link>https://www.wellphone.me/categories/ios/</link>
       <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/ios/</guid>
+      <guid>https://www.wellphone.me/categories/ios/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Javascript</title>
-      <link>https://wellphone.me/categories/javascript/</link>
+      <title>JavaScript</title>
+      <link>https://www.wellphone.me/categories/javascript/</link>
       <pubDate>Mon, 19 Mar 2018 19:35:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/javascript/</guid>
+      <guid>https://www.wellphone.me/categories/javascript/</guid>
       <description></description>
     </item>
     
     <item>
       <title>React Native</title>
-      <link>https://wellphone.me/categories/react-native/</link>
+      <link>https://www.wellphone.me/categories/react-native/</link>
       <pubDate>Mon, 19 Mar 2018 19:35:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/react-native/</guid>
+      <guid>https://www.wellphone.me/categories/react-native/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Sqlite</title>
-      <link>https://wellphone.me/categories/sqlite/</link>
+      <title>SQLITE</title>
+      <link>https://www.wellphone.me/categories/sqlite/</link>
       <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/sqlite/</guid>
+      <guid>https://www.wellphone.me/categories/sqlite/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Trouble Shooting</title>
-      <link>https://wellphone.me/categories/trouble-shooting/</link>
+      <title>Trouble shooting</title>
+      <link>https://www.wellphone.me/categories/trouble-shooting/</link>
       <pubDate>Fri, 25 Aug 2017 16:52:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/trouble-shooting/</guid>
+      <guid>https://www.wellphone.me/categories/trouble-shooting/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Ui</title>
-      <link>https://wellphone.me/categories/ui/</link>
+      <title>UI</title>
+      <link>https://www.wellphone.me/categories/ui/</link>
       <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/categories/ui/</guid>
+      <guid>https://www.wellphone.me/categories/ui/</guid>
       <description></description>
     </item>
     

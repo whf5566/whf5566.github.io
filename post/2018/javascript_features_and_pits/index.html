@@ -1,89 +1,211 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="generator" content="Hugo 0.31.1" />
-    <link rel="shortcut icon" href="/images/favicon.ico">
-    <link href="https://wellphone.me/index.xml" rel="alternate" type="application/rss+xml" title="Wellphone&#39;s Blog" />
-    
-    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.6.1/css/font-awesome.min.css">
-    
-    <link rel="stylesheet" href="https://yandex.st/highlightjs/8.0/styles/default.min.css">
-    <script src="https://yandex.st/highlightjs/8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-    
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <title>JavaScript的特性与坑 | Wellphone&#39;s Blog</title>
-    <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>JavaScript的特性与坑 - Wellphone - blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-  </head>
-  <body>
-    <div id="wrap">
-      <header class="site-header">
-        <div class="site-header-left">
-          <a class="site-header-title" href="https://wellphone.me">Wellphone&#39;s Blog</a>
-        </div>
-      </header>
-      <div class="container">
-        <div id="main">
+<meta name="author" content="Wellphone" />
+  <meta name="description" content="前言 最近要入坑React Native，在廖雪峰的博客上找到一篇非常好的JavaScript入门教程。这篇文章是笔者在阅读廖老师的教程时做的笔" />
 
-<div class="article">
-  <header>
-    <div class="article-header">
-      <h1>JavaScript的特性与坑</h1>
-      <div class="article-meta">
-        <span class="posttime">2018/03/19</span>
-        
-<div class="tags">
-  <ul>
-    
-    <li>
-        <a href="/tags/rn">RN</a>
-    </li>
-    
-    <li>
-        <a href="/tags/react-native">React Native</a>
-    </li>
-    
-    <li>
-        <a href="/tags/javascript">JavaScript</a>
-    </li>
-    
+  <meta name="keywords" content="Wellphone, whf5566, iOS" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.46" />
+
+
+<link rel="canonical" href="https://www.wellphone.me/post/2018/javascript_features_and_pits/" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+
+
+<meta property="og:title" content="JavaScript的特性与坑" />
+<meta property="og:description" content="前言 最近要入坑React Native，在廖雪峰的博客上找到一篇非常好的JavaScript入门教程。这篇文章是笔者在阅读廖老师的教程时做的笔" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.wellphone.me/post/2018/javascript_features_and_pits/" />
+
+
+
+<meta property="article:published_time" content="2018-03-19T19:35:20&#43;08:00"/>
+
+<meta property="article:modified_time" content="2018-03-19T19:35:20&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="JavaScript的特性与坑">
+<meta itemprop="description" content="前言 最近要入坑React Native，在廖雪峰的博客上找到一篇非常好的JavaScript入门教程。这篇文章是笔者在阅读廖老师的教程时做的笔">
+
+
+<meta itemprop="datePublished" content="2018-03-19T19:35:20&#43;08:00" />
+<meta itemprop="dateModified" content="2018-03-19T19:35:20&#43;08:00" />
+<meta itemprop="wordCount" content="5446">
+
+
+
+<meta itemprop="keywords" content="RN,React Native,JavaScript," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="JavaScript的特性与坑"/>
+<meta name="twitter:description" content="前言 最近要入坑React Native，在廖雪峰的博客上找到一篇非常好的JavaScript入门教程。这篇文章是笔者在阅读廖老师的教程时做的笔"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Wellphone</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
   </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Wellphone</a>
 </div>
 
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
 
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">JavaScript的特性与坑</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-03-19 </span>
+        <div class="post-category">
+            
+              <a href="/categories/2018/"> 2018 </a>
+            
+              <a href="/categories/javascript/"> JavaScript </a>
+            
+              <a href="/categories/react-native/"> React Native </a>
+            
+          </div>
+        
+        
       </div>
-    </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#自动加分号">自动加分号</a></li>
+<li><a href="#number">Number</a></li>
+<li><a href="#和">== 和 ===</a></li>
+<li><a href="#null和undefined">null和undefined</a></li>
+<li><a href="#数组">数组</a></li>
+<li><a href="#全局变量">全局变量</a></li>
+<li><a href="#字符串">字符串</a></li>
+<li><a href="#对象">对象</a></li>
+<li><a href="#循环">循环</a></li>
+<li><a href="#函数">函数</a></li>
+<li><a href="#变量提升">变量提升</a></li>
+<li><a href="#全局作用域">全局作用域</a></li>
+<li><a href="#名字空间">名字空间</a></li>
+<li><a href="#局部作用域">局部作用域</a></li>
+<li><a href="#this">this</a></li>
+<li><a href="#sort排序">sort排序</a></li>
+<li><a href="#闭包">闭包</a></li>
+<li><a href="#箭头函数">箭头函数</a></li>
+<li><a href="#date">Date</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+    
     
 
-  </header>
-  <div class="content">
     
+    <div class="post-content">
+      
 
 <h2 id="前言">前言</h2>
 
@@ -97,7 +219,7 @@ var _hmt = _hmt || [];
 比如：</li>
 </ul>
 
-<pre><code class="language-Javascript">function foo() {
+<pre><code class="language-javascript">function foo() {
     return
         { name: 'foo' };
 }
@@ -124,7 +246,7 @@ function foo() {
 <li>JavaScript不区分整数和浮点数，统一用Number表示，以下都是合法的Number类型</li>
 </ul>
 
-<pre><code class="language-Javascript">123; // 整数123
+<pre><code class="language-javascript">123; // 整数123
 0.456; // 浮点数0.456
 1.2345e3; // 科学计数法表示1.2345x1000，等同于1234.5
 -99; // 负数
@@ -139,12 +261,12 @@ Infinity; // Infinity表示无限大，当数值超过了JavaScript的Number所�
 由于JavaScript这个设计缺陷，不要使用\==比较，始终坚持使用===比较。
 NaN这个特殊的Number与所有其他值都不相等，包括它自己</p>
 
-<pre><code class="language-Javascript">NaN === NaN; // false
+<pre><code class="language-javascript">NaN === NaN; // false
 </code></pre>
 
 <p>唯一能判断NaN的方法是通过isNaN()函数：</p>
 
-<pre><code class="language-Javascript">isNaN(NaN); // true
+<pre><code class="language-javascript">isNaN(NaN); // true
 </code></pre>
 
 <h2 id="null和undefined">null和undefined</h2>
@@ -165,7 +287,7 @@ NaN这个特殊的Number与所有其他值都不相等，包括它自己</p>
 <li>索引超出了范围，返回undefined<br /></li>
 </ul>
 
-<pre><code class="language-Javascript">var arr = [1, 2, 3.14, 'Hello', null, true];
+<pre><code class="language-javascript">var arr = [1, 2, 3.14, 'Hello', null, true];
 arr[0]; // 返回索引为0的元素，即1
 arr[5]; // 返回索引为5的元素，即true
 arr[6]; // 索引超出了范围，返回undefined
@@ -175,7 +297,7 @@ arr[6]; // 索引超出了范围，返回undefined
 <li>如果通过索引赋值时，索引超过了范围，同样会引起Array大小的变化</li>
 </ul>
 
-<pre><code class="language-Javascript">var arr = [1, 2, 3];
+<pre><code class="language-javascript">var arr = [1, 2, 3];
 arr[5] = 'x';
 arr; // arr变为[1, 2, 3, undefined, undefined, 'x']
 </code></pre>
@@ -186,7 +308,7 @@ arr; // arr变为[1, 2, 3, undefined, undefined, 'x']
 <li>使用new Array()创建数组需要注意</li>
 </ul>
 
-<pre><code class="language-Javascript">new Array(1, 2, 3); // 创建了数组[1, 2, 3]
+<pre><code class="language-javascript">new Array(1, 2, 3); // 创建了数组[1, 2, 3]
 new Array(2); // 创建了数组[undefined,undefined]
 </code></pre>
 
@@ -194,7 +316,7 @@ new Array(2); // 创建了数组[undefined,undefined]
 <li>直接给Array的length赋一个新的值会导致Array大小的变化</li>
 </ul>
 
-<pre><code class="language-Javascript">var arr = [1, 2, 3];
+<pre><code class="language-javascript">var arr = [1, 2, 3];
 arr.length; // 3
 arr.length = 6;
 arr; // arr变为[1, 2, 3, undefined, undefined, undefined]
@@ -206,7 +328,7 @@ arr; // arr变为[1, 2]
 
 <p>JavaScript在设计之初，为了方便初学者学习，并不强制要求用var申明变量。这个设计错误带来了严重的后果：如果一个变量没有通过var申明就被使用，那么该变量就自动被申明为全局变量</p>
 
-<pre><code class="language-Javascript">i = 10; // i现在是全局变量
+<pre><code class="language-javascript">i = 10; // i现在是全局变量
 // 如果其他页面都不用var申明，恰好都使用了变量i，将造成变量i互相影响，产生难以调试的错误结果
 </code></pre>
 
@@ -214,7 +336,7 @@ arr; // arr变为[1, 2]
 
 <p>字符串是不可变的，如果对字符串的某个索引赋值，不会有任何错误，但是，也没有任何效果</p>
 
-<pre><code class="language-Javascript">var s = 'Test';
+<pre><code class="language-javascript">var s = 'Test';
 s[0] = 'X';
 alert(s); // s仍然为'Test'
 </code></pre>
@@ -229,13 +351,13 @@ alert(s); // s仍然为'Test'
 <li><p>如果in判断一个属性存在，这个属性不一定是xiaoming的，它可能是xiaoming继承得到的</p></li>
 </ul>
 
-<pre><code class="language-Javascript">'toString' in xiaoming; // true
+<pre><code class="language-javascript">'toString' in xiaoming; // true
 </code></pre>
 
 <p>因为toString定义在object对象中，而所有对象最终都会在原型链上指向object，所以xiaoming也拥有toString属性。
 要判断一个属性是否是xiaoming自身拥有的，而不是继承得到的，可以用hasOwnProperty()方法：</p>
 
-<pre><code class="language-Javascript">var xiaoming = {
+<pre><code class="language-javascript">var xiaoming = {
     name: '小明'
 };
 xiaoming.hasOwnProperty('name'); // true
@@ -246,7 +368,7 @@ xiaoming.hasOwnProperty('toString'); // false
 <li>number、string、boolean、function和undefined有别于其他类型。特别注意null的类型是object，Array的类型也是object，如果我们用typeof将无法区分出null、Array和通常意义上的object——{}</li>
 </ul>
 
-<pre><code class="language-Javascript">typeof 123; // 'number'
+<pre><code class="language-javascript">typeof 123; // 'number'
 typeof NaN; // 'number'
 typeof 'str'; // 'string'
 typeof true; // 'boolean'
@@ -262,7 +384,7 @@ typeof {}; // 'object'
 虽然包装对象看上去和原来的值一模一样，显示出来也是一模一样，但他们的类型已经变为object了！所以，包装对象和原始值用===比较会返回false</li>
 </ul>
 
-<pre><code class="language-Javascript">typeof new Number(123); // 'object'
+<pre><code class="language-javascript">typeof new Number(123); // 'object'
 new Number(123) === 123; // false
 
 typeof new Boolean(true); // 'object'
@@ -303,7 +425,7 @@ typeof s; // 'string'
 <li>number对象调用toString()报SyntaxError。</li>
 </ol>
 
-<pre><code class="language-Javascript">123.toString(); // SyntaxError
+<pre><code class="language-javascript">123.toString(); // SyntaxError
 123..toString(); // '123', 注意是两个点！
 (123).toString(); // '123'
 </code></pre>
@@ -314,7 +436,7 @@ typeof s; // 'string'
 <li>for &hellip; in对Array的循环得到的是String而不是Number</li>
 </ul>
 
-<pre><code class="language-Javascript">var a = ['A', 'B', 'C'];
+<pre><code class="language-javascript">var a = ['A', 'B', 'C'];
 for (var i in a) {
     console.log(i); // '0', '1', '2'
     console.log(a[i]); // 'A', 'B', 'C'
@@ -327,7 +449,7 @@ for (var i in a) {
 
 <p>当我们手动给Array对象添加了额外的属性后，for &hellip; in循环将带来意想不到的意外效果</p>
 
-<pre><code class="language-Javascript">var a = ['A', 'B', 'C'];
+<pre><code class="language-javascript">var a = ['A', 'B', 'C'];
 a.name = 'Hello';
 for (var x in a) {
     console.log(x); // '0', '1', '2', 'name'
@@ -343,7 +465,7 @@ for (var x of a) {
 <li>允许传入任意个参数而不影响调用，因此传入的参数比定义的参数多也没有问题，传入的参数比定义的少也没有问题</li>
 </ul>
 
-<pre><code class="language-Javascript">var abs = function (x) {
+<pre><code class="language-javascript">var abs = function (x) {
     if (x &gt;= 0) {
         return x;
     } else {
@@ -360,7 +482,7 @@ abs(); // 返回NaN
 <li>函数不定义任何参数，还是通过arguments可以拿到参数的值</li>
 </ul>
 
-<pre><code class="language-Javascript">function abs() {
+<pre><code class="language-javascript">function abs() {
     if (arguments.length === 0) {
         return 0;
     }
@@ -377,7 +499,7 @@ abs(-9); // 9
 <li>函数末尾如果没有return，就是隐含的return undefined;</li>
 </ul>
 
-<pre><code class="language-Javascript">function foo(x) {
+<pre><code class="language-javascript">function foo(x) {
     console.log(x)
 }
 
@@ -388,7 +510,7 @@ var r = foo(1); // 调用foo函数, r 为undefined
 
 <p>JavaScript的函数定义有个特点，它会先扫描整个函数体的语句，把所有申明的变量“提升”到函数顶部</p>
 
-<pre><code class="language-Javascript">'use strict';
+<pre><code class="language-javascript">'use strict';
 
 function foo() {
     var x = 'Hello, ' + y; //不报错，原因是变量y在稍后申明了
@@ -400,7 +522,7 @@ foo();
 
 <p>对于上述foo()函数，JavaScript引擎看到的代码相当于：</p>
 
-<pre><code class="language-Javascript">function foo() {
+<pre><code class="language-javascript">function foo() {
     var y; // 提升变量y的申明，此时y为undefined
     var x = 'Hello, ' + y;
     console.log(x);
@@ -414,7 +536,7 @@ foo();
 
 <p>不在任何函数内定义的变量就具有全局作用域。实际上，JavaScript默认有一个全局对象window，全局作用域的变量实际上被绑定到window的一个属性。</p>
 
-<pre><code class="language-Javascript">'use strict';
+<pre><code class="language-javascript">'use strict';
 
 var course = 'Learn JavaScript';
 alert(course); // 'Learn JavaScript'
@@ -431,7 +553,7 @@ alert(window.course); // 'Learn JavaScript'
 
 <p>减少冲突的一个方法是把自己的所有变量和函数全部绑定到一个全局变量中。例如：</p>
 
-<pre><code class="language-Javascript">// 唯一的全局变量MYAPP:
+<pre><code class="language-javascript">// 唯一的全局变量MYAPP:
 var MYAPP = {};
 
 // 其他变量:
@@ -448,7 +570,7 @@ MYAPP.foo = function () {
 
 <p>由于JavaScript的变量作用域实际上是函数内部，我们在for循环等语句块中是无法定义具有局部作用域的变量的</p>
 
-<pre><code class="language-Javascript">'use strict';
+<pre><code class="language-javascript">'use strict';
 
 function foo() {
     for (var i=0; i&lt;100; i++) {
@@ -460,7 +582,7 @@ function foo() {
 
 <p>为了解决块级作用域，ES6引入了新的关键字let，用let替代var可以申明一个块级作用域的变量</p>
 
-<pre><code class="language-Javascript">'use strict';
+<pre><code class="language-javascript">'use strict';
 
 function foo() {
     var sum = 0;
@@ -482,7 +604,7 @@ function foo() {
 <li><p>如果这么写，也是不行的！要保证this指向正确，必须用obj.xxx()的形式调用！</p></li>
 </ul>
 
-<pre><code class="language-Javascript">var fn = xiaoming.age; // 先拿到xiaoming的age函数
+<pre><code class="language-javascript">var fn = xiaoming.age; // 先拿到xiaoming的age函数
 fn(); // NaN
 </code></pre>
 
@@ -490,7 +612,7 @@ fn(); // NaN
 <li>ECMA决定，在strict模式下让函数的this指向undefined，因此，在strict模式下，你会得到一个错误：</li>
 </ul>
 
-<pre><code class="language-Javascript">'use strict';
+<pre><code class="language-javascript">'use strict';
 
 var xiaoming = {
     name: '小明',
@@ -509,7 +631,7 @@ fn(); // Uncaught TypeError: Cannot read property 'birth' of undefined
 <li>在函数内部定义的函数，this又指向undefined了！（在非strict模式下，它重新指向全局对象window！）</li>
 </ul>
 
-<pre><code class="language-Javascript">'use strict';
+<pre><code class="language-javascript">'use strict';
 
 var xiaoming = {
     name: '小明',
@@ -528,7 +650,7 @@ xiaoming.age(); // Uncaught TypeError: Cannot read property 'birth' of undefined
 
 <p>解决办法</p>
 
-<pre><code class="language-Javascript">'use strict';
+<pre><code class="language-javascript">'use strict';
 
 var xiaoming = {
     name: '小明',
@@ -552,7 +674,7 @@ xiaoming.age(); // 25
 <li>默认把所有元素先转换为String再排序</li>
 </ul>
 
-<pre><code class="language-Javascript">[10, 20, 1, 2].sort(); // [1, 10, 2, 20]
+<pre><code class="language-javascript">[10, 20, 1, 2].sort(); // [1, 10, 2, 20]
 </code></pre>
 
 <h2 id="闭包">闭包</h2>
@@ -561,7 +683,7 @@ xiaoming.age(); // 25
 <li>返回函数时不要引用任何循环变量，或者后续会发生变化的变量</li>
 </ul>
 
-<pre><code class="language-Javascript">function count() {
+<pre><code class="language-javascript">function count() {
     var arr = [];
     for (var i=1; i&lt;=3; i++) {
         arr.push(function () {
@@ -584,7 +706,7 @@ f3(); //16 ,而不是 9
 <p>原因就在于返回的函数引用了变量i，但它并非立刻执行。等到3个函数都返回时，它们所引用的变量i已经变成了4，因此最终结果为16。<br />
 如果一定要引用循环变量怎么办？方法是再创建一个函数，用该函数的参数绑定循环变量当前的值，无论该循环变量后续如何更改，已绑定到函数参数的值不变</p>
 
-<pre><code class="language-Javascript">function count() {
+<pre><code class="language-javascript">function count() {
     var arr = [];
     for (var i=1; i&lt;=3; i++) {
         arr.push((function (n) {
@@ -612,14 +734,14 @@ f3(); // 9
 <li>如果参数不是一个，就需要用括号()括起来：</li>
 </ul>
 
-<pre><code class="language-Javascript">(x, y) =&gt; x * x + y * y
+<pre><code class="language-javascript">(x, y) =&gt; x * x + y * y
 </code></pre>
 
 <ul>
 <li>如果要返回一个对象，需要用括号()括起来：</li>
 </ul>
 
-<pre><code class="language-Javascript">// SyntaxError:
+<pre><code class="language-javascript">// SyntaxError:
 x =&gt; { foo: x }
 
 // ok:
@@ -630,7 +752,7 @@ x =&gt; ({ foo: x })
 <li>箭头函数看上去是匿名函数的一种简写，但实际上，箭头函数和匿名函数有个明显的区别：箭头函数内部的this是词法作用域，由上下文确定</li>
 </ul>
 
-<pre><code class="language-Javascript">var obj = {
+<pre><code class="language-javascript">var obj = {
     birth: 1990,
     getAge: function () {
         var b = this.birth; // 1990
@@ -645,7 +767,7 @@ obj.getAge(); // 25
 <li>由于this在箭头函数中已经按照词法作用域绑定了，所以，用call()或者apply()调用箭头函数时，无法对this进行绑定，即传入的第一个参数被忽略</li>
 </ul>
 
-<pre><code class="language-Javascript">var obj = {
+<pre><code class="language-javascript">var obj = {
     birth: 1990,
     getAge: function (year) {
         var b = this.birth; // 1990
@@ -662,7 +784,7 @@ obj.getAge(2015); // 25
 <li>JavaScript的Date对象月份值从0开始，牢记0=1月，1=2月，2=3月，……，11=12月。</li>
 </ul>
 
-<pre><code class="language-Javascript">var now = new Date();
+<pre><code class="language-javascript">var now = new Date();
 now; // Wed Jun 24 2015 19:49:22 GMT+0800 (CST)
 now.getFullYear(); // 2015, 年份
 now.getMonth(); // 5, 月份，注意月份范围是0~11，5表示六月
@@ -672,168 +794,140 @@ now.getMonth(); // 5, 月份，注意月份范围是0~11，5表示六月
 <li>使用Date.parse()时传入的字符串使用实际月份01到12，转换为Date对象后getMonth()获取的月份值为0到11。</li>
 </ul>
 
-<pre><code class="language-Javascript">var d = Date.parse('2015-06-24T19:49:22.875+08:00');
+<pre><code class="language-javascript">var d = Date.parse('2015-06-24T19:49:22.875+08:00');
 d; // 1435146562875
 var d1 = new Date(1435146562875);
 d1; // Wed Jun 24 2015 19:49:22 GMT+0800 (CST)
 d1.getMonth(); // 5
 </code></pre>
 
-  </div>
-  <footer>
-    <div class="article-footer">
-      
-<div class="tags">
-  <ul>
+    </div>
+
     
-    <li>
-        <a href="/tags/rn">RN</a>
-    </li>
-    
-    <li>
-        <a href="/tags/react-native">React Native</a>
-    </li>
-    
-    <li>
-        <a href="/tags/javascript">JavaScript</a>
-    </li>
-    
-  </ul>
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Wellphone</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2018-03-19</span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank">CC BY-SA 4.0</a></span>
+  </p>
 </div>
 
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/rn/">RN</a>
+          
+          <a href="/tags/react-native/">React Native</a>
+          
+          <a href="/tags/javascript/">JavaScript</a>
+          
+        </div>
 
       
-      
-
-      
-      <div id="pagenavigation-next-prev">
+      <nav class="post-nav">
         
-        <div id="pagenavigation-next">
-          <span class="pagenav-label">Previous</span>
-          <a href="https://wellphone.me/post/2018/setup_rn_dev_env/">搭建React Native开发环境</a>
+        
+          <a class="next" href="/post/2018/setup_rn_dev_env/">
+            <span class="next-text nav-default">搭建React Native开发环境</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
-        
-      </div>
-      
-    </div>
-  </footer>
   
-<div id="SOHUCS" sid="javascript_features_and_pits" ></div> 
-<script type="text/javascript"> 
-(function(){ 
-var appid = 'cyso3GYYu'; 
-var conf = 'prod_fa6a31665b4b269e716ec23d4ce3de3a'; 
-var width = window.innerWidth || document.documentElement.clientWidth; 
-if (width < 960) { 
-window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("https://changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
 
+  
 
-</div>
-        </div>
-        <div class="sidebar">
-  
-  
-  <div class="sidebar-content">
-    <div class="sidebar-header">
-      <span>Author</span>
-    </div>
-    <div id="author">
-      <span>Wellphone</span>
-      <div>
-        
-        
-        <a href="https://github.com/whf5566"><i class="fa fa-github-square fa-2x" aria-hidden="true"></i></a>
-        
-        
-        
       </div>
-    </div>
-  </div>
-  
-  
-  <div class="sidebar-content">
-    <div class="sidebar-header">
-      <span>Categories</span>
-    </div>
-    <div class="categories">
-      <ul>
-        
-        <li>
-          <a href="/categories/2017"><span></span>2017 (11)</a>
-        </li>
-        
-        <li>
-          <a href="/categories/2018"><span></span>2018 (2)</a>
-        </li>
-        
-        <li>
-          <a href="/categories/airpods"><span></span>airpods (1)</a>
-        </li>
-        
-        <li>
-          <a href="/categories/debug"><span></span>debug (2)</a>
-        </li>
-        
-        <li>
-          <a href="/categories/git"><span></span>git (1)</a>
-        </li>
-        
-        <li>
-          <a href="/categories/ios"><span></span>ios (11)</a>
-        </li>
-        
-        <li>
-          <a href="/categories/javascript"><span></span>javascript (1)</a>
-        </li>
-        
-        <li>
-          <a href="/categories/react-native"><span></span>react-native (2)</a>
-        </li>
-        
-        <li>
-          <a href="/categories/sqlite"><span></span>sqlite (1)</a>
-        </li>
-        
-        <li>
-          <a href="/categories/trouble-shooting"><span></span>trouble-shooting (3)</a>
-        </li>
-        
-        <li>
-          <a href="/categories/ui"><span></span>ui (6)</a>
-        </li>
-        
-      </ul>
-    </div>
-  </div>
-  
-  <div class="sidebar-content">
-    <div class="sidebar-header">
-      <span>RSS</span>
-    </div>
-    <div id="rss">
-      <a href="https://wellphone.me/index.xml" type="application/rss+xml" target="_blank">
-        <i class="fa fa-rss-square fa-2x" aria-hidden="true"></i>
-      </a>
-    </div>
-  </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/whf5566" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.wellphone.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
 
-      </div>
-      <footer>
-        <div id="site-footer-wrap">
-          <div id="site-footer">
-            <span>Powered by <a href="https://gohugo.io/">Hugo</a>.</span>
-            <span>Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>. </span>
-            <span>
-              
-              Copyright (c) 2018, <a href="https://wellphone.me">Wellphone&#39;s Blog</a>
-              
-            </span>
-          </div>
-        </div>
-      </footer>
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2017 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Wellphone's blog @ <a href='https://pages.coding.me/' target='_blank'>Coding Pages</a></span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
     </div>
-  </body>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+</body>
 </html>
-

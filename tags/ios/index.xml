@@ -1,68 +1,42 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ios on Wellphone&#39;s Blog</title>
-    <link>https://wellphone.me/tags/ios/</link>
-    <description>Recent content in Ios on Wellphone&#39;s Blog</description>
+    <title>IOS on Wellphone - blog</title>
+    <link>https://www.wellphone.me/tags/ios/</link>
+    <description>Recent content in IOS on Wellphone - blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-Hans</language>
+    <language>en</language>
+    <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://pages.coding.me/&#39; target=&#39;_blank&#39;&gt;Coding Pages&lt;/a&gt;</copyright>
     <lastBuildDate>Sat, 08 Jul 2017 22:28:48 +0800</lastBuildDate>
-    <atom:link href="/tags/ios/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://www.wellphone.me/tags/ios/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>iOS如何正确的监听手机侧边音量键</title>
-      <link>https://wellphone.me/post/2017/how_to_monitor_volume_changes/</link>
+      <link>https://www.wellphone.me/post/2017/how_to_monitor_volume_changes/</link>
       <pubDate>Sat, 08 Jul 2017 22:28:48 +0800</pubDate>
       
-      <guid>https://wellphone.me/post/2017/how_to_monitor_volume_changes/</guid>
-      <description>如何监听手机侧边音量键 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们的App有这样一个Feature，用户通过音量键调节到最大音量时，会弹出一个Toast，提示 用户当前音量已经最大了，继续按音量上键可以设置为超大音量模式（通过调节音频文件的音量）。刚开始，我们在App中是监听名称为“AVSystemController_SystemVolumeDidChangeNotification”的系统通知来获知用户通过侧边音量键调节手机音量的事件。
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onVolumeChanged:) name:@&amp;quot;AVSystemController_SystemVolumeDidChangeNotification&amp;quot; object:nil];  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;处理该通知的方法如下：
-- (void)onVolumeChanged:(NSNotification *)notification { if ([[notification.userInfo objectForKey:@&amp;quot;AVSystemController_AudioCategoryNotificationParameter&amp;quot;] isEqualToString:@&amp;quot;Audio/Video&amp;quot;]) { if ([[notification.userInfo objectForKey:@&amp;quot;AVSystemController_AudioVolumeChangeReasonNotificationParameter&amp;quot;] isEqualToString:@&amp;quot;ExplicitVolumeChange&amp;quot;]) { CGFloat volume = [[notification.userInfo objectForKey:@&amp;quot;AVSystemController_AudioVolumeNotificationParameter&amp;quot;] floatValue]; if (volume != MAX_VOLUME) { // todo } else { // todo } } } }  发现问题 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;这段代码在我们这个App中工作的一直很好。但是最近一段时间，测试人员编译版本，有时音量调节到最大后，没有弹出Toast提示，而有时又会弹出来。经调试，发现有时候能监听到“AVSystemController_SystemVolumeDidChangeNotification”系统通知，有时候又没有，很飘忽不定。一时间大家都不知道怎么回事，很是头疼。因为这个代码在之前发布出去的正式版本中，从来没有出现过这样的问题。
-定位问题 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;以前版本没有，而现在的版本有，说明肯定是改出来的问题。只有checkout到之前的commit，逐一测试找出是哪次提交造成这样的问题。但是这样折腾了好久也没能定位到是哪次提交造成的。最后，折腾了一天，我们这边的一位美女同事Sharon最后解决了这个问题，她在stackoverflow上找到了类似的问题，发现是我们删除之前通过耳机线控App的一个Feature时，把这段代码删掉了造成的。而这段代码是开始监听远程控制事件。
-[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Fuck！NSNotificationCenter监听的通知“AVSystemController_SystemVolumeDidChangeNotification”居然和RemoteControlEvents有关系，是因为耳机线上也有音量调节按键的原因？？？</description>
+      <guid>https://www.wellphone.me/post/2017/how_to_monitor_volume_changes/</guid>
+      <description>如何监听手机侧边音量键 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们的App有这样一个Feature，用户通过音量键调节到最大音量时，</description>
     </item>
     
     <item>
       <title>使用Interface Builder开发界面</title>
-      <link>https://wellphone.me/post/2017/autolayout_demo/</link>
+      <link>https://www.wellphone.me/post/2017/autolayout_demo/</link>
       <pubDate>Wed, 03 May 2017 09:51:08 +0800</pubDate>
       
-      <guid>https://wellphone.me/post/2017/autolayout_demo/</guid>
-      <description>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;之前在公司内部分享会上，简单的分享了下如何使用Interface Builder开发iOS界面以及几种界面开发的方式的优缺点。写了一篇文章，现在直接把这篇文章贴到了blog上。
-认识IB IB 即 Interface Builder ，是集成到Xcode上的iOS界面可视化开发工具。
-功能面板  对象库面板
-提供了所有Cocoa Touch 库给我们定义好的界面组件，包括 View 组件和 Controller 组件(所有名字带 xxxxController 的组件)。
-对象库中组件较多，为了查找方便，底部提供了搜索栏，功能强大，一般只要输入关键的几个字母，就能快速找到你需要的组件。
- 主界面
-主界面提供了一个设计区域，该区域中放入我们设计的所有组件，一般要先放入一个容器组件，如：UIView 视图。然后在视图中放入其他组件。
-为了快速查看主界面中相关信息，可以通过左侧的侧边栏(Desk)查看。
- 属性面板
-在主界面选中某个组件后，在该区域可以查看并设置组件的属性。
-  示例 demo下载
- 新增一个按钮
- 新增一个table
- IBInspectable / IBDesignable
-  Autoresizing 技术介绍 autoresizing是UIView的属性，可以用来做一些简单的自动布局实现。   属性 描述   UIViewAutoresizingNone 不会随父视图的改变而改变    UIViewAutoresizingFlexibleLeftMargin 自动调整view与父视图左边距，以保证右边距不变   UIViewAutoresizingFlexibleWidth 自动调整view的宽度，保证左边距和右边距不变    UIViewAutoresizingFlexibleRightMargin 自动调整view与父视图右边距，以保证左边距不变    UIViewAutoresizingFlexibleTopMargin 自动调整view与父视图上边距，以保证下边距不变   UIViewAutoresizingFlexibleHeight 自动调整view的高度，以保证上边距和下边距不变   UIViewAutoresizingFlexibleBottomMargin 动调整view与父视图的下边距，以保证上边距不变</description>
+      <guid>https://www.wellphone.me/post/2017/autolayout_demo/</guid>
+      <description>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;之前在公司内部分享会上，简单的分享了下如何使用Interface Builder开发iOS界面</description>
     </item>
     
     <item>
       <title>AirPods远程控制适配</title>
-      <link>https://wellphone.me/post/2017/airpods_remote_controll/</link>
+      <link>https://www.wellphone.me/post/2017/airpods_remote_controll/</link>
       <pubDate>Mon, 24 Apr 2017 09:59:57 +0800</pubDate>
       
-      <guid>https://wellphone.me/post/2017/airpods_remote_controll/</guid>
-      <description>AirPods 16年底苹果推出了AirPods耳机。公司产品要适配AirPods，支持AirPods的远程控制。我在拿到耳机后，折腾了一会，连不上手机，竟然不知道怎么使用。～～～
-上网找到了官方的使用方法：https://support.apple.com/zh-cn/HT207010
-AirPods的远程控制默认是控制Siri和电话。快速施力轻点两下这个AirPod外侧可激活Siri或使用电话。这个不是我们App想要的远程控制，我们希望能通过AirPods来控制App的行为，即希望App能监听到AirPods的操作。在官方的使用说明中有这样一段话“如果您喜欢，您可以更改设置，使轻点两下时执行的操作变成播放或暂停音乐。”Ok，只要能双击播放，双击暂停音乐，那么App就能监听到远程控制事件，同线控耳机的那些远程控制事件一样。
-下面是适配AirPods远程控制的一些小结。
-AirPods在不同系统上的表现 AirPods在iOS10.2以下表现和普通的蓝牙耳机类似，能手动通过蓝牙连接上手机。
-AirPods在iOS10.2以上的能支持双击操作，双击播放音乐，双击停止音乐；分别对应远程线控中的UIEventSubtypeRemoteControlPlay、UIEventSubtypeRemoteControlStop等事件。
-如何监听远程控制事件：http://www.cnblogs.com/kenshincui/p/3950646.html#remoteControl
-如何判断现在接入了AirPods 通过检查AVAudioSession的currentRoute中的输出port的名字，可以判断当前音频输出是否是AirPods
-- (BOOL)isAirPods { NSArray&amp;lt;AVAudioSessionPortDescription *&amp;gt; *outputPorts = [AVAudioSession sharedInstance].currentRoute.outputs; for (AVAudioSessionPortDescription *desc in outputPorts) { if ([desc.portName rangeOfString:@&amp;quot;AirPods&amp;quot;].length &amp;gt; 0) { return YES; } } return NO; }  这个代码在iOS10以下的系统也能工作，在iOS10以下AirPods表现如同蓝牙耳机，并且，portName 还是AirPods。
-如果需要用户在戴上耳机的时候检查是否是AirPods，可以监听系统发出的AVAudioSessionRouteChangeNotification通知，在route改变时，通过上面的代码检查下，就可以知道是否是用户带上了AirPods耳机。
-有时，我们需要检查当前输出音频设备是否有蓝牙，也可以像上面的代码一样
-- (BOOL)isBluetooth { NSArray&amp;lt;AVAudioSessionPortDescription *&amp;gt; *outputPorts = [AVAudioSession sharedInstance].currentRoute.outputs; for (AVAudioSessionPortDescription *desc in outputPorts) { if ([desc.portType isEqualToString:AVAudioSessionPortBluetoothA2DP] || [desc.portType isEqualToString:AVAudioSessionPortBluetoothLE] || [desc.portType isEqualToString:AVAudioSessionPortBluetoothHFP]) { return YES; } } return NO; }  AirPods的远程控制 这里说的AirPods远程控制，不是通过AirPods唤起Siri或者接系统电话，而是通过AirPods播放、停止音乐。 在连上AirPods后，需要在手机上进行设置，将AirPods的双击操作改成播放／停止音乐。具体设置方法见：https://support.</description>
+      <guid>https://www.wellphone.me/post/2017/airpods_remote_controll/</guid>
+      <description>AirPods 16年底苹果推出了AirPods耳机。公司产品要适配AirPods，支持AirPods的远程控制。我在拿到耳机后，折腾了一会，连不上手机，</description>
     </item>
     
   </channel>

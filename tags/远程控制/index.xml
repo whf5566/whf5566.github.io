@@ -1,32 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>远程控制 on Wellphone&#39;s Blog</title>
-    <link>https://wellphone.me/tags/%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6/</link>
-    <description>Recent content in 远程控制 on Wellphone&#39;s Blog</description>
+    <title>远程控制 on Wellphone - blog</title>
+    <link>https://www.wellphone.me/tags/%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6/</link>
+    <description>Recent content in 远程控制 on Wellphone - blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-Hans</language>
+    <language>en</language>
+    <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://pages.coding.me/&#39; target=&#39;_blank&#39;&gt;Coding Pages&lt;/a&gt;</copyright>
     <lastBuildDate>Mon, 24 Apr 2017 09:59:57 +0800</lastBuildDate>
-    <atom:link href="/tags/%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://www.wellphone.me/tags/%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>AirPods远程控制适配</title>
-      <link>https://wellphone.me/post/2017/airpods_remote_controll/</link>
+      <link>https://www.wellphone.me/post/2017/airpods_remote_controll/</link>
       <pubDate>Mon, 24 Apr 2017 09:59:57 +0800</pubDate>
       
-      <guid>https://wellphone.me/post/2017/airpods_remote_controll/</guid>
-      <description>AirPods 16年底苹果推出了AirPods耳机。公司产品要适配AirPods，支持AirPods的远程控制。我在拿到耳机后，折腾了一会，连不上手机，竟然不知道怎么使用。～～～
-上网找到了官方的使用方法：https://support.apple.com/zh-cn/HT207010
-AirPods的远程控制默认是控制Siri和电话。快速施力轻点两下这个AirPod外侧可激活Siri或使用电话。这个不是我们App想要的远程控制，我们希望能通过AirPods来控制App的行为，即希望App能监听到AirPods的操作。在官方的使用说明中有这样一段话“如果您喜欢，您可以更改设置，使轻点两下时执行的操作变成播放或暂停音乐。”Ok，只要能双击播放，双击暂停音乐，那么App就能监听到远程控制事件，同线控耳机的那些远程控制事件一样。
-下面是适配AirPods远程控制的一些小结。
-AirPods在不同系统上的表现 AirPods在iOS10.2以下表现和普通的蓝牙耳机类似，能手动通过蓝牙连接上手机。
-AirPods在iOS10.2以上的能支持双击操作，双击播放音乐，双击停止音乐；分别对应远程线控中的UIEventSubtypeRemoteControlPlay、UIEventSubtypeRemoteControlStop等事件。
-如何监听远程控制事件：http://www.cnblogs.com/kenshincui/p/3950646.html#remoteControl
-如何判断现在接入了AirPods 通过检查AVAudioSession的currentRoute中的输出port的名字，可以判断当前音频输出是否是AirPods
-- (BOOL)isAirPods { NSArray&amp;lt;AVAudioSessionPortDescription *&amp;gt; *outputPorts = [AVAudioSession sharedInstance].currentRoute.outputs; for (AVAudioSessionPortDescription *desc in outputPorts) { if ([desc.portName rangeOfString:@&amp;quot;AirPods&amp;quot;].length &amp;gt; 0) { return YES; } } return NO; }  这个代码在iOS10以下的系统也能工作，在iOS10以下AirPods表现如同蓝牙耳机，并且，portName 还是AirPods。
-如果需要用户在戴上耳机的时候检查是否是AirPods，可以监听系统发出的AVAudioSessionRouteChangeNotification通知，在route改变时，通过上面的代码检查下，就可以知道是否是用户带上了AirPods耳机。
-有时，我们需要检查当前输出音频设备是否有蓝牙，也可以像上面的代码一样
-- (BOOL)isBluetooth { NSArray&amp;lt;AVAudioSessionPortDescription *&amp;gt; *outputPorts = [AVAudioSession sharedInstance].currentRoute.outputs; for (AVAudioSessionPortDescription *desc in outputPorts) { if ([desc.portType isEqualToString:AVAudioSessionPortBluetoothA2DP] || [desc.portType isEqualToString:AVAudioSessionPortBluetoothLE] || [desc.portType isEqualToString:AVAudioSessionPortBluetoothHFP]) { return YES; } } return NO; }  AirPods的远程控制 这里说的AirPods远程控制，不是通过AirPods唤起Siri或者接系统电话，而是通过AirPods播放、停止音乐。 在连上AirPods后，需要在手机上进行设置，将AirPods的双击操作改成播放／停止音乐。具体设置方法见：https://support.</description>
+      <guid>https://www.wellphone.me/post/2017/airpods_remote_controll/</guid>
+      <description>AirPods 16年底苹果推出了AirPods耳机。公司产品要适配AirPods，支持AirPods的远程控制。我在拿到耳机后，折腾了一会，连不上手机，</description>
     </item>
     
   </channel>

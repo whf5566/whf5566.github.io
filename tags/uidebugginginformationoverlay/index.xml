@@ -1,56 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Uidebugginginformationoverlay on Wellphone&#39;s Blog</title>
-    <link>https://wellphone.me/tags/uidebugginginformationoverlay/</link>
-    <description>Recent content in Uidebugginginformationoverlay on Wellphone&#39;s Blog</description>
+    <title>UIDebuggingInformationOverlay on Wellphone - blog</title>
+    <link>https://www.wellphone.me/tags/uidebugginginformationoverlay/</link>
+    <description>Recent content in UIDebuggingInformationOverlay on Wellphone - blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-Hans</language>
+    <language>en</language>
+    <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://pages.coding.me/&#39; target=&#39;_blank&#39;&gt;Coding Pages&lt;/a&gt;</copyright>
     <lastBuildDate>Wed, 06 Dec 2017 17:15:20 +0800</lastBuildDate>
-    <atom:link href="/tags/uidebugginginformationoverlay/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://www.wellphone.me/tags/uidebugginginformationoverlay/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>在iOS11上使用自带悬浮窗工具调试UI</title>
-      <link>https://wellphone.me/post/2017/use_uidebugginginformationoverlay_for_ios11/</link>
+      <link>https://www.wellphone.me/post/2017/use_uidebugginginformationoverlay_for_ios11/</link>
       <pubDate>Wed, 06 Dec 2017 17:15:20 +0800</pubDate>
       
-      <guid>https://wellphone.me/post/2017/use_uidebugginginformationoverlay_for_ios11/</guid>
-      <description>背景介绍 iOS系统从9.0之后就加入了悬浮窗调试小工具来帮助开发者调试UI，很遗憾的是，这个是一个非公开的功能，苹果没有公开它的头文件。（私有API传送门）当然私有API没有阻挡住我们使用这么酷炫的小工具。如何使用可以看看前段时间笔者写过一片文章《iOS自带悬浮窗调试工具使用详解》。可是好景不长，在iOS11中这个小工具没法用了。最近想用这个系统自带的悬浮窗工具来调试UI，毕竟是接入成本最小UI调试工具，于是看到了国外大神的这篇文章 《Swizzling in iOS 11 with UIDebuggingInformationOverlay》。
-原因 国外大神的文章很长，详细介绍了他是如何让悬浮窗调试工具重现在iOS11上的。文章具体内容这里就不展开了，感兴趣的可以去看看他的文章。文章主要内容：
-iOS9 &amp;amp; 10 上 -[UIDebuggingInformationOverlay init] 和 [UIDebuggingInformationOverlay prepareDebuggingOverlay] 是能正常工作的。在iOS11上，上面这两个方法被苹果做了限制，只有苹果内部设备才可以正常使用。对这两个方法逆向后的代码如下：
-@implementation UIDebuggingInformationOverlay - (instancetype)init { static BOOL overlayEnabled = NO; static dispatch_once_t onceToken; dispatch_once(&amp;amp;onceToken, ^{ overlayEnabled = UIDebuggingOverlayIsEnabled(); }); if (!overlayEnabled) { return nil; } if (self = [super init]) { [self _setWindowControlsStatusBarOrientation:NO]; } return self; } + (void)prepareDebuggingOverlay { if (_UIGetDebuggingOverlayEnabled()) { id handler = [UIDebuggingInformationOverlayInvokeGestureHandler mainHandler]; UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:handler action:@selector(_handleActivationGesture:)]; [tapGesture setNumberOfTouchesRequired:2]; [tapGesture setNumberOfTapsRequired:1]; [tapGesture setDelegate:handler]; UIView *statusBarWindow = [UIApp statusBarWindow]; [statusBarWindow addGestureRecognizer:tapGesture]; } } @end  可以很清晰的看到，苹果用UIDebuggingOverlayIsEnabled() 对UIDebuggingInformationOverlay的初始化方法做了检测，如果不是内部设备就返回nil，同时对prepareDebuggingOverlay方法也做了检测。</description>
+      <guid>https://www.wellphone.me/post/2017/use_uidebugginginformationoverlay_for_ios11/</guid>
+      <description>背景介绍 iOS系统从9.0之后就加入了悬浮窗调试小工具来帮助开发者调试UI，很遗憾的是，这个是一个非公开的功能，苹果没有公开它的头文件。（私</description>
     </item>
     
     <item>
       <title>iOS自带悬浮窗调试工具使用详解</title>
-      <link>https://wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/</link>
+      <link>https://www.wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/</link>
       <pubDate>Thu, 08 Jun 2017 09:58:10 +0800</pubDate>
       
-      <guid>https://wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/</guid>
-      <description>12月11日更新 大家可以在这里看看如何在iOS11上使用自带的悬浮窗口调试工具：《在iOS11上使用自带悬浮窗工具调试UI》。
-以下是原文 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前几天在博客上看到一篇文章《震惊！iOS 系统居然自带悬浮窗口调试工具》,看完之后笔者真就震惊了，有这样好的UI调试工具，苹果为什么不公开呢？笔者按照博文中的描述，在app中试了一下，感觉非常好用。
-如何开启 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;在 AppDelegate 的 didFinishLaunchingWithOptions 方法中加入以下代码就可以了。
-#if DEBUG id overlayClass = NSClassFromString(@&amp;quot;UIDebuggingInformationOverlay&amp;quot;); [overlayClass performSelector:NSSelectorFromString(@&amp;quot;prepareDebuggingOverlay&amp;quot;)]; #endif  运行后，用两个手指头在状态栏上同时点击下就可以显示出这个调试的悬浮层。
-悬浮窗主界面 可以看到大概有这样几个选项，
- View Hierarchy（查看View的层级关系）
- VC Hierarchy（查看ViewController层级关系）
- Ivar Explorer（查看UIApplication 的成员属性）
- Measure （测量View的尺寸）
- Spec Compare （对比设计图）
-  View Hierarchy &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 进入到这个页面后，可以看见整个view的层级结构。悬浮窗右上角有个Inspect，点击这个可以高亮显示当前选择的View。如图所示：
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-当前选中的是 SettingSwitchItemView。
-我们在页面上选择一个swicth按钮，这时会定位到该view的条目，如图所示：
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-我们点击右侧的“！”图标，进入到swicth的详情页面，这里展示了view的详西信息，并且可以修改一些属性，比如我们修改这个button的透明度，如图所示：
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-VC Hierarchy &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们回到悬浮窗的主界面，进入到VC Hierarchy界面看看。
-这里是所有的VC的层级关系，一目了然。 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-Ivar Explorer &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;接下来我们去Ivar Explorer页面看一下。进到页面后，对里面的一些值不是很熟悉，不知道是哪里的一些值，不过里面，看见了我们熟悉的 AppDelegate 。</description>
+      <guid>https://www.wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/</guid>
+      <description>12月11日更新 大家可以在这里看看如何在iOS11上使用自带的悬浮窗口调试工具：《在iOS11上使用自带悬浮窗工具调试UI》。 以下是原文 &amp;n</description>
     </item>
     
   </channel>

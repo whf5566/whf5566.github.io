@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>音量键 on Wellphone&#39;s Blog</title>
-    <link>https://wellphone.me/tags/%E9%9F%B3%E9%87%8F%E9%94%AE/</link>
-    <description>Recent content in 音量键 on Wellphone&#39;s Blog</description>
+    <title>音量键 on Wellphone - blog</title>
+    <link>https://www.wellphone.me/tags/%E9%9F%B3%E9%87%8F%E9%94%AE/</link>
+    <description>Recent content in 音量键 on Wellphone - blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-Hans</language>
+    <language>en</language>
+    <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://pages.coding.me/&#39; target=&#39;_blank&#39;&gt;Coding Pages&lt;/a&gt;</copyright>
     <lastBuildDate>Sat, 08 Jul 2017 22:28:48 +0800</lastBuildDate>
-    <atom:link href="/tags/%E9%9F%B3%E9%87%8F%E9%94%AE/" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://www.wellphone.me/tags/%E9%9F%B3%E9%87%8F%E9%94%AE/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>iOS如何正确的监听手机侧边音量键</title>
-      <link>https://wellphone.me/post/2017/how_to_monitor_volume_changes/</link>
+      <link>https://www.wellphone.me/post/2017/how_to_monitor_volume_changes/</link>
       <pubDate>Sat, 08 Jul 2017 22:28:48 +0800</pubDate>
       
-      <guid>https://wellphone.me/post/2017/how_to_monitor_volume_changes/</guid>
-      <description>如何监听手机侧边音量键 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们的App有这样一个Feature，用户通过音量键调节到最大音量时，会弹出一个Toast，提示 用户当前音量已经最大了，继续按音量上键可以设置为超大音量模式（通过调节音频文件的音量）。刚开始，我们在App中是监听名称为“AVSystemController_SystemVolumeDidChangeNotification”的系统通知来获知用户通过侧边音量键调节手机音量的事件。
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onVolumeChanged:) name:@&amp;quot;AVSystemController_SystemVolumeDidChangeNotification&amp;quot; object:nil];  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;处理该通知的方法如下：
-- (void)onVolumeChanged:(NSNotification *)notification { if ([[notification.userInfo objectForKey:@&amp;quot;AVSystemController_AudioCategoryNotificationParameter&amp;quot;] isEqualToString:@&amp;quot;Audio/Video&amp;quot;]) { if ([[notification.userInfo objectForKey:@&amp;quot;AVSystemController_AudioVolumeChangeReasonNotificationParameter&amp;quot;] isEqualToString:@&amp;quot;ExplicitVolumeChange&amp;quot;]) { CGFloat volume = [[notification.userInfo objectForKey:@&amp;quot;AVSystemController_AudioVolumeNotificationParameter&amp;quot;] floatValue]; if (volume != MAX_VOLUME) { // todo } else { // todo } } } }  发现问题 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;这段代码在我们这个App中工作的一直很好。但是最近一段时间，测试人员编译版本，有时音量调节到最大后，没有弹出Toast提示，而有时又会弹出来。经调试，发现有时候能监听到“AVSystemController_SystemVolumeDidChangeNotification”系统通知，有时候又没有，很飘忽不定。一时间大家都不知道怎么回事，很是头疼。因为这个代码在之前发布出去的正式版本中，从来没有出现过这样的问题。
-定位问题 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;以前版本没有，而现在的版本有，说明肯定是改出来的问题。只有checkout到之前的commit，逐一测试找出是哪次提交造成这样的问题。但是这样折腾了好久也没能定位到是哪次提交造成的。最后，折腾了一天，我们这边的一位美女同事Sharon最后解决了这个问题，她在stackoverflow上找到了类似的问题，发现是我们删除之前通过耳机线控App的一个Feature时，把这段代码删掉了造成的。而这段代码是开始监听远程控制事件。
-[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];  &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Fuck！NSNotificationCenter监听的通知“AVSystemController_SystemVolumeDidChangeNotification”居然和RemoteControlEvents有关系，是因为耳机线上也有音量调节按键的原因？？？</description>
+      <guid>https://www.wellphone.me/post/2017/how_to_monitor_volume_changes/</guid>
+      <description>如何监听手机侧边音量键 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;我们的App有这样一个Feature，用户通过音量键调节到最大音量时，</description>
     </item>
     
   </channel>
