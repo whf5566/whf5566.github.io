@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Git on Wellphone - blog</title>
-    <link>https://www.wellphone.me/tags/git/</link>
-    <description>Recent content in Git on Wellphone - blog</description>
+    <title>Gitlab on Wellphone - blog</title>
+    <link>https://www.wellphone.me/tags/gitlab/</link>
+    <description>Recent content in Gitlab on Wellphone - blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://pages.coding.me/&#39; target=&#39;_blank&#39;&gt;Coding Pages&lt;/a&gt;</copyright>
     <lastBuildDate>Thu, 23 Aug 2018 09:34:52 +0800</lastBuildDate>
     
-	<atom:link href="https://www.wellphone.me/tags/git/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.wellphone.me/tags/gitlab/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,15 +19,6 @@
       
       <guid>https://www.wellphone.me/post/2018/sync_code_to_gitlab/</guid>
       <description>最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、rev</description>
-    </item>
-    
-    <item>
-      <title>git命令行工作环境配置</title>
-      <link>https://www.wellphone.me/post/2017/git_config_for_working_with_shell/</link>
-      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/post/2017/git_config_for_working_with_shell/</guid>
-      <description>转载请注明出处 前言 笔者一直使用git的图形化工具sourceTree来管理代码库，日常工作中较少的使用git命令。但最近公司给配了一台旧电脑</description>
     </item>
     
   </channel>

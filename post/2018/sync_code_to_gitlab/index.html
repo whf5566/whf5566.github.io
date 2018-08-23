@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何实现两个Git仓库之间的同步 - Wellphone - blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Wellphone" />
+  <meta name="description" content="最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、rev" />
+<meta name="keywords" content="git, gitlab, clone, sync" />
+
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.46" />
+
+
+<link rel="canonical" href="https://www.wellphone.me/post/2018/sync_code_to_gitlab/" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+
+
+<meta property="og:title" content="如何实现两个Git仓库之间的同步" />
+<meta property="og:description" content="最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、rev" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.wellphone.me/post/2018/sync_code_to_gitlab/" />
+
+
+
+<meta property="article:published_time" content="2018-08-23T09:34:52&#43;08:00"/>
+
+<meta property="article:modified_time" content="2018-08-23T09:34:52&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="如何实现两个Git仓库之间的同步">
+<meta itemprop="description" content="最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、rev">
+
+
+<meta itemprop="datePublished" content="2018-08-23T09:34:52&#43;08:00" />
+<meta itemprop="dateModified" content="2018-08-23T09:34:52&#43;08:00" />
+<meta itemprop="wordCount" content="1154">
+
+
+
+<meta itemprop="keywords" content="git,gitlab," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何实现两个Git仓库之间的同步"/>
+<meta name="twitter:description" content="最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、rev"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Wellphone</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Wellphone</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何实现两个Git仓库之间的同步</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-08-23 </span>
+        <div class="post-category">
+            
+              <a href="/categories/git/"> git </a>
+            
+              <a href="/categories/2018/"> 2018 </a>
+            
+          </div>
+        
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#使用git-clone命令同步">使用git clone命令同步</a></li>
+<li><a href="#使用git的pull-push命令同步">使用git的pull，push命令同步</a>
+<ul>
+<li><a href="#如何clone出所有远程分支">如何clone出所有远程分支</a></li>
+<li><a href="#如何push所有本地分支到远端仓库">如何push所有本地分支到远端仓库</a></li>
+<li><a href="#可用脚本">可用脚本</a></li>
+</ul></li>
+<li><a href="#使用第三方工具来同步">使用第三方工具来同步</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>
+最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、review都在Gerrit服务器上，而集成发布是通过jenkins服务器完成的。现在新建了一个gitlab服务器，准备将代码迁移到gitlab作为备份。于是就有了这样的一个需求，如何在两个git仓库之间同步。在网上找到一些方法，大致是这三种思路，使用git clone命令同步、使用git的pull，push命令同步和使用第三方工具来同步。</p>
+
+<h2 id="使用git-clone命令同步">使用git clone命令同步</h2>
+
+<ol>
+<li>从原地址克隆一份裸版本库</li>
+</ol>
+
+<pre><code class="language-shell">git clone –bare git://github.com/username/project.git
+</code></pre>
+
+<ol>
+<li>以镜像推送的方式push到gitlab 服务器上</li>
+</ol>
+
+<pre><code class="language-shell">cd project.git
+git push –mirror ssh://git@gitlab.com/username/newproject.git
+</code></pre>
+
+<p>该方法比较简单，由于我们项目没有采用，也没有做更多的研究。</p>
+
+<h2 id="使用git的pull-push命令同步">使用git的pull，push命令同步</h2>
+
+<p>使用pull，push命令是最容易想到的一个办法，我们也是采用的这个方法。它流程比较简单，就是先pull原始库，然后push到新的gitlab库上，但在操作过程中遇到了一些问题。</p>
+
+<h3 id="如何clone出所有远程分支">如何clone出所有远程分支</h3>
+
+<p>我们在使用git clone命令时默认是在本地仓库中新建一个master分支，跟踪远程的origin/master分支，但是我们是要同步整个git库，也就是所有分支都需要pull到本地，然后push到新的gitlab库上，这就带来一个问题，如何clone出所有远程分支。 先给出结果：</p>
+
+<pre><code class="language-shell">git branch -r --list &quot;origin/*&quot;  | grep -v HEAD | grep -v master | xargs -I @ git checkout -t @
+</code></pre>
+
+<p>这个命令步骤是先使用 git branch -r &ndash;list &ldquo;origin/*&rdquo; 命令，获取到所有的origin服务器上的远程分支。</p>
+
+<pre><code class="language-shell">git branch -r --list &quot;origin/*&quot;
+输出：
+origin/HEAD -&gt; origin/master
+origin/develop
+origin/master
+</code></pre>
+
+<p>然后使用 grep 命令 过滤掉 HEAD 和 master。<br />
+最后使用 git checkout -t  命令新建和远程分支同名的本地分支，把这些命令串起来就是上面给出命令。</p>
+
+<h3 id="如何push所有本地分支到远端仓库">如何push所有本地分支到远端仓库</h3>
+
+<p>使用git clone命令后，在本地默认有个名为origin远端仓库。但是我们现在要将所有分支推送到gitlab的仓库，所以先要添加一个远端仓库。</p>
+
+<pre><code class="language-shell"># 添加一个名为gitlab的远端仓库
+git remote add gitlab ssh://git@gitlab.com/username/newproject.git
+</code></pre>
+
+<p>然后使用push命令推送所有分支及tag</p>
+
+<pre><code class="language-shell">git push -u gitlab --all
+git push -u gitlab --tags
+</code></pre>
+
+<h3 id="可用脚本">可用脚本</h3>
+
+<p>将上面的步骤串起来就是可以工作的脚本。在本地仓库目录下执行这个脚本就可以把仓库同步到远端的gitlab服务器上。</p>
+
+<pre><code class="language-shell">#!/bin/bash
+
+GITLAB_URL='ssh://git@gitlab.com/username/newproject.git'
+
+# 删除gitlab服务器
+git remote | grep gitlab | xargs -I @ git remote remove @
+
+# 更新master分支
+git fetch --all
+git checkout master
+git branch --set-upstream-to=origin/master master
+git pull
+
+# 删除所有本地分支（保留master），拉取创建所有远程分支
+git branch  | grep -v HEAD | grep -v master | xargs -I @ git branch -D @
+git branch -r --list &quot;origin/*&quot;  | grep -v HEAD | grep -v master | xargs -I @ git checkout -t @
+
+# 添加gitlab服务器
+git remote add gitlab $GITLAB_URL
+
+git push -u gitlab --all
+git push -u gitlab --tags
+
+# 删除gitlab服务器
+git remote remove gitlab
+</code></pre>
+
+<h2 id="使用第三方工具来同步">使用第三方工具来同步</h2>
+
+<p>在网上还有一些使用第三方工具来做同步的，这个我们没有在现有项目上做尝试。大家有兴趣可以去试试。</p>
+
+<blockquote>
+<p><a href="https://github.com/samrocketman/gitlab-mirrors">gitlab-mirrors</a><br />
+<a href="https://hpr.ews.im/#/">hpr</a></p>
+</blockquote>
+    </div>
+
+    
+    
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          
+          <a href="/tags/git/">git</a>
+          
+          <a href="/tags/gitlab/">gitlab</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/2018/javascript_features_and_pits/">
+            <span class="next-text nav-default">JavaScript的特性与坑</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/whf5566" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.wellphone.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2017 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Wellphone's blog @ <a href='https://pages.coding.me/' target='_blank'>Coding Pages</a></span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+</body>
+</html>

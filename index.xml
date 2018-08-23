@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://pages.coding.me/&#39; target=&#39;_blank&#39;&gt;Coding Pages&lt;/a&gt;</copyright>
-    <lastBuildDate>Mon, 19 Mar 2018 19:35:20 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 23 Aug 2018 09:34:52 +0800</lastBuildDate>
     
 	<atom:link href="https://www.wellphone.me/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>如何实现两个Git仓库之间的同步</title>
+      <link>https://www.wellphone.me/post/2018/sync_code_to_gitlab/</link>
+      <pubDate>Thu, 23 Aug 2018 09:34:52 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/post/2018/sync_code_to_gitlab/</guid>
+      <description>最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、rev</description>
+    </item>
     
     <item>
       <title>JavaScript的特性与坑</title>
