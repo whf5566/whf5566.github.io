@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何精简iOS SDK文件大小 - Wellphone - blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Wellphone" />
+  <meta name="description" content="我们的SDK项目随着各种功能的加入，SDK文件也越来越大。Objective-C的库最终会把用到的，没有用到类和方法都连接进App里，所以精" />
+
+  <meta name="keywords" content="Wellphone, whf5566, iOS" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.46" />
+
+
+<link rel="canonical" href="https://www.wellphone.me/post/2018/how_reduce_ios_sdk_file_size/" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+
+
+<meta property="og:title" content="如何精简iOS SDK文件大小" />
+<meta property="og:description" content="我们的SDK项目随着各种功能的加入，SDK文件也越来越大。Objective-C的库最终会把用到的，没有用到类和方法都连接进App里，所以精" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.wellphone.me/post/2018/how_reduce_ios_sdk_file_size/" />
+
+
+
+<meta property="article:published_time" content="2018-08-28T19:47:44&#43;08:00"/>
+
+<meta property="article:modified_time" content="2018-08-28T19:47:44&#43;08:00"/>
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="如何精简iOS SDK文件大小">
+<meta itemprop="description" content="我们的SDK项目随着各种功能的加入，SDK文件也越来越大。Objective-C的库最终会把用到的，没有用到类和方法都连接进App里，所以精">
+
+
+<meta itemprop="datePublished" content="2018-08-28T19:47:44&#43;08:00" />
+<meta itemprop="dateModified" content="2018-08-28T19:47:44&#43;08:00" />
+<meta itemprop="wordCount" content="2734">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何精简iOS SDK文件大小"/>
+<meta name="twitter:description" content="我们的SDK项目随着各种功能的加入，SDK文件也越来越大。Objective-C的库最终会把用到的，没有用到类和方法都连接进App里，所以精"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Wellphone</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Wellphone</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何精简iOS SDK文件大小</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2018-08-28 </span>
+        
+        
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#ios平台上库文件格式">iOS平台上库文件格式</a></li>
+<li><a href="#游戏sdk文件格式">游戏SDK文件格式</a></li>
+<li><a href="#相关命令行工具使用">相关命令行工具使用</a>
+<ul>
+<li><a href="#查看sdk的架构信息">查看SDK的架构信息</a></li>
+<li><a href="#导出-a文件">导出.a文件</a></li>
+<li><a href="#查看-a文件中-o文件大小">查看.a文件中.o文件大小</a></li>
+<li><a href="#查看-o文件中代码段-数据段等详细的大小信息">查看.o文件中代码段、数据段等详细的大小信息</a></li>
+</ul></li>
+<li><a href="#如何比较sdk大小变化">如何比较SDK大小变化</a></li>
+<li><a href="#如何精简sdk包大小">如何精简SDK包大小</a>
+<ul>
+<li><a href="#删除符号文件">删除符号文件</a></li>
+<li><a href="#删除无用类">删除无用类</a></li>
+<li><a href="#删除无用代码">删除无用代码</a></li>
+<li><a href="#精简sdk引用的第三方库">精简SDK引用的第三方库</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+    
+    
+
+    
+    <div class="post-content">
+      <p>
+我们的SDK项目随着各种功能的加入，SDK文件也越来越大。Objective-C的库最终会把用到的，没有用到类和方法都连接进App里，所以精简SDK大小很有必要，有助于减少最终App的size。</p>
+
+<h2 id="ios平台上库文件格式">iOS平台上库文件格式</h2>
+
+<p>库文件主要分动态库和静态库两种。<br />
+动态库：</p>
+
+<blockquote>
+<p>文件后缀名有.dylib和.framework。
+链接时不复制，程序运行时由系统动态加载到内存，供程序调用，系统只加载一次，多个程序共用，节省内存。</p>
+</blockquote>
+
+<p>静态库：</p>
+
+<blockquote>
+<p>文件后缀名有.a和.framework。.framework是一个文件包，包含二进制文件、头文件及相关的资源文件。
+链接时完整地拷贝至可执行文件中。</p>
+</blockquote>
+
+<h2 id="游戏sdk文件格式">游戏SDK文件格式</h2>
+
+<p>现在游戏SDK是framework形式的静态库。framework文件夹中二进制文件是占比最大的部分，其格式为“<a href="https://objccn.io/issue-6-3/">Mach-O universal binary</a>”，是一种Fat binary文件。</p>
+
+<ol>
+<li>Fat binary文件由多个cpu平台上的archive文件合并生成。<br /></li>
+<li>archive文件是由多个.o文件及调试用的符号文件合并生成。<br /></li>
+<li>.o文件即代码源文件编译后生成。<br /></li>
+</ol>
+
+<p>大致关系是 Fat binary包含多个.a文件，.a文件包含多个.o文件。</p>
+
+<h2 id="相关命令行工具使用">相关命令行工具使用</h2>
+
+<h3 id="查看sdk的架构信息">查看SDK的架构信息</h3>
+
+<p>查看SDK文件的架构信息可以使用 file命令 和 lipo命令</p>
+
+<pre><code class="language-shell">file TestSDK.framework/TestSDK
+TestSDK.framework/TestSDK: Mach-O universal binary with 2 architectures: [arm_v7:current ar archive] [arm64]
+TestSDK.framework/TestSDK (for architecture armv7): current ar archive
+TestSDK.framework/TestSDK (for architecture arm64): current ar archive
+</code></pre>
+
+<p>可以看到TestSDK.framework包含armv7和arm64两种cpu架构的archive文件。下面是lipo命令的使用：</p>
+
+<pre><code class="language-shell">lipo -info TestSDK.framework/TestSDK
+Architectures in the fat file: TestSDK.framework/TestSDK are: armv7 arm64
+</code></pre>
+
+<h3 id="导出-a文件">导出.a文件</h3>
+
+<p>在SDK文件中包含多种cpu架构的二进制文件，我们可以使用lipo命令导出。</p>
+
+<pre><code class="language-shell">#导出armv7架构的archive文件
+lipo -thin armv7 -output TestSDK_armv7.a  TestSDK.framework/TestSDK
+#导出arm64架构的archive文件
+lipo -thin arm64 -output TestSDK_arm64.a  TestSDK.framework/TestSDK
+</code></pre>
+
+<h3 id="查看-a文件中-o文件大小">查看.a文件中.o文件大小</h3>
+
+<p>ar命令是建立或修改archive文件，或是从archive文件中抽取文件的命令。</p>
+
+<pre><code class="language-shell">ar -t -v TestSDK_armv7.a
+rw-r--r--     501/20       416800 Jul 17 15:09 2018 __.SYMDEF
+rw-r--r--     501/20        81488 Jul 17 15:09 2018 ImageViewController.o
+rw-r--r--     501/20        58616 Jul 17 15:09 2018 PasswordViewController.o
+......
+</code></pre>
+
+<h3 id="查看-o文件中代码段-数据段等详细的大小信息">查看.o文件中代码段、数据段等详细的大小信息</h3>
+
+<pre><code class="language-shell">size TestSDK.framework/TestSDK
+__TEXT  __DATA  __OBJC  others  dec     hex
+15479   3040    0       28683   47202   b862    TestSDK.framework/TestSDK(ImageViewController.o) (for architecture armv7)
+12043   2132    0       18722   32897   8081    TestSDK.framework/TestSDK(PasswordViewController.o) (for architecture armv7)
+......
+16696   5772    0       32674   55142   d766    TestSDK.framework/TestSDK(ImageViewController.o) (for architecture arm64)
+13020   4092    0       20627   37739   936b    TestSDK.framework/TestSDK(PasswordViewController.o) (for architecture arm64)
+......
+</code></pre>
+
+<p>使用size -m 可以显示更多的Mach-O segments 和 sections大小信息</p>
+
+<pre><code class="language-shell">size  -m TestSDK.framework/TestSDK
+Segment : 47207
+        Section (__TEXT, __text): 10072
+        Section (__TEXT, __gcc_except_tab): 8
+        Section (__DATA, __objc_data): 40
+        Section (__DATA, __objc_superrefs): 4
+        Section (__TEXT, __objc_methname): 2395
+        Section (__DATA, __objc_selrefs): 424
+        Section (__TEXT, __cstring): 2274
+        Section (__DATA, __cfstring): 320
+        Section (__DATA, __objc_classrefs): 80
+        Section (__DATA, __objc_ivar): 44
+        Section (__TEXT, __ustring): 102
+        Section (__DATA, __const): 180
+        Section (__TEXT, __objc_classname): 122
+        Section (__TEXT, __objc_methtype): 506
+        Section (__DATA, __objc_const): 1648
+        Section (__DATA, __data): 260
+        Section (__DATA, __objc_protolist): 20
+        Section (__DATA, __objc_classlist): 4
+        Section (__LLVM, __bitcode): 1
+        Section (__LLVM, __cmdline): 1
+        Section (__DATA, __objc_imageinfo): 8
+        Section (__DWARF, __debug_str): 8277
+        Section (__DWARF, __debug_loc): 2969
+        Section (__DWARF, __debug_abbrev): 807
+        Section (__DWARF, __debug_info): 8129
+        Section (__DWARF, __debug_ranges): 0
+        Section (__DWARF, __debug_macinfo): 1
+        Section (__DWARF, __apple_names): 2852
+        Section (__DWARF, __apple_objc): 252
+        Section (__DWARF, __apple_namespac): 36
+        Section (__DWARF, __apple_types): 1351
+        Section (__DATA, __nl_symbol_ptr): 8
+        Section (__DWARF, __debug_line): 4007
+        total 47202
+total 47207
+</code></pre>
+
+<p>可以看出size命令是可以直接显示Fat binary文件中各个cpu架构文件信息的，但ar命令不能操作Fat binary文件，只能是某个cpu架构下的archive文件。</p>
+
+<h2 id="如何比较sdk大小变化">如何比较SDK大小变化</h2>
+
+<p>结合上面介绍的几个命令行工具，就可以简单比较出SDK文件的大小增量。
+思路大致如下：</p>
+
+<ol>
+<li><p>使用“lipo -info”命令获取SDK中包含的cpu架构</p>
+
+<pre><code class="language-shell">lipo -info SDKFilePath | sed -En -e &quot;s/^(Non-|Architectures in the )fat file: .+( is architecture| are): (.*)$/\\3/p&quot;
+</code></pre></li>
+
+<li><p>使用“lipo -thin”命令抽取出各个cpu架构的.a文件</p>
+
+<pre><code class="language-shell">lipo -thin arm64 SDKFilePath -output SDKFilePath_arm64.a  
+</code></pre></li>
+
+<li><p>使用“ar -t -v”命令获取SDK中.o文件的大小</p>
+
+<pre><code class="language-shell">ar -t -v SDKFilePath_arm64.a | awk '{printf \&quot;%s:%s\\n\&quot;, $8, $3}'  
+</code></pre></li>
+
+<li><p>比较SDK新旧版本中同一个.o文件大小</p></li>
+</ol>
+
+<p>按照上述步骤能比对两个SDK中.o文件的变化。 这里有一个脚本<a href="https://github.com/whf5566/sdkdiff">sdkdiff.py</a><br />
+使用方法</p>
+
+<pre><code class="language-shell">sdkdiff.py TestSDK_v1 TestSDK_v2
++1152         361088       Title.o
++824          180032       Notice.o
+.....
+-4232         260696       Login.o
+-5640         243032       Proxy.o
+-5856         335680       User.o
+----------------------------------
+-45288        80801624     Total
+</code></pre>
+
+<h2 id="如何精简sdk包大小">如何精简SDK包大小</h2>
+
+<p>通过上面命令可以看出，SDK二进制文件包含了不同cpu架构下.m .c .cpp等源码文件编译后生成的.o文件及对应的符号文件。<br />
+精简SDK二进制文件大小也主要是删除符号文件，删除没有用到的.o文件，删除无用代码。</p>
+
+<h3 id="删除符号文件">删除符号文件</h3>
+
+<p>设置Xcode Target的Building Settings &gt;&gt; Deployment &gt;&gt; Deployment Postprocessing  为YES
+Building Settings &gt;&gt; Deployment &gt;&gt; Strip Style 有三种选项All Symbols、Non-Global Symbols和Debugging Symbols。其中默认是Debugging Symbols。
+去掉debug symbols后，不能使用xcode断点调试SDK类的代码，这个对于已发布的release模式的SDK来说，可以去掉。</p>
+
+<h3 id="删除无用类">删除无用类</h3>
+
+<p>使用otool -v -s __DATA <strong>objc_classlist 可执行文件名， 逆向</strong>DATA.__objc_classlist段，提取可执行文件里所有的OC类名,<br />
+使用otool -v -s __DATA <strong>objc_classrefs 可执行文件名， 逆向</strong>DATA.__objc_classrefs段，提取可执行文件里所有的引用到的OC类名,<br />
+两者的差集就是代码中没有直接使用到的OC类，注意可以通过反射的方式来使用OC类，还需要搜索代码中有没有通过类的名字来使用该OC类。
+这里的方法是针对可执行文件，所以在编译好SDK后，还应为SDK编译一个可执行的Demo，然后使用上面的方法来查找未使用到的类。</p>
+
+<blockquote>
+<p>注意：OC是动态语言，是可以通过类名来调用类的方法的，所以查找到没有引用到的类后，还需要查看代码中有没有通过 NSClassFromString(@&ldquo;OCClassName&rdquo;) 方法使用该类。</p>
+</blockquote>
+
+<p>下面是查找无用类的脚本</p>
+
+<pre><code class="language-shell">#!/bin/bash
+# 输出未在项目中使用的类名
+# 使用说明
+# unused_class &lt;hex file&gt;
+
+usage() {
+  cat &lt;&lt;__EOF
+Summary
+    output names of unused objc class.
+Usage
+    $(basename $0) &lt;hex file&gt;
+__EOF
+}
+
+error_usage(){
+  local error=${1:-Undefined error}
+  echo &quot;$0:$LINE $error&quot;
+  usage
+  exit 1
+}
+
+if [[ $# -lt 1 ]] ;then error_usage &quot;Error! No project directory was specified.&quot;; fi
+
+HEXFILE=$1
+CLASSLIST=`otool -s __DATA __objc_classlist  $HEXFILE | grep &quot;^[0-9a-f]&quot; | awk '{print $3$2&quot;\n&quot;$5$4}'|sort`
+CLASSREFS=`otool -s __DATA __objc_classrefs  $HEXFILE | grep &quot;^[0-9a-f]&quot; | awk '{print $3$2&quot;\n&quot;$5$4}'|sort`
+
+nm $HEXFILE &gt;./temp_all_symbols.txt
+for classname in $CLASSLIST
+do
+    if [[ $CLASSREFS =~ $classname ]]; then 
+       :
+    else
+        grep $classname ./temp_all_symbols.txt
+    fi
+done
+rm ./temp_all_symbols.txt
+</code></pre>
+
+<h3 id="删除无用代码">删除无用代码</h3>
+
+<p>使用otool -v -s __DATA <strong>objc_selrefs 可执行文件名，逆向</strong>DATA.<strong>objc_selrefs段，提取可执行文件里引用到的方法名，
+使用LinkMap文件的</strong>TEXT.__text 提取当前可执行文件里所有objc类方法和实例方法，<br />
+两者的差集就是代码中没有直接使用到的方法，注意可以通过反射的方式来类方法和实例方法，还需要搜索代码中有没有通过方法名字来使用该方法。</p>
+
+<h3 id="精简sdk引用的第三方库">精简SDK引用的第三方库</h3>
+
+<p>我们的SDK引用了微信，QQ等第三方库来提供第三方登录的功能，为了SDK接入方的方便，我们直接将微信，QQ等公用的第三方库打包进我们的SDK了。虽然这样减少了我们SDK接入方的工作，但是也导致我们SDK文件大小暴涨。另外也带来了一些其他的问题，比如接入方需要更新微信，QQ SDK版本时就麻烦了。<br />
+我们SDK去掉微信，QQ SDK，让接入方自己引入，这样可以减小我们SDK的大小。但是最后所有的接入方生成的App还是会包含微信，QQ的SDK，然而，并不是所有的接入方都需要接入微信，QQ登录。这样的话，对于这部分的接入方，App就包含并不需要的微信和QQ的SDK代码。
+其实我们可以在我们的SDK中使用类反射的的方式来调用微信，QQ等第三方库的功能，这样对于没有接入微信登录功能的接入方，就没必要引入微信等第三方库。</p>
+
+<pre><code class="language-objectivec">+ (void)enableWeChat:(NSString *)appid class:(Class)cls {
+  [NSClassFromString(@&quot;WXApi&quot;) registerApp:appid];
+}
+</code></pre>
+
+<p>接入方如果需要引入微信登录功能，需要引入微信SDK，然后再添加这样的代码</p>
+
+<pre><code class="language-objectivec">[TestSDK enableWeChat:@&quot;1234567890&quot;  class:WXApi.class];
+</code></pre>
+    </div>
+
+    
+    
+
+    
+    
+
+    <footer class="post-footer">
+      
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/post/2018/sync_code_to_gitlab/">
+            <span class="next-text nav-default">如何实现两个Git仓库之间的同步</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/whf5566" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.wellphone.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+    <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    
+      2017 - 
+    2018
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Wellphone's blog @ <a href='https://pages.coding.me/' target='_blank'>Coding Pages</a></span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+</body>
+</html>
