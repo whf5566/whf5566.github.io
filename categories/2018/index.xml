@@ -7,10 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://www.netlify.com/&#39; target=&#39;_blank&#39;&gt;Netlify&lt;/a&gt;</copyright>
-    <lastBuildDate>Thu, 23 Aug 2018 09:34:52 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 18 Sep 2018 22:37:06 +0800</lastBuildDate>
     
 	<atom:link href="https://www.wellphone.me/categories/2018/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>如何清空所有Keychain及UserDefaults</title>
+      <link>https://www.wellphone.me/post/2018/how_to_delete_keychain_and_userdefaults/</link>
+      <pubDate>Tue, 18 Sep 2018 22:37:06 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/post/2018/how_to_delete_keychain_and_userdefaults/</guid>
+      <description>我们经常会使用Keychain和UserDefaults来存储iOS App数据。 Keychain是iOS设备中的一个安全的存储容器，可以用来</description>
+    </item>
+    
+    <item>
+      <title>如何精简iOS SDK文件大小</title>
+      <link>https://www.wellphone.me/post/2018/how_reduce_ios_sdk_file_size/</link>
+      <pubDate>Tue, 28 Aug 2018 19:47:44 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/post/2018/how_reduce_ios_sdk_file_size/</guid>
+      <description>我们的SDK项目随着各种功能的加入，SDK文件也越来越大。Objective-C的库最终会把用到的，没有用到类和方法都连接进App里，所以精</description>
+    </item>
     
     <item>
       <title>如何实现两个Git仓库之间的同步</title>
