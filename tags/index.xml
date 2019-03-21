@@ -67,15 +67,6 @@
     </item>
     
     <item>
-      <title>Config</title>
-      <link>https://www.wellphone.me/tags/config/</link>
-      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/tags/config/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>DEBUG</title>
       <link>https://www.wellphone.me/tags/debug/</link>
       <pubDate>Thu, 13 Jul 2017 09:42:08 +0800</pubDate>
@@ -85,74 +76,11 @@
     </item>
     
     <item>
-      <title>Dispatch_once</title>
-      <link>https://www.wellphone.me/tags/dispatch_once/</link>
-      <pubDate>Fri, 25 Aug 2017 16:52:20 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/tags/dispatch_once/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Filesize</title>
-      <link>https://www.wellphone.me/tags/filesize/</link>
-      <pubDate>Tue, 28 Aug 2018 19:47:44 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/tags/filesize/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Frame</title>
       <link>https://www.wellphone.me/tags/frame/</link>
       <pubDate>Thu, 07 Sep 2017 10:25:12 +0800</pubDate>
       
       <guid>https://www.wellphone.me/tags/frame/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Git</title>
-      <link>https://www.wellphone.me/tags/git/</link>
-      <pubDate>Thu, 23 Aug 2018 09:34:52 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/tags/git/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Git config</title>
-      <link>https://www.wellphone.me/tags/git-config/</link>
-      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/tags/git-config/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Gitlab</title>
-      <link>https://www.wellphone.me/tags/gitlab/</link>
-      <pubDate>Thu, 23 Aug 2018 09:34:52 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/tags/gitlab/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>IOS</title>
-      <link>https://www.wellphone.me/tags/ios/</link>
-      <pubDate>Sat, 08 Jul 2017 22:28:48 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/tags/ios/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>IOS SDK</title>
-      <link>https://www.wellphone.me/tags/ios-sdk/</link>
-      <pubDate>Tue, 28 Aug 2018 19:47:44 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/tags/ios-sdk/</guid>
       <description></description>
     </item>
     
@@ -202,24 +130,6 @@
     </item>
     
     <item>
-      <title>Sql</title>
-      <link>https://www.wellphone.me/tags/sql/</link>
-      <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/tags/sql/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Sqlite</title>
-      <link>https://www.wellphone.me/tags/sqlite/</link>
-      <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/tags/sqlite/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>TPLayout</title>
       <link>https://www.wellphone.me/tags/tplayout/</link>
       <pubDate>Thu, 07 Sep 2017 10:25:12 +0800</pubDate>
@@ -261,6 +171,96 @@
       <pubDate>Sat, 08 Jul 2017 22:28:48 +0800</pubDate>
       
       <guid>https://www.wellphone.me/tags/volume/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>config</title>
+      <link>https://www.wellphone.me/tags/config/</link>
+      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/config/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dispatch_once</title>
+      <link>https://www.wellphone.me/tags/dispatch_once/</link>
+      <pubDate>Fri, 25 Aug 2017 16:52:20 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/dispatch_once/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>filesize</title>
+      <link>https://www.wellphone.me/tags/filesize/</link>
+      <pubDate>Tue, 28 Aug 2018 19:47:44 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/filesize/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git</title>
+      <link>https://www.wellphone.me/tags/git/</link>
+      <pubDate>Thu, 23 Aug 2018 09:34:52 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git config</title>
+      <link>https://www.wellphone.me/tags/git-config/</link>
+      <pubDate>Tue, 14 Nov 2017 17:12:20 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/git-config/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gitlab</title>
+      <link>https://www.wellphone.me/tags/gitlab/</link>
+      <pubDate>Thu, 23 Aug 2018 09:34:52 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/gitlab/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iOS</title>
+      <link>https://www.wellphone.me/tags/ios/</link>
+      <pubDate>Sat, 08 Jul 2017 22:28:48 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/ios/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iOS SDK</title>
+      <link>https://www.wellphone.me/tags/ios-sdk/</link>
+      <pubDate>Tue, 28 Aug 2018 19:47:44 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/ios-sdk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sql</title>
+      <link>https://www.wellphone.me/tags/sql/</link>
+      <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/sql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sqlite</title>
+      <link>https://www.wellphone.me/tags/sqlite/</link>
+      <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/sqlite/</guid>
       <description></description>
     </item>
     

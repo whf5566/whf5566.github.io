@@ -16,59 +16,34 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Wellphone" />
-  <meta name="description" content="前言 Bugly和dispatch_once使用不当，会造成UI界面卡死。笔者在前段时间碰见了这样的一个卡死的情况，特意记录下来。 iOS开发者" />
-
-  <meta name="keywords" content="Wellphone, whf5566, iOS" />
+<meta name="author" content="Wellphone" /><meta name="description" content="前言 Bugly和dispatch_once使用不当，会造成UI界面卡死。笔者在前段时间碰见了这样的一个卡死的情况，特意记录下来。 iOS开发者" /><meta name="keywords" content="Wellphone, whf5566, iOS" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.46" />
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
 
 
 <link rel="canonical" href="https://www.wellphone.me/post/2017/bugly_dispatch_once_crash/" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/manifest.json">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
-
-
-
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
 
 
 <meta property="og:title" content="腾讯Bugly的巨坑：使用不当会造成UI界面卡死" />
 <meta property="og:description" content="前言 Bugly和dispatch_once使用不当，会造成UI界面卡死。笔者在前段时间碰见了这样的一个卡死的情况，特意记录下来。 iOS开发者" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.wellphone.me/post/2017/bugly_dispatch_once_crash/" />
-
-
-
 <meta property="article:published_time" content="2017-08-25T16:52:20&#43;08:00"/>
-
 <meta property="article:modified_time" content="2017-08-25T16:52:20&#43;08:00"/>
-
-
-
-
-
-
-
-
-
-
 
 <meta itemprop="name" content="腾讯Bugly的巨坑：使用不当会造成UI界面卡死">
 <meta itemprop="description" content="前言 Bugly和dispatch_once使用不当，会造成UI界面卡死。笔者在前段时间碰见了这样的一个卡死的情况，特意记录下来。 iOS开发者">
@@ -151,26 +126,17 @@
       <div class="post-meta">
         <span class="post-time"> 2017-08-25 </span>
         <div class="post-category">
-            
-              <a href="/categories/ios/"> iOS </a>
-            
-              <a href="/categories/2017/"> 2017 </a>
-            
-              <a href="/categories/trouble-shooting/"> trouble shooting </a>
-            
-              <a href="/categories/ui/"> UI </a>
-            
-          </div>
-        
+            <a href="/categories/ios/"> iOS </a>
+            <a href="/categories/2017/"> 2017 </a>
+            <a href="/categories/trouble-shooting/"> trouble shooting </a>
+            <a href="/categories/ui/"> UI </a>
+            </div>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
       </div>
     </header>
 
-    
-    
-<div class="post-toc" id="post-toc">
+    <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">Contents</h2>
-  
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
 <ul>
@@ -193,11 +159,6 @@
 </nav>
   </div>
 </div>
-
-    
-    
-
-    
     <div class="post-content">
       
 
@@ -400,7 +361,6 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
 
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -408,7 +368,10 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
-    <span class="item-content">2017-08-25</span>
+    <span class="item-content">
+        2017-08-25
+        
+    </span>
   </p>
   
   <p class="copyright-item">
@@ -416,31 +379,19 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank">CC BY-SA 4.0</a></span>
   </p>
 </div>
-
-    
-    
-
-    <footer class="post-footer">
+<footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/bugly/">Bugly</a>
-          
           <a href="/tags/dispatch_once/">dispatch_once</a>
-          
           <a href="/tags/%E6%AD%BB%E9%94%81/">死锁</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/post/2017/sqlite3_sql_autoincrement/">
+        <a class="prev" href="/post/2017/sqlite3_sql_autoincrement/">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">sqlite的自增长主键</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/post/2017/how_to_view_app_log_on_mac/">
+        <a class="next" href="/post/2017/how_to_view_app_log_on_mac/">
             <span class="next-text nav-default">iOS如何实时查看App运行日志</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -450,9 +401,6 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -475,15 +423,14 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
 
   <div class="busuanzi-footer">
     <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
-    <span class="division">|</span>
+      <span class="division">|</span>
     <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
   </div>
 
   <span class="copyright-year">
     &copy; 
-    
-      2017 - 
-    2018
+    2017 - 
+    2019
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
@@ -497,13 +444,10 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
 
 <script id="baidu_analytics">
   var _hmt = _hmt || [];

@@ -16,59 +16,34 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Wellphone" />
-  <meta name="description" content="我们经常会使用Keychain和UserDefaults来存储iOS App数据。 Keychain是iOS设备中的一个安全的存储容器，可以用来" />
-<meta name="keywords" content="Keychain, UserDefaults, Clear, delete" />
+<meta name="author" content="Wellphone" /><meta name="description" content="我们经常会使用Keychain和UserDefaults来存储iOS App数据。 Keychain是iOS设备中的一个安全的存储容器，可以用来" /><meta name="keywords" content="Keychain, UserDefaults, Clear, delete" />
 
 
 
 
 
 
-
-<meta name="generator" content="Hugo 0.46" />
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
 
 
 <link rel="canonical" href="https://www.wellphone.me/post/2018/how_to_delete_keychain_and_userdefaults/" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/manifest.json">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
-
-
-
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
 
 
 <meta property="og:title" content="如何清空所有Keychain及UserDefaults" />
 <meta property="og:description" content="我们经常会使用Keychain和UserDefaults来存储iOS App数据。 Keychain是iOS设备中的一个安全的存储容器，可以用来" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.wellphone.me/post/2018/how_to_delete_keychain_and_userdefaults/" />
-
-
-
 <meta property="article:published_time" content="2018-09-18T22:37:06&#43;08:00"/>
-
 <meta property="article:modified_time" content="2018-09-18T22:37:06&#43;08:00"/>
-
-
-
-
-
-
-
-
-
-
 
 <meta itemprop="name" content="如何清空所有Keychain及UserDefaults">
 <meta itemprop="description" content="我们经常会使用Keychain和UserDefaults来存储iOS App数据。 Keychain是iOS设备中的一个安全的存储容器，可以用来">
@@ -151,25 +126,15 @@
       <div class="post-meta">
         <span class="post-time"> 2018-09-18 </span>
         <div class="post-category">
-            
-              <a href="/categories/2018/"> 2018 </a>
-            
-          </div>
-        
+            <a href="/categories/2018/"> 2018 </a>
+            </div>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
       </div>
     </header>
 
     
-    
-
-    
-    
-
-    
     <div class="post-content">
-      <p>
-我们经常会使用Keychain和UserDefaults来存储iOS App数据。<br />
+      <p>我们经常会使用Keychain和UserDefaults来存储iOS App数据。<br />
 Keychain是iOS设备中的一个安全的存储容器，可以用来为应用保存敏感信息比如用户名，密码，网络密码，认证令牌。在删掉应用后，Keychain中的数据也会保留，用户再次安装的App还能从Keychain中读取到数据。所以Keychain中保存的数据一般都是比较重要，并且不希望卸载应用后就被删除的数据，比如用户的登录信息，wifi密码等。我们常用的OpenUDID库就是使用Keychain的这个特性来获取唯一性的设备ID，具体做法是，生成一个UUID，或者是获取广告标识符，然后存入Keychain，这样删除应用后再次安装应用也还能读取到上一次生成的设备标识符。<br />
 UserDefaults是iOS设备上一个Key-Value的存储容器，最终数据会以plist文件的形式存在文件夹Library/Preferences下面。默认的UserDefaults的文件名是bundle identitier加上.plist的后缀名。UserDefaulst会随App的删除而被清除（也可以同步到iCloud上），所以UserDefaults存储着一些可以再生的的数据。<br />
 大部分时候，我们都会使用Keychain或者UserDefaults来存储一些App登录用户相关的数据，或者服务器的token等，可以很方便的实现App启动自登录的功能；但是这个对于测试来说就比较头疼，尤其是存储到Keychain里的不能删除的数据，而要模仿一个全新的从没有安装过我们应用的App的时候，必须要清除掉保存的Keychain。</p>
@@ -239,25 +204,14 @@ UserDefaults是iOS设备上一个Key-Value的存储容器，最终数据会以pl
     </div>
 
     
-    
-
-    
-    
-
-    <footer class="post-footer">
+<footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/keychain/">Keychain</a>
-          
           <a href="/tags/userdefaults/">UserDefaults</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
         
-        
-          <a class="next" href="/post/2018/how_reduce_ios_sdk_file_size/">
+        <a class="next" href="/post/2018/how_reduce_ios_sdk_file_size/">
             <span class="next-text nav-default">如何精简iOS SDK文件大小</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -289,15 +243,14 @@ UserDefaults是iOS设备上一个Key-Value的存储容器，最终数据会以pl
 
   <div class="busuanzi-footer">
     <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
-    <span class="division">|</span>
+      <span class="division">|</span>
     <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
   </div>
 
   <span class="copyright-year">
     &copy; 
-    
-      2017 - 
-    2018
+    2017 - 
+    2019
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
@@ -311,13 +264,10 @@ UserDefaults是iOS设备上一个Key-Value的存储容器，最终数据会以pl
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
 
 <script id="baidu_analytics">
   var _hmt = _hmt || [];

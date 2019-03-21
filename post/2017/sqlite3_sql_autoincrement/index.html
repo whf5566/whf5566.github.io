@@ -16,59 +16,34 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Wellphone" />
-  <meta name="description" content="数据库表的自增长主键，就是每次插入一条数据后，主键的值自动增1。 sqlite数据库里有个rowid，这个值是自增长，使用的人需要注意了，如果" />
-
-  <meta name="keywords" content="Wellphone, whf5566, iOS" />
+<meta name="author" content="Wellphone" /><meta name="description" content="数据库表的自增长主键，就是每次插入一条数据后，主键的值自动增1。 sqlite数据库里有个rowid，这个值是自增长，使用的人需要注意了，如果" /><meta name="keywords" content="Wellphone, whf5566, iOS" />
 
 
 
 
 
 
-<meta name="generator" content="Hugo 0.46" />
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
 
 
 <link rel="canonical" href="https://www.wellphone.me/post/2017/sqlite3_sql_autoincrement/" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/manifest.json">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
-
-
-
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
 
 
 <meta property="og:title" content="sqlite的自增长主键" />
 <meta property="og:description" content="数据库表的自增长主键，就是每次插入一条数据后，主键的值自动增1。 sqlite数据库里有个rowid，这个值是自增长，使用的人需要注意了，如果" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.wellphone.me/post/2017/sqlite3_sql_autoincrement/" />
-
-
-
 <meta property="article:published_time" content="2017-08-28T16:42:12&#43;08:00"/>
-
 <meta property="article:modified_time" content="2017-08-28T16:42:12&#43;08:00"/>
-
-
-
-
-
-
-
-
-
-
 
 <meta itemprop="name" content="sqlite的自增长主键">
 <meta itemprop="description" content="数据库表的自增长主键，就是每次插入一条数据后，主键的值自动增1。 sqlite数据库里有个rowid，这个值是自增长，使用的人需要注意了，如果">
@@ -151,33 +126,20 @@
       <div class="post-meta">
         <span class="post-time"> 2017-08-28 </span>
         <div class="post-category">
-            
-              <a href="/categories/ios/"> iOS </a>
-            
-              <a href="/categories/2017/"> 2017 </a>
-            
-              <a href="/categories/sqlite/"> SQLITE </a>
-            
-          </div>
-        
+            <a href="/categories/ios/"> iOS </a>
+            <a href="/categories/2017/"> 2017 </a>
+            <a href="/categories/sqlite/"> SQLITE </a>
+            </div>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
       </div>
     </header>
 
-    
-    
-<div class="post-toc" id="post-toc">
+    <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">Contents</h2>
-  
   <div class="post-toc-content always-active">
     
   </div>
 </div>
-
-    
-    
-
-    
     <div class="post-content">
       <p>数据库表的自增长主键，就是每次插入一条数据后，主键的值自动增1。</p>
 
@@ -195,7 +157,6 @@ CREATE TABLE Message(msgIndex INTEGER, content TEXT ,PRIMARY KEY (msgIndex AUTOI
 
     </div>
 
-    
     <div class="post-copyright">
   <p class="copyright-item">
     <span class="item-title">Author</span>
@@ -203,7 +164,10 @@ CREATE TABLE Message(msgIndex INTEGER, content TEXT ,PRIMARY KEY (msgIndex AUTOI
   </p>
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
-    <span class="item-content">2017-08-28</span>
+    <span class="item-content">
+        2017-08-28
+        
+    </span>
   </p>
   
   <p class="copyright-item">
@@ -211,31 +175,19 @@ CREATE TABLE Message(msgIndex INTEGER, content TEXT ,PRIMARY KEY (msgIndex AUTOI
     <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank">CC BY-SA 4.0</a></span>
   </p>
 </div>
-
-    
-    
-
-    <footer class="post-footer">
+<footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/sql/">sql</a>
-          
           <a href="/tags/sqlite/">sqlite</a>
-          
           <a href="/tags/autoincrement/">AUTOINCREMENT</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/post/2017/tplayout_introduce/">
+        <a class="prev" href="/post/2017/tplayout_introduce/">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">iOS纯代码编写UI工具介绍：TPLayout</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/post/2017/bugly_dispatch_once_crash/">
+        <a class="next" href="/post/2017/bugly_dispatch_once_crash/">
             <span class="next-text nav-default">腾讯Bugly的巨坑：使用不当会造成UI界面卡死</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -245,9 +197,6 @@ CREATE TABLE Message(msgIndex INTEGER, content TEXT ,PRIMARY KEY (msgIndex AUTOI
   </article>
         </div>
         
-  
-
-  
 
       </div>
     </main>
@@ -270,15 +219,14 @@ CREATE TABLE Message(msgIndex INTEGER, content TEXT ,PRIMARY KEY (msgIndex AUTOI
 
   <div class="busuanzi-footer">
     <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
-    <span class="division">|</span>
+      <span class="division">|</span>
     <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
   </div>
 
   <span class="copyright-year">
     &copy; 
-    
-      2017 - 
-    2018
+    2017 - 
+    2019
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
@@ -292,13 +240,10 @@ CREATE TABLE Message(msgIndex INTEGER, content TEXT ,PRIMARY KEY (msgIndex AUTOI
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
 
 <script id="baidu_analytics">
   var _hmt = _hmt || [];

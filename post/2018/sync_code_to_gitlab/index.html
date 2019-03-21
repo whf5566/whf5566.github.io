@@ -16,59 +16,34 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="Wellphone" />
-  <meta name="description" content="最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、rev" />
-<meta name="keywords" content="git, gitlab, clone, sync" />
+<meta name="author" content="Wellphone" /><meta name="description" content="最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、rev" /><meta name="keywords" content="git, gitlab, clone, sync" />
 
 
 
 
 
 
-
-<meta name="generator" content="Hugo 0.46" />
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
 
 
 <link rel="canonical" href="https://www.wellphone.me/post/2018/sync_code_to_gitlab/" />
-
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/manifest.json">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 
-
-
-
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-<link href="/dist/even.min.css?v=3.2.0" rel="stylesheet">
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
-
-
 
 
 <meta property="og:title" content="如何实现两个Git仓库之间的同步" />
 <meta property="og:description" content="最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、rev" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.wellphone.me/post/2018/sync_code_to_gitlab/" />
-
-
-
 <meta property="article:published_time" content="2018-08-23T09:34:52&#43;08:00"/>
-
 <meta property="article:modified_time" content="2018-08-23T09:34:52&#43;08:00"/>
-
-
-
-
-
-
-
-
-
-
 
 <meta itemprop="name" content="如何实现两个Git仓库之间的同步">
 <meta itemprop="description" content="最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、rev">
@@ -151,22 +126,15 @@
       <div class="post-meta">
         <span class="post-time"> 2018-08-23 </span>
         <div class="post-category">
-            
-              <a href="/categories/git/"> git </a>
-            
-              <a href="/categories/2018/"> 2018 </a>
-            
-          </div>
-        
+            <a href="/categories/git/"> git </a>
+            <a href="/categories/2018/"> 2018 </a>
+            </div>
         <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
       </div>
     </header>
 
-    
-    
-<div class="post-toc" id="post-toc">
+    <div class="post-toc" id="post-toc">
   <h2 class="post-toc-title">Contents</h2>
-  
   <div class="post-toc-content always-active">
     <nav id="TableOfContents">
 <ul>
@@ -185,14 +153,8 @@
 </nav>
   </div>
 </div>
-
-    
-    
-
-    
     <div class="post-content">
-      <p>
-最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、review都在Gerrit服务器上，而集成发布是通过jenkins服务器完成的。现在新建了一个gitlab服务器，准备将代码迁移到gitlab作为备份。于是就有了这样的一个需求，如何在两个git仓库之间同步。在网上找到一些方法，大致是这三种思路，使用git clone命令同步、使用git的pull，push命令同步和使用第三方工具来同步。</p>
+      <p>最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、review都在Gerrit服务器上，而集成发布是通过jenkins服务器完成的。现在新建了一个gitlab服务器，准备将代码迁移到gitlab作为备份。于是就有了这样的一个需求，如何在两个git仓库之间同步。在网上找到一些方法，大致是这三种思路，使用git clone命令同步、使用git的pull，push命令同步和使用第三方工具来同步。</p>
 
 <h2 id="使用git-clone命令同步">使用git clone命令同步</h2>
 
@@ -292,30 +254,18 @@ git remote remove gitlab
     </div>
 
     
-    
-
-    
-    
-
-    <footer class="post-footer">
+<footer class="post-footer">
       <div class="post-tags">
-          
           <a href="/tags/git/">git</a>
-          
           <a href="/tags/gitlab/">gitlab</a>
-          
-        </div>
-
-      
+          </div>
       <nav class="post-nav">
-        
-          <a class="prev" href="/post/2018/how_reduce_ios_sdk_file_size/">
+        <a class="prev" href="/post/2018/how_reduce_ios_sdk_file_size/">
             <i class="iconfont icon-left"></i>
             <span class="prev-text nav-default">如何精简iOS SDK文件大小</span>
             <span class="prev-text nav-mobile">Prev</span>
           </a>
-        
-          <a class="next" href="/post/2018/javascript_features_and_pits/">
+        <a class="next" href="/post/2018/javascript_features_and_pits/">
             <span class="next-text nav-default">JavaScript的特性与坑</span>
             <span class="next-text nav-mobile">Next</span>
             <i class="iconfont icon-right"></i>
@@ -347,15 +297,14 @@ git remote remove gitlab
 
   <div class="busuanzi-footer">
     <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
-    <span class="division">|</span>
+      <span class="division">|</span>
     <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
   </div>
 
   <span class="copyright-year">
     &copy; 
-    
-      2017 - 
-    2018
+    2017 - 
+    2019
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
@@ -369,13 +318,10 @@ git remote remove gitlab
     </div>
   </div>
   
-<script src="/lib/highlight/highlight.pack.js?v=20171001"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
-
-
-<script type="text/javascript" src="/dist/even.min.js?v=3.2.0"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
 
 <script id="baidu_analytics">
   var _hmt = _hmt || [];

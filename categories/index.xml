@@ -49,24 +49,6 @@
     </item>
     
     <item>
-      <title>Git</title>
-      <link>https://www.wellphone.me/categories/git/</link>
-      <pubDate>Thu, 23 Aug 2018 09:34:52 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/categories/git/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>IOS</title>
-      <link>https://www.wellphone.me/categories/ios/</link>
-      <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/categories/ios/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>JavaScript</title>
       <link>https://www.wellphone.me/categories/javascript/</link>
       <pubDate>Mon, 19 Mar 2018 19:35:20 +0800</pubDate>
@@ -94,20 +76,38 @@
     </item>
     
     <item>
-      <title>Trouble shooting</title>
-      <link>https://www.wellphone.me/categories/trouble-shooting/</link>
-      <pubDate>Fri, 25 Aug 2017 16:52:20 +0800</pubDate>
-      
-      <guid>https://www.wellphone.me/categories/trouble-shooting/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>UI</title>
       <link>https://www.wellphone.me/categories/ui/</link>
       <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
       
       <guid>https://www.wellphone.me/categories/ui/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git</title>
+      <link>https://www.wellphone.me/categories/git/</link>
+      <pubDate>Thu, 23 Aug 2018 09:34:52 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/categories/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iOS</title>
+      <link>https://www.wellphone.me/categories/ios/</link>
+      <pubDate>Fri, 02 Mar 2018 19:05:20 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/categories/ios/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>trouble shooting</title>
+      <link>https://www.wellphone.me/categories/trouble-shooting/</link>
+      <pubDate>Fri, 25 Aug 2017 16:52:20 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/categories/trouble-shooting/</guid>
       <description></description>
     </item>
     
