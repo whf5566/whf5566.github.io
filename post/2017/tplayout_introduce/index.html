@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-09-07T10:25:12&#43;08:00" />
 <meta itemprop="dateModified" content="2017-09-07T10:25:12&#43;08:00" />
-<meta itemprop="wordCount" content="1943">
+<meta itemprop="wordCount" content="2007">
 
 
 
@@ -171,25 +171,40 @@
 <p>对于<a href="https://github.com/SnapKit/Masonry">Masonry</a>这个库大家应该都比较熟悉，就是它让大家不用去写苹果反人类的AutoLayout布局的API接口，帮助苹果普及了AutoLayout的布局方式。<br />
 对于<a href="https://github.com/PureLayout/PureLayout">PureLayout</a>这个库相信应该也有大部分都知道，它将AutoLayout的接口进行了封装，也极大的方便开发者使用AutoLayout进行UI布局。<br />
 但是在使用它们的过程中，或多或少有些不方便地方。比如Masonry：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="n">UIEdgeInsets</span> <span class="n">padding</span> <span class="o">=</span> <span class="n">UIEdgeInsetsMake</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
 
-<pre><code class="language-objectivec">UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);
-
-[view1 mas_makeConstraints:^(MASConstraintMaker *make) {
-    make.top.equalTo(superview.mas_top).with.offset(padding.top); //with is an optional semantic filler
-    make.left.equalTo(superview.mas_left).with.offset(padding.left);
-    make.bottom.equalTo(superview.mas_bottom).with.offset(-padding.bottom);
-    make.right.equalTo(superview.mas_right).with.offset(-padding.right);
-}];
-</code></pre>
-
+<span class="p">[</span><span class="n">view1</span> <span class="nl">mas_makeConstraints</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">MASConstraintMaker</span> <span class="o">*</span><span class="n">make</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">make</span><span class="p">.</span><span class="n">top</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="n">superview</span><span class="p">.</span><span class="n">mas_top</span><span class="p">).</span><span class="n">with</span><span class="p">.</span><span class="n">offset</span><span class="p">(</span><span class="n">padding</span><span class="p">.</span><span class="n">top</span><span class="p">);</span> <span class="c1">//with is an optional semantic filler
+</span><span class="c1"></span>    <span class="n">make</span><span class="p">.</span><span class="n">left</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="n">superview</span><span class="p">.</span><span class="n">mas_left</span><span class="p">).</span><span class="n">with</span><span class="p">.</span><span class="n">offset</span><span class="p">(</span><span class="n">padding</span><span class="p">.</span><span class="n">left</span><span class="p">);</span>
+    <span class="n">make</span><span class="p">.</span><span class="n">bottom</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="n">superview</span><span class="p">.</span><span class="n">mas_bottom</span><span class="p">).</span><span class="n">with</span><span class="p">.</span><span class="n">offset</span><span class="p">(</span><span class="o">-</span><span class="n">padding</span><span class="p">.</span><span class="n">bottom</span><span class="p">);</span>
+    <span class="n">make</span><span class="p">.</span><span class="n">right</span><span class="p">.</span><span class="n">equalTo</span><span class="p">(</span><span class="n">superview</span><span class="p">.</span><span class="n">mas_right</span><span class="p">).</span><span class="n">with</span><span class="p">.</span><span class="n">offset</span><span class="p">(</span><span class="o">-</span><span class="n">padding</span><span class="p">.</span><span class="n">right</span><span class="p">);</span>
+<span class="p">}];</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>以上代码中，每条make开头语句实际上是一个约束；但是我们怎么获取到生成的约束的NSLayoutConstraint对象呢？完全没有办法，除非自己去遍历view的constraints属性。<br />
 mas_makeConstraints，mas_updateConstraints和mas_remakeConstraints三个方法把NSLayoutConstraint对象全隐藏起来了，开发者不能获取到每一个约束生成的NSLayoutConstraint对象。笔者觉得这个是Masonry库对开发者唯一不友好的地方。</p>
 
 <p>再比如PureLayout：</p>
-
-<pre><code class="language-objectivec">NSLayoutConstraint *constraint =  [view autoPinEdge:ALEdgeLeft toEdge:ALEdgeLeft ofView:otherView withOffset:10];
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="n">NSLayoutConstraint</span> <span class="o">*</span><span class="n">constraint</span> <span class="o">=</span>  <span class="p">[</span><span class="n">view</span> <span class="nl">autoPinEdge</span><span class="p">:</span><span class="n">ALEdgeLeft</span> <span class="nl">toEdge</span><span class="p">:</span><span class="n">ALEdgeLeft</span> <span class="nl">ofView</span><span class="p">:</span><span class="n">otherView</span> <span class="nl">withOffset</span><span class="p">:</span><span class="mi">10</span><span class="p">];</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>基本上每个语句返回NSLayoutConstraint对象，但是相对于Masonry来说少了链式语句的可读性。</p>
 
 <p>TPLayout库结合了两者的优点：每条链式语句返回一个NSLayoutConstraint对象或者NSLayoutConstraint对象的数组。<br />
@@ -205,70 +220,129 @@ mas_makeConstraints，mas_updateConstraints和mas_remakeConstraints三个方法�
 <p>详细的<a href="https://github.com/whf5566/TPLayout/tree/master/Examples">Demo</a></p>
 
 <h3 id="使用frame构建ui">使用Frame构建UI</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="c1">// 设置大小
+</span><span class="c1"></span><span class="n">viewA</span><span class="p">.</span><span class="n">tp_size</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>  
 
-<pre><code class="language-objectivec">// 设置大小
-viewA.tp_size = CGSizeMake(100, 100);  
+<span class="c1">// 设置左上边距
+</span><span class="c1"></span><span class="n">viewA</span><span class="p">.</span><span class="n">tp_top</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">viewA</span><span class="p">.</span><span class="n">tp_left</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>  
 
-// 设置左上边距
-viewA.tp_top = 10;
-viewA.tp_left = 10;  
+<span class="c1">// 设置左上边距时，保持右下边距并自动调整view的size大小
+</span><span class="c1"></span><span class="n">viewB</span><span class="p">.</span><span class="n">tp_topResize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">viewB</span><span class="p">.</span><span class="n">tp_leftResize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>  
 
-// 设置左上边距时，保持右下边距并自动调整view的size大小
-viewB.tp_topResize = 10;
-viewB.tp_leftResize = 10;  
+<span class="c1">// 设置左右边距距其他view的边距10px.
+</span><span class="c1"></span><span class="p">[</span><span class="n">viewC</span> <span class="nl">leftToViewLeft</span><span class="p">:</span><span class="n">otherView</span> <span class="nl">offset</span><span class="p">:</span><span class="mi">10</span> <span class="nl">fixedSize</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
+<span class="p">[</span><span class="n">viewC</span> <span class="nl">rightToViewRight</span><span class="p">:</span><span class="n">otherView</span> <span class="nl">offset</span><span class="p">:</span><span class="o">-</span><span class="mi">10</span> <span class="nl">fixedSize</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
 
-// 设置左右边距距其他view的边距10px.
-[viewC leftToViewLeft:otherView offset:10 fixedSize:NO];
-[viewC rightToViewRight:otherView offset:-10 fixedSize:NO];
+<span class="c1">// 在其他的view中居中
+</span><span class="c1"></span><span class="p">[</span><span class="n">viewD</span> <span class="nl">centerInView</span><span class="p">:</span><span class="n">otherView</span><span class="p">];</span> <span class="c1">// or
+</span><span class="c1"></span><span class="p">[</span><span class="n">viewD</span> <span class="nl">centerToView</span><span class="p">:</span><span class="n">otherView</span> <span class="nl">offsetSize</span><span class="p">:</span><span class="n">CGSizeZero</span><span class="p">];</span>
 
-// 在其他的view中居中
-[viewD centerInView:otherView]; // or
-[viewD centerToView:otherView offsetSize:CGSizeZero];
+<span class="c1">// 距离其他View中心点左边10px
+</span><span class="c1"></span><span class="p">[</span><span class="n">viewE</span> <span class="nl">centerXToView</span><span class="p">:</span><span class="n">otherView</span> <span class="nl">offset</span><span class="p">:</span><span class="mi">10</span><span class="p">];</span> <span class="c1">// or
+</span><span class="c1"></span><span class="p">[</span><span class="n">viewE</span> <span class="nl">centerToView</span><span class="p">:</span><span class="n">otherView</span> <span class="nl">offsetSize</span><span class="p">:</span><span class="n">CGSizeMake</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">)];</span>
 
-// 距离其他View中心点左边10px
-[viewE centerXToView:otherView offset:10]; // or
-[viewE centerToView:otherView offsetSize:CGSizeMake(10,0)];
-
-// 边距距其他view10px
-[viewF edgesToView:otherView offsetEdge:UIEdgeInsetsMake(10, 10, 10, 10)];
-
-</code></pre>
-
+<span class="c1">// 边距距其他view10px
+</span><span class="c1"></span><span class="p">[</span><span class="n">viewF</span> <span class="nl">edgesToView</span><span class="p">:</span><span class="n">otherView</span> <span class="nl">offsetEdge</span><span class="p">:</span><span class="n">UIEdgeInsetsMake</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)];</span></code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="使用autolayout构建ui">使用AutoLayout构建UI</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="c1">// 设置约束
+</span><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">al_top</span><span class="p">.</span><span class="n">greaterOrEqual</span><span class="p">(</span><span class="n">otherView</span><span class="p">.</span><span class="n">al_top</span><span class="p">).</span><span class="n">offset</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">view</span><span class="p">.</span><span class="n">al_left</span><span class="p">.</span><span class="n">lessOrEqual</span><span class="p">(</span><span class="n">otherView</span><span class="p">.</span><span class="n">al_left</span><span class="p">).</span><span class="n">offset</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">view</span><span class="p">.</span><span class="n">al_bottom</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="n">otherview</span><span class="p">.</span><span class="n">al_top</span><span class="p">).</span><span class="n">offset</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">);</span>
+<span class="n">view</span><span class="p">.</span><span class="n">al_height</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+<span class="n">view</span><span class="p">.</span><span class="n">al_width</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="mi">@100</span><span class="p">);</span>
 
-<pre><code class="language-objectivec">// 设置约束
-view.al_top.greaterOrEqual(otherView.al_top).offset(10);
-view.al_left.lessOrEqual(otherView.al_left).offset(10);
-view.al_bottom.equal(otherview.al_top).offset(-10);
-view.al_height.equal(100);
-view.al_width.equal(@100);
+<span class="c1">// 设置复合属性的约束
+</span><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">al_size</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="n">CGSizeMake</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">));</span>
+<span class="n">view</span><span class="p">.</span><span class="n">al_center</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="n">otherView</span><span class="p">).</span><span class="n">centerOffset</span><span class="p">(</span><span class="n">CGPointMake</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">));</span>
+<span class="n">view</span><span class="p">.</span><span class="n">al_edges</span><span class="p">.</span><span class="n">equal</span><span class="p">(</span><span class="n">superview</span><span class="p">).</span><span class="n">insets</span><span class="p">(</span><span class="n">UIEdgeInsetsMake</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
 
-// 设置复合属性的约束
-view.al_size.equal(CGSizeMake(100,100));
-view.al_center.equal(otherView).centerOffset(CGPointMake(10,10));
-view.al_edges.equal(superview).insets(UIEdgeInsetsMake(10, 10, 10, 10));
+<span class="c1">// 设置约束优先级
+</span><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">al_width</span><span class="p">.</span><span class="n">priority</span><span class="p">(</span><span class="mi">750</span><span class="p">).</span><span class="n">equal</span><span class="p">(</span><span class="l">@(</span><span class="mi">10</span><span class="l">)</span><span class="p">);</span>
 
-// 设置约束优先级
-view.al_width.priority(750).equal(@(10));
+<span class="c1">// 设置约束multiplier
+</span><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">al_width</span><span class="p">.</span><span class="n">multiplier</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="n">equal</span><span class="p">(</span><span class="n">otherView</span><span class="p">.</span><span class="n">al_width</span><span class="p">);</span>
 
-// 设置约束multiplier
-view.al_width.multiplier(3).equal(otherView.al_width);
+<span class="c1">// 更新约束
+</span><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">al_width</span><span class="p">.</span><span class="n">update</span><span class="p">().</span><span class="n">lessOrEqual</span><span class="p">(</span><span class="n">superview</span><span class="p">);</span>
+<span class="c1">// or use macros
+</span><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">al_update</span><span class="p">(</span><span class="n">al_width</span><span class="p">).</span><span class="n">lessOrEqual</span><span class="p">(</span><span class="n">superview</span><span class="p">);</span>
 
-// 更新约束
-view.al_width.update().lessOrEqual(superview);
-// or use macros
-view.al_update(al_width).lessOrEqual(superview);
+<span class="c1">// 重置约束
+</span><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">al_width</span><span class="p">.</span><span class="n">reset</span><span class="p">().</span><span class="n">lessOrEqual</span><span class="p">(</span><span class="n">superview</span><span class="p">);</span>
+<span class="c1">// or use macros
+</span><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">al_reset</span><span class="p">(</span><span class="n">al_width</span><span class="p">).</span><span class="n">lessOrEqual</span><span class="p">(</span><span class="n">superview</span><span class="p">);</span>
 
-// 重置约束
-view.al_width.reset().lessOrEqual(superview);
-// or use macros
-view.al_reset(al_width).lessOrEqual(superview);
-
-// 重置所有约束
-view.al_resetAll();
-
-</code></pre>
-
+<span class="c1">// 重置所有约束
+</span><span class="c1"></span><span class="n">view</span><span class="p">.</span><span class="n">al_resetAll</span><span class="p">();</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>可以看到，链式语句的写法和Masonry基本相同（实际上也是借鉴的Masonry库）；每条语句生成一个NSLayoutConstraint对象，view的复合属性size，center，edge等，这些语句会生成一个NSLayoutConstraint对象的数组。</p>
 
 <h2 id="tplayout的性能">TPLayout的性能</h2>

@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-07-08T22:28:48&#43;08:00" />
 <meta itemprop="dateModified" content="2017-07-08T22:28:48&#43;08:00" />
-<meta itemprop="wordCount" content="935">
+<meta itemprop="wordCount" content="949">
 
 
 
@@ -156,26 +156,45 @@
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;我们的App有这样一个Feature，用户通过音量键调节到最大音量时，会弹出一个Toast，提示
 用户当前音量已经最大了，继续按音量上键可以设置为超大音量模式（通过调节音频文件的音量）。刚开始，我们在App中是监听名称为“AVSystemController_SystemVolumeDidChangeNotification”的系统通知来获知用户通过侧边音量键调节手机音量的事件。</p>
-
-<pre><code class="language-objectivec">    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onVolumeChanged:) name:@&quot;AVSystemController_SystemVolumeDidChangeNotification&quot; object:nil];
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec">    <span class="p">[[</span><span class="n">NSNotificationCenter</span> <span class="n">defaultCenter</span><span class="p">]</span> <span class="nl">addObserver</span><span class="p">:</span><span class="nb">self</span> <span class="nl">selector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">onVolumeChanged</span><span class="p">:)</span> <span class="nl">name</span><span class="p">:</span><span class="s">@&#34;AVSystemController_SystemVolumeDidChangeNotification&#34;</span> <span class="nl">object</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;处理该通知的方法如下：</p>
-
-<pre><code class="language-objectivec">- (void)onVolumeChanged:(NSNotification *)notification {
-    if ([[notification.userInfo objectForKey:@&quot;AVSystemController_AudioCategoryNotificationParameter&quot;] isEqualToString:@&quot;Audio/Video&quot;]) {
-        if ([[notification.userInfo objectForKey:@&quot;AVSystemController_AudioVolumeChangeReasonNotificationParameter&quot;] isEqualToString:@&quot;ExplicitVolumeChange&quot;]) {
-            CGFloat volume = [[notification.userInfo objectForKey:@&quot;AVSystemController_AudioVolumeNotificationParameter&quot;] floatValue];
-            if (volume != MAX_VOLUME) {
-                // todo
-            } else {
-                // todo
-            }
-        }
-    }
-}
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">onVolumeChanged:</span><span class="p">(</span><span class="n">NSNotification</span> <span class="o">*</span><span class="p">)</span><span class="nv">notification</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">([[</span><span class="n">notification</span><span class="p">.</span><span class="n">userInfo</span> <span class="nl">objectForKey</span><span class="p">:</span><span class="s">@&#34;AVSystemController_AudioCategoryNotificationParameter&#34;</span><span class="p">]</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&#34;Audio/Video&#34;</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">([[</span><span class="n">notification</span><span class="p">.</span><span class="n">userInfo</span> <span class="nl">objectForKey</span><span class="p">:</span><span class="s">@&#34;AVSystemController_AudioVolumeChangeReasonNotificationParameter&#34;</span><span class="p">]</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&#34;ExplicitVolumeChange&#34;</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">CGFloat</span> <span class="n">volume</span> <span class="o">=</span> <span class="p">[[</span><span class="n">notification</span><span class="p">.</span><span class="n">userInfo</span> <span class="nl">objectForKey</span><span class="p">:</span><span class="s">@&#34;AVSystemController_AudioVolumeNotificationParameter&#34;</span><span class="p">]</span> <span class="n">floatValue</span><span class="p">];</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">volume</span> <span class="o">!=</span> <span class="n">MAX_VOLUME</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// todo
+</span><span class="c1"></span>            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="c1">// todo
+</span><span class="c1"></span>            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
 <h2 id="发现问题">发现问题</h2>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;这段代码在我们这个App中工作的一直很好。但是最近一段时间，测试人员编译版本，有时音量调节到最大后，没有弹出Toast提示，而有时又会弹出来。经调试，发现有时候能监听到“AVSystemController_SystemVolumeDidChangeNotification”系统通知，有时候又没有，很飘忽不定。一时间大家都不知道怎么回事，很是头疼。因为这个代码在之前发布出去的正式版本中，从来没有出现过这样的问题。</p>
@@ -183,10 +202,14 @@
 <h2 id="定位问题">定位问题</h2>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;以前版本没有，而现在的版本有，说明肯定是改出来的问题。只有checkout到之前的commit，逐一测试找出是哪次提交造成这样的问题。但是这样折腾了好久也没能定位到是哪次提交造成的。最后，折腾了一天，我们这边的一位美女同事Sharon最后解决了这个问题，她在stackoverflow上找到了类似的问题，发现是我们删除之前通过耳机线控App的一个Feature时，把这段代码删掉了造成的。而这段代码是开始监听远程控制事件。</p>
-
-<pre><code class="language-objectivec">[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="n">beginReceivingRemoteControlEvents</span><span class="p">];</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;Fuck！NSNotificationCenter监听的通知“AVSystemController_SystemVolumeDidChangeNotification”居然和RemoteControlEvents有关系，是因为耳机线上也有音量调节按键的原因？？？</p>
 
     </div>

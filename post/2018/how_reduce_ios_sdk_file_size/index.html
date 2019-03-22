@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2018-08-28T19:47:44&#43;08:00" />
 <meta itemprop="dateModified" content="2018-08-28T19:47:44&#43;08:00" />
-<meta itemprop="wordCount" content="2734">
+<meta itemprop="wordCount" content="2845">
 
 
 
@@ -198,93 +198,171 @@
 <h3 id="查看sdk的架构信息">查看SDK的架构信息</h3>
 
 <p>查看SDK文件的架构信息可以使用 file命令 和 lipo命令</p>
-
-<pre><code class="language-shell">file TestSDK.framework/TestSDK
-TestSDK.framework/TestSDK: Mach-O universal binary with 2 architectures: [arm_v7:current ar archive] [arm64]
-TestSDK.framework/TestSDK (for architecture armv7): current ar archive
-TestSDK.framework/TestSDK (for architecture arm64): current ar archive
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">file TestSDK.framework/TestSDK
+TestSDK.framework/TestSDK: Mach-O universal binary with <span class="m">2</span> architectures: <span class="o">[</span>arm_v7:current ar archive<span class="o">]</span> <span class="o">[</span>arm64<span class="o">]</span>
+TestSDK.framework/TestSDK <span class="o">(</span><span class="k">for</span> architecture armv7<span class="o">)</span>: current ar archive
+TestSDK.framework/TestSDK <span class="o">(</span><span class="k">for</span> architecture arm64<span class="o">)</span>: current ar archive</code></pre></td></tr></table>
+</div>
+</div>
 <p>可以看到TestSDK.framework包含armv7和arm64两种cpu架构的archive文件。下面是lipo命令的使用：</p>
-
-<pre><code class="language-shell">lipo -info TestSDK.framework/TestSDK
-Architectures in the fat file: TestSDK.framework/TestSDK are: armv7 arm64
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">lipo -info TestSDK.framework/TestSDK
+Architectures in the fat file: TestSDK.framework/TestSDK are: armv7 arm64</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="导出-a文件">导出.a文件</h3>
 
 <p>在SDK文件中包含多种cpu架构的二进制文件，我们可以使用lipo命令导出。</p>
-
-<pre><code class="language-shell">#导出armv7架构的archive文件
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1">#导出armv7架构的archive文件</span>
 lipo -thin armv7 -output TestSDK_armv7.a  TestSDK.framework/TestSDK
-#导出arm64架构的archive文件
-lipo -thin arm64 -output TestSDK_arm64.a  TestSDK.framework/TestSDK
-</code></pre>
-
+<span class="c1">#导出arm64架构的archive文件</span>
+lipo -thin arm64 -output TestSDK_arm64.a  TestSDK.framework/TestSDK</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="查看-a文件中-o文件大小">查看.a文件中.o文件大小</h3>
 
 <p>ar命令是建立或修改archive文件，或是从archive文件中抽取文件的命令。</p>
-
-<pre><code class="language-shell">ar -t -v TestSDK_armv7.a
-rw-r--r--     501/20       416800 Jul 17 15:09 2018 __.SYMDEF
-rw-r--r--     501/20        81488 Jul 17 15:09 2018 ImageViewController.o
-rw-r--r--     501/20        58616 Jul 17 15:09 2018 PasswordViewController.o
-......
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ar -t -v TestSDK_armv7.a
+rw-r--r--     <span class="m">501</span>/20       <span class="m">416800</span> Jul <span class="m">17</span> <span class="m">15</span>:09 <span class="m">2018</span> __.SYMDEF
+rw-r--r--     <span class="m">501</span>/20        <span class="m">81488</span> Jul <span class="m">17</span> <span class="m">15</span>:09 <span class="m">2018</span> ImageViewController.o
+rw-r--r--     <span class="m">501</span>/20        <span class="m">58616</span> Jul <span class="m">17</span> <span class="m">15</span>:09 <span class="m">2018</span> PasswordViewController.o
+......</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="查看-o文件中代码段-数据段等详细的大小信息">查看.o文件中代码段、数据段等详细的大小信息</h3>
-
-<pre><code class="language-shell">size TestSDK.framework/TestSDK
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">size TestSDK.framework/TestSDK
 __TEXT  __DATA  __OBJC  others  dec     hex
-15479   3040    0       28683   47202   b862    TestSDK.framework/TestSDK(ImageViewController.o) (for architecture armv7)
-12043   2132    0       18722   32897   8081    TestSDK.framework/TestSDK(PasswordViewController.o) (for architecture armv7)
+<span class="m">15479</span>   <span class="m">3040</span>    <span class="m">0</span>       <span class="m">28683</span>   <span class="m">47202</span>   b862    TestSDK.framework/TestSDK<span class="o">(</span>ImageViewController.o<span class="o">)</span> <span class="o">(</span><span class="k">for</span> architecture armv7<span class="o">)</span>
+<span class="m">12043</span>   <span class="m">2132</span>    <span class="m">0</span>       <span class="m">18722</span>   <span class="m">32897</span>   <span class="m">8081</span>    TestSDK.framework/TestSDK<span class="o">(</span>PasswordViewController.o<span class="o">)</span> <span class="o">(</span><span class="k">for</span> architecture armv7<span class="o">)</span>
 ......
-16696   5772    0       32674   55142   d766    TestSDK.framework/TestSDK(ImageViewController.o) (for architecture arm64)
-13020   4092    0       20627   37739   936b    TestSDK.framework/TestSDK(PasswordViewController.o) (for architecture arm64)
-......
-</code></pre>
-
+<span class="m">16696</span>   <span class="m">5772</span>    <span class="m">0</span>       <span class="m">32674</span>   <span class="m">55142</span>   d766    TestSDK.framework/TestSDK<span class="o">(</span>ImageViewController.o<span class="o">)</span> <span class="o">(</span><span class="k">for</span> architecture arm64<span class="o">)</span>
+<span class="m">13020</span>   <span class="m">4092</span>    <span class="m">0</span>       <span class="m">20627</span>   <span class="m">37739</span>   936b    TestSDK.framework/TestSDK<span class="o">(</span>PasswordViewController.o<span class="o">)</span> <span class="o">(</span><span class="k">for</span> architecture arm64<span class="o">)</span>
+......</code></pre></td></tr></table>
+</div>
+</div>
 <p>使用size -m 可以显示更多的Mach-O segments 和 sections大小信息</p>
-
-<pre><code class="language-shell">size  -m TestSDK.framework/TestSDK
-Segment : 47207
-        Section (__TEXT, __text): 10072
-        Section (__TEXT, __gcc_except_tab): 8
-        Section (__DATA, __objc_data): 40
-        Section (__DATA, __objc_superrefs): 4
-        Section (__TEXT, __objc_methname): 2395
-        Section (__DATA, __objc_selrefs): 424
-        Section (__TEXT, __cstring): 2274
-        Section (__DATA, __cfstring): 320
-        Section (__DATA, __objc_classrefs): 80
-        Section (__DATA, __objc_ivar): 44
-        Section (__TEXT, __ustring): 102
-        Section (__DATA, __const): 180
-        Section (__TEXT, __objc_classname): 122
-        Section (__TEXT, __objc_methtype): 506
-        Section (__DATA, __objc_const): 1648
-        Section (__DATA, __data): 260
-        Section (__DATA, __objc_protolist): 20
-        Section (__DATA, __objc_classlist): 4
-        Section (__LLVM, __bitcode): 1
-        Section (__LLVM, __cmdline): 1
-        Section (__DATA, __objc_imageinfo): 8
-        Section (__DWARF, __debug_str): 8277
-        Section (__DWARF, __debug_loc): 2969
-        Section (__DWARF, __debug_abbrev): 807
-        Section (__DWARF, __debug_info): 8129
-        Section (__DWARF, __debug_ranges): 0
-        Section (__DWARF, __debug_macinfo): 1
-        Section (__DWARF, __apple_names): 2852
-        Section (__DWARF, __apple_objc): 252
-        Section (__DWARF, __apple_namespac): 36
-        Section (__DWARF, __apple_types): 1351
-        Section (__DATA, __nl_symbol_ptr): 8
-        Section (__DWARF, __debug_line): 4007
-        total 47202
-total 47207
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">size  -m TestSDK.framework/TestSDK
+Segment : <span class="m">47207</span>
+        Section <span class="o">(</span>__TEXT, __text<span class="o">)</span>: <span class="m">10072</span>
+        Section <span class="o">(</span>__TEXT, __gcc_except_tab<span class="o">)</span>: <span class="m">8</span>
+        Section <span class="o">(</span>__DATA, __objc_data<span class="o">)</span>: <span class="m">40</span>
+        Section <span class="o">(</span>__DATA, __objc_superrefs<span class="o">)</span>: <span class="m">4</span>
+        Section <span class="o">(</span>__TEXT, __objc_methname<span class="o">)</span>: <span class="m">2395</span>
+        Section <span class="o">(</span>__DATA, __objc_selrefs<span class="o">)</span>: <span class="m">424</span>
+        Section <span class="o">(</span>__TEXT, __cstring<span class="o">)</span>: <span class="m">2274</span>
+        Section <span class="o">(</span>__DATA, __cfstring<span class="o">)</span>: <span class="m">320</span>
+        Section <span class="o">(</span>__DATA, __objc_classrefs<span class="o">)</span>: <span class="m">80</span>
+        Section <span class="o">(</span>__DATA, __objc_ivar<span class="o">)</span>: <span class="m">44</span>
+        Section <span class="o">(</span>__TEXT, __ustring<span class="o">)</span>: <span class="m">102</span>
+        Section <span class="o">(</span>__DATA, __const<span class="o">)</span>: <span class="m">180</span>
+        Section <span class="o">(</span>__TEXT, __objc_classname<span class="o">)</span>: <span class="m">122</span>
+        Section <span class="o">(</span>__TEXT, __objc_methtype<span class="o">)</span>: <span class="m">506</span>
+        Section <span class="o">(</span>__DATA, __objc_const<span class="o">)</span>: <span class="m">1648</span>
+        Section <span class="o">(</span>__DATA, __data<span class="o">)</span>: <span class="m">260</span>
+        Section <span class="o">(</span>__DATA, __objc_protolist<span class="o">)</span>: <span class="m">20</span>
+        Section <span class="o">(</span>__DATA, __objc_classlist<span class="o">)</span>: <span class="m">4</span>
+        Section <span class="o">(</span>__LLVM, __bitcode<span class="o">)</span>: <span class="m">1</span>
+        Section <span class="o">(</span>__LLVM, __cmdline<span class="o">)</span>: <span class="m">1</span>
+        Section <span class="o">(</span>__DATA, __objc_imageinfo<span class="o">)</span>: <span class="m">8</span>
+        Section <span class="o">(</span>__DWARF, __debug_str<span class="o">)</span>: <span class="m">8277</span>
+        Section <span class="o">(</span>__DWARF, __debug_loc<span class="o">)</span>: <span class="m">2969</span>
+        Section <span class="o">(</span>__DWARF, __debug_abbrev<span class="o">)</span>: <span class="m">807</span>
+        Section <span class="o">(</span>__DWARF, __debug_info<span class="o">)</span>: <span class="m">8129</span>
+        Section <span class="o">(</span>__DWARF, __debug_ranges<span class="o">)</span>: <span class="m">0</span>
+        Section <span class="o">(</span>__DWARF, __debug_macinfo<span class="o">)</span>: <span class="m">1</span>
+        Section <span class="o">(</span>__DWARF, __apple_names<span class="o">)</span>: <span class="m">2852</span>
+        Section <span class="o">(</span>__DWARF, __apple_objc<span class="o">)</span>: <span class="m">252</span>
+        Section <span class="o">(</span>__DWARF, __apple_namespac<span class="o">)</span>: <span class="m">36</span>
+        Section <span class="o">(</span>__DWARF, __apple_types<span class="o">)</span>: <span class="m">1351</span>
+        Section <span class="o">(</span>__DATA, __nl_symbol_ptr<span class="o">)</span>: <span class="m">8</span>
+        Section <span class="o">(</span>__DWARF, __debug_line<span class="o">)</span>: <span class="m">4007</span>
+        total <span class="m">47202</span>
+total <span class="m">47207</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>可以看出size命令是可以直接显示Fat binary文件中各个cpu架构文件信息的，但ar命令不能操作Fat binary文件，只能是某个cpu架构下的archive文件。</p>
 
 <h2 id="如何比较sdk大小变化">如何比较SDK大小变化</h2>
@@ -294,37 +372,64 @@ total 47207
 
 <ol>
 <li><p>使用“lipo -info”命令获取SDK中包含的cpu架构</p>
-
-<pre><code class="language-shell">lipo -info SDKFilePath | sed -En -e &quot;s/^(Non-|Architectures in the )fat file: .+( is architecture| are): (.*)$/\\3/p&quot;
-</code></pre></li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">lipo -info SDKFilePath <span class="p">|</span> sed -En -e <span class="s2">&#34;s/^(Non-|Architectures in the )fat file: .+( is architecture| are): (.*)</span>$<span class="s2">/\\3/p&#34;</span></code></pre></td></tr></table>
+</div>
+</div></li>
 
 <li><p>使用“lipo -thin”命令抽取出各个cpu架构的.a文件</p>
-
-<pre><code class="language-shell">lipo -thin arm64 SDKFilePath -output SDKFilePath_arm64.a  
-</code></pre></li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">lipo -thin arm64 SDKFilePath -output SDKFilePath_arm64.a  </code></pre></td></tr></table>
+</div>
+</div></li>
 
 <li><p>使用“ar -t -v”命令获取SDK中.o文件的大小</p>
-
-<pre><code class="language-shell">ar -t -v SDKFilePath_arm64.a | awk '{printf \&quot;%s:%s\\n\&quot;, $8, $3}'  
-</code></pre></li>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">ar -t -v SDKFilePath_arm64.a <span class="p">|</span> awk <span class="s1">&#39;{printf \&#34;%s:%s\\n\&#34;, $8, $3}&#39;</span>  </code></pre></td></tr></table>
+</div>
+</div></li>
 
 <li><p>比较SDK新旧版本中同一个.o文件大小</p></li>
 </ol>
 
 <p>按照上述步骤能比对两个SDK中.o文件的变化。 这里有一个脚本<a href="https://github.com/whf5566/sdkdiff">sdkdiff.py</a><br />
 使用方法</p>
-
-<pre><code class="language-shell">sdkdiff.py TestSDK_v1 TestSDK_v2
-+1152         361088       Title.o
-+824          180032       Notice.o
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">sdkdiff.py TestSDK_v1 TestSDK_v2
++1152         <span class="m">361088</span>       Title.o
++824          <span class="m">180032</span>       Notice.o
 .....
--4232         260696       Login.o
--5640         243032       Proxy.o
--5856         335680       User.o
+-4232         <span class="m">260696</span>       Login.o
+-5640         <span class="m">243032</span>       Proxy.o
+-5856         <span class="m">335680</span>       User.o
 ----------------------------------
--45288        80801624     Total
-</code></pre>
-
+-45288        <span class="m">80801624</span>     Total</code></pre></td></tr></table>
+</div>
+</div>
 <h2 id="如何精简sdk包大小">如何精简SDK包大小</h2>
 
 <p>通过上面命令可以看出，SDK二进制文件包含了不同cpu架构下.m .c .cpp等源码文件编译后生成的.o文件及对应的符号文件。<br />
@@ -348,46 +453,86 @@ Building Settings &gt;&gt; Deployment &gt;&gt; Strip Style 有三种选项All Sy
 </blockquote>
 
 <p>下面是查找无用类的脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="c1"># 输出未在项目中使用的类名</span>
+<span class="c1"># 使用说明</span>
+<span class="c1"># unused_class &lt;hex file&gt;</span>
 
-<pre><code class="language-shell">#!/bin/bash
-# 输出未在项目中使用的类名
-# 使用说明
-# unused_class &lt;hex file&gt;
+usage<span class="o">()</span> <span class="o">{</span>
+  cat <span class="s">&lt;&lt;__EOF
+</span><span class="s">Summary
+</span><span class="s">    output names of unused objc class.
+</span><span class="s">Usage
+</span><span class="s">    $(basename $0) &lt;hex file&gt;
+</span><span class="s">__EOF</span>
+<span class="o">}</span>
 
-usage() {
-  cat &lt;&lt;__EOF
-Summary
-    output names of unused objc class.
-Usage
-    $(basename $0) &lt;hex file&gt;
-__EOF
-}
-
-error_usage(){
-  local error=${1:-Undefined error}
-  echo &quot;$0:$LINE $error&quot;
+error_usage<span class="o">(){</span>
+  <span class="nb">local</span> <span class="nv">error</span><span class="o">=</span><span class="si">${</span><span class="nv">1</span><span class="k">:-</span><span class="nv">Undefined</span><span class="p"> error</span><span class="si">}</span>
+  <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2">:</span><span class="nv">$LINE</span><span class="s2"> </span><span class="nv">$error</span><span class="s2">&#34;</span>
   usage
-  exit 1
-}
+  <span class="nb">exit</span> <span class="m">1</span>
+<span class="o">}</span>
 
-if [[ $# -lt 1 ]] ;then error_usage &quot;Error! No project directory was specified.&quot;; fi
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$#</span> -lt <span class="m">1</span> <span class="o">]]</span> <span class="p">;</span><span class="k">then</span> error_usage <span class="s2">&#34;Error! No project directory was specified.&#34;</span><span class="p">;</span> <span class="k">fi</span>
 
-HEXFILE=$1
-CLASSLIST=`otool -s __DATA __objc_classlist  $HEXFILE | grep &quot;^[0-9a-f]&quot; | awk '{print $3$2&quot;\n&quot;$5$4}'|sort`
-CLASSREFS=`otool -s __DATA __objc_classrefs  $HEXFILE | grep &quot;^[0-9a-f]&quot; | awk '{print $3$2&quot;\n&quot;$5$4}'|sort`
+<span class="nv">HEXFILE</span><span class="o">=</span><span class="nv">$1</span>
+<span class="nv">CLASSLIST</span><span class="o">=</span><span class="sb">`</span>otool -s __DATA __objc_classlist  <span class="nv">$HEXFILE</span> <span class="p">|</span> grep <span class="s2">&#34;^[0-9a-f]&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $3$2&#34;\n&#34;$5$4}&#39;</span><span class="p">|</span>sort<span class="sb">`</span>
+<span class="nv">CLASSREFS</span><span class="o">=</span><span class="sb">`</span>otool -s __DATA __objc_classrefs  <span class="nv">$HEXFILE</span> <span class="p">|</span> grep <span class="s2">&#34;^[0-9a-f]&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $3$2&#34;\n&#34;$5$4}&#39;</span><span class="p">|</span>sort<span class="sb">`</span>
 
-nm $HEXFILE &gt;./temp_all_symbols.txt
-for classname in $CLASSLIST
-do
-    if [[ $CLASSREFS =~ $classname ]]; then 
+nm <span class="nv">$HEXFILE</span> &gt;./temp_all_symbols.txt
+<span class="k">for</span> classname in <span class="nv">$CLASSLIST</span>
+<span class="k">do</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nv">$CLASSREFS</span> <span class="o">=</span>~ <span class="nv">$classname</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span> 
        :
-    else
-        grep $classname ./temp_all_symbols.txt
-    fi
-done
-rm ./temp_all_symbols.txt
-</code></pre>
-
+    <span class="k">else</span>
+        grep <span class="nv">$classname</span> ./temp_all_symbols.txt
+    <span class="k">fi</span>
+<span class="k">done</span>
+rm ./temp_all_symbols.txt</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="删除无用代码">删除无用代码</h3>
 
 <p>使用otool -v -s __DATA <strong>objc_selrefs 可执行文件名，逆向</strong>DATA.<strong>objc_selrefs段，提取可执行文件里引用到的方法名，
@@ -399,16 +544,27 @@ rm ./temp_all_symbols.txt
 <p>我们的SDK引用了微信，QQ等第三方库来提供第三方登录的功能，为了SDK接入方的方便，我们直接将微信，QQ等公用的第三方库打包进我们的SDK了。虽然这样减少了我们SDK接入方的工作，但是也导致我们SDK文件大小暴涨。另外也带来了一些其他的问题，比如接入方需要更新微信，QQ SDK版本时就麻烦了。<br />
 我们SDK去掉微信，QQ SDK，让接入方自己引入，这样可以减小我们SDK的大小。但是最后所有的接入方生成的App还是会包含微信，QQ的SDK，然而，并不是所有的接入方都需要接入微信，QQ登录。这样的话，对于这部分的接入方，App就包含并不需要的微信和QQ的SDK代码。
 其实我们可以在我们的SDK中使用类反射的的方式来调用微信，QQ等第三方库的功能，这样对于没有接入微信登录功能的接入方，就没必要引入微信等第三方库。</p>
-
-<pre><code class="language-objectivec">+ (void)enableWeChat:(NSString *)appid class:(Class)cls {
-  [NSClassFromString(@&quot;WXApi&quot;) registerApp:appid];
-}
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">enableWeChat:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">appid</span> <span class="nf">class:</span><span class="p">(</span><span class="kt">Class</span><span class="p">)</span><span class="nv">cls</span> <span class="p">{</span>
+  <span class="p">[</span><span class="n">NSClassFromString</span><span class="p">(</span><span class="s">@&#34;WXApi&#34;</span><span class="p">)</span> <span class="nl">registerApp</span><span class="p">:</span><span class="n">appid</span><span class="p">];</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>接入方如果需要引入微信登录功能，需要引入微信SDK，然后再添加这样的代码</p>
-
-<pre><code class="language-objectivec">[TestSDK enableWeChat:@&quot;1234567890&quot;  class:WXApi.class];
-</code></pre>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">[</span><span class="n">TestSDK</span> <span class="nl">enableWeChat</span><span class="p">:</span><span class="s">@&#34;1234567890&#34;</span>  <span class="k">class</span><span class="o">:</span><span class="n">WXApi</span><span class="p">.</span><span class="k">class</span><span class="p">];</span></code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
     

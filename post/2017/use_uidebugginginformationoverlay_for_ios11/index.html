@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-12-06T17:15:20&#43;08:00" />
 <meta itemprop="dateModified" content="2017-12-06T17:15:20&#43;08:00" />
-<meta itemprop="wordCount" content="1118">
+<meta itemprop="wordCount" content="1208">
 
 
 
@@ -162,108 +162,204 @@
 
 <p>国外大神的文章很长，详细介绍了他是如何让悬浮窗调试工具重现在iOS11上的。文章具体内容这里就不展开了，感兴趣的可以去看看他的文章。文章主要内容：<br />
 iOS9 &amp; 10 上 -[UIDebuggingInformationOverlay init] 和 [UIDebuggingInformationOverlay prepareDebuggingOverlay] 是能正常工作的。在iOS11上，上面这两个方法被苹果做了限制，只有苹果内部设备才可以正常使用。对这两个方法逆向后的代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="k">@implementation</span> <span class="nc">UIDebuggingInformationOverlay</span>
 
-<pre><code class="language-objectivec">@implementation UIDebuggingInformationOverlay
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">init</span> <span class="p">{</span>
+  <span class="k">static</span> <span class="kt">BOOL</span> <span class="n">overlayEnabled</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+  <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+  <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+    <span class="n">overlayEnabled</span> <span class="o">=</span> <span class="n">UIDebuggingOverlayIsEnabled</span><span class="p">();</span>
+  <span class="p">});</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">overlayEnabled</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="k">return</span> <span class="nb">nil</span><span class="p">;</span>
+  <span class="p">}</span>
 
-- (instancetype)init {
-  static BOOL overlayEnabled = NO;
-  static dispatch_once_t onceToken;
-  dispatch_once(&amp;onceToken, ^{
-    overlayEnabled = UIDebuggingOverlayIsEnabled();
-  });
-  if (!overlayEnabled) { 
-    return nil;
-  }
+  <span class="k">if</span> <span class="p">(</span><span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="n">init</span><span class="p">])</span> <span class="p">{</span>
+    <span class="p">[</span><span class="nb">self</span> <span class="nl">_setWindowControlsStatusBarOrientation</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
 
-  if (self = [super init]) {
-    [self _setWindowControlsStatusBarOrientation:NO];
-  }
-  return self;
-}
-
-+ (void)prepareDebuggingOverlay {
-  if (_UIGetDebuggingOverlayEnabled()) {
-    id handler = [UIDebuggingInformationOverlayInvokeGestureHandler mainHandler];
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:handler action:@selector(_handleActivationGesture:)];
-    [tapGesture setNumberOfTouchesRequired:2];
-    [tapGesture setNumberOfTapsRequired:1];
-    [tapGesture setDelegate:handler];
+<span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">prepareDebuggingOverlay</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">_UIGetDebuggingOverlayEnabled</span><span class="p">())</span> <span class="p">{</span>
+    <span class="kt">id</span> <span class="n">handler</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIDebuggingInformationOverlayInvokeGestureHandler</span> <span class="n">mainHandler</span><span class="p">];</span>
+    <span class="n">UITapGestureRecognizer</span> <span class="o">*</span><span class="n">tapGesture</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UITapGestureRecognizer</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTarget</span><span class="p">:</span><span class="n">handler</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">_handleActivationGesture</span><span class="p">:)];</span>
+    <span class="p">[</span><span class="n">tapGesture</span> <span class="nl">setNumberOfTouchesRequired</span><span class="p">:</span><span class="mi">2</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">tapGesture</span> <span class="nl">setNumberOfTapsRequired</span><span class="p">:</span><span class="mi">1</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">tapGesture</span> <span class="nl">setDelegate</span><span class="p">:</span><span class="n">handler</span><span class="p">];</span>
     
-    UIView *statusBarWindow = [UIApp statusBarWindow];
-    [statusBarWindow addGestureRecognizer:tapGesture];
-  }
-}
+    <span class="n">UIView</span> <span class="o">*</span><span class="n">statusBarWindow</span> <span class="o">=</span> <span class="p">[</span><span class="n">UIApp</span> <span class="n">statusBarWindow</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">statusBarWindow</span> <span class="nl">addGestureRecognizer</span><span class="p">:</span><span class="n">tapGesture</span><span class="p">];</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 
-@end
-</code></pre>
-
+<span class="k">@end</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>可以很清晰的看到，苹果用UIDebuggingOverlayIsEnabled() 对UIDebuggingInformationOverlay的初始化方法做了检测，如果不是内部设备就返回nil，同时对prepareDebuggingOverlay方法也做了检测。</p>
 
 <h2 id="破解">破解</h2>
 
 <p>既然我们都知道了方法内容，我们绕过这两个检查方法不就OK了？对的，使用Methond Swizzling 替换这两个OC的方法就好了。<br />
 国外大神也给出了一个解决方案，替换上面的两个OC方法，但是其中prepareDebuggingOverlay中添加了汇编代码，并且给出的汇编代码只支持x86_64的cpu。笔者在这个基础上重写了prepareDebuggingOverlay，发现也可以work。代码如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="k">@interface</span> <span class="nc">UIWindow</span> <span class="nl">(PrivateMethods)</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">_setWindowControlsStatusBarOrientation:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">orientation</span><span class="p">;</span>
+<span class="k">@end</span>
 
-<pre><code class="language-objectivec">@interface UIWindow (PrivateMethods)
-- (void)_setWindowControlsStatusBarOrientation:(BOOL)orientation;
-@end
+<span class="k">@interface</span> <span class="nc">FakeWindowClass</span> : <span class="nc">UIWindow</span>
+<span class="k">@end</span>
 
-@interface FakeWindowClass : UIWindow
-@end
+<span class="k">@implementation</span> <span class="nc">FakeWindowClass</span>
 
-@implementation FakeWindowClass
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initSwizzled</span> <span class="p">{</span>
+    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="nb">self</span> <span class="nl">_setWindowControlsStatusBarOrientation</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
 
-- (instancetype)initSwizzled {
-    self = [super init];
-    if (self) {
-        [self _setWindowControlsStatusBarOrientation:NO];
-    }
-    return self;
-}
+<span class="k">@end</span>
 
-@end
+<span class="k">@implementation</span> <span class="nc">NSObject</span> <span class="nl">(UIDebuggingInformationOverlayEnable)</span>
 
-@implementation NSObject (UIDebuggingInformationOverlayEnable)
+<span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">onceToken</span><span class="p">;</span>
+    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">onceToken</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        <span class="kt">Class</span> <span class="n">cls</span> <span class="o">=</span> <span class="n">NSClassFromString</span><span class="p">(</span><span class="s">@&#34;UIDebuggingInformationOverlay&#34;</span><span class="p">);</span>
+        <span class="p">[</span><span class="n">FakeWindowClass</span> <span class="nl">swizzleSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">init</span><span class="p">)</span> <span class="nl">newSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">initSwizzled</span><span class="p">)</span> <span class="nl">forClass</span><span class="p">:</span><span class="n">cls</span> <span class="nl">isClassMethod</span><span class="p">:</span><span class="nb">NO</span><span class="p">];</span>
+        <span class="p">[</span><span class="nb">self</span> <span class="nl">swizzleSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">prepareDebuggingOverlay</span><span class="p">)</span> <span class="nl">newSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">prepareDebuggingOverlaySwizzled</span><span class="p">)</span> <span class="nl">forClass</span><span class="p">:</span><span class="n">cls</span> <span class="nl">isClassMethod</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+    <span class="p">});</span>
+<span class="p">}</span>
 
-+ (void)load {
-    static dispatch_once_t onceToken;
-    dispatch_once(&amp;onceToken, ^{
-        Class cls = NSClassFromString(@&quot;UIDebuggingInformationOverlay&quot;);
-        [FakeWindowClass swizzleSelector:@selector(init) newSelector:@selector(initSwizzled) forClass:cls isClassMethod:NO];
-        [self swizzleSelector:@selector(prepareDebuggingOverlay) newSelector:@selector(prepareDebuggingOverlaySwizzled) forClass:cls isClassMethod:YES];
-    });
-}
-
-+ (void)swizzleSelector:(SEL)originalSelector newSelector:(SEL)swizzledSelector forClass:(Class)class isClassMethod:(BOOL)isClassMethod {
-    Method originalMethod = NULL;
-    Method swizzledMethod = NULL;
+<span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">swizzleSelector:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">originalSelector</span> <span class="nf">newSelector:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">swizzledSelector</span> <span class="nf">forClass:</span><span class="p">(</span><span class="kt">Class</span><span class="p">)</span><span class="nv">class</span> <span class="nf">isClassMethod:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">isClassMethod</span> <span class="p">{</span>
+    <span class="n">Method</span> <span class="n">originalMethod</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">Method</span> <span class="n">swizzledMethod</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
     
-    if (isClassMethod) {
-        originalMethod = class_getClassMethod(class, originalSelector);
-        swizzledMethod = class_getClassMethod([self class], swizzledSelector);
-    } else {
-        originalMethod = class_getInstanceMethod(class, originalSelector);
-        swizzledMethod = class_getInstanceMethod([self class], swizzledSelector);
-    }
-    method_exchangeImplementations(originalMethod, swizzledMethod);
-}
+    <span class="k">if</span> <span class="p">(</span><span class="n">isClassMethod</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">originalMethod</span> <span class="o">=</span> <span class="n">class_getClassMethod</span><span class="p">(</span><span class="k">class</span><span class="p">,</span> <span class="n">originalSelector</span><span class="p">);</span>
+        <span class="n">swizzledMethod</span> <span class="o">=</span> <span class="n">class_getClassMethod</span><span class="p">([</span><span class="nb">self</span> <span class="k">class</span><span class="p">],</span> <span class="n">swizzledSelector</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">originalMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="k">class</span><span class="p">,</span> <span class="n">originalSelector</span><span class="p">);</span>
+        <span class="n">swizzledMethod</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">([</span><span class="nb">self</span> <span class="k">class</span><span class="p">],</span> <span class="n">swizzledSelector</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">originalMethod</span><span class="p">,</span> <span class="n">swizzledMethod</span><span class="p">);</span>
+<span class="p">}</span>
 
-+ (void)prepareDebuggingOverlaySwizzled {
-    id overlayClass = NSClassFromString(@&quot;UIDebuggingInformationOverlayInvokeGestureHandler&quot;);
-    id handler = [overlayClass performSelector:NSSelectorFromString(@&quot;mainHandler&quot;)];
+<span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">prepareDebuggingOverlaySwizzled</span> <span class="p">{</span>
+    <span class="kt">id</span> <span class="n">overlayClass</span> <span class="o">=</span> <span class="n">NSClassFromString</span><span class="p">(</span><span class="s">@&#34;UIDebuggingInformationOverlayInvokeGestureHandler&#34;</span><span class="p">);</span>
+    <span class="kt">id</span> <span class="n">handler</span> <span class="o">=</span> <span class="p">[</span><span class="n">overlayClass</span> <span class="nl">performSelector</span><span class="p">:</span><span class="n">NSSelectorFromString</span><span class="p">(</span><span class="s">@&#34;mainHandler&#34;</span><span class="p">)];</span>
   
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:handler action:@selector(_handleActivationGesture:)];
-    tapGesture.numberOfTouchesRequired = 2;
-    tapGesture.numberOfTapsRequired = 1;
-    tapGesture.delegate = handler;
+    <span class="n">UITapGestureRecognizer</span> <span class="o">*</span><span class="n">tapGesture</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UITapGestureRecognizer</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTarget</span><span class="p">:</span><span class="n">handler</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">_handleActivationGesture</span><span class="p">:)];</span>
+    <span class="n">tapGesture</span><span class="p">.</span><span class="n">numberOfTouchesRequired</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">tapGesture</span><span class="p">.</span><span class="n">numberOfTapsRequired</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">tapGesture</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">handler</span><span class="p">;</span>
   
-    UIView *statusBarWindow = [[UIApplication sharedApplication] valueForKey:@&quot;statusBarWindow&quot;];
-    [statusBarWindow addGestureRecognizer:tapGesture];
-}
+    <span class="n">UIView</span> <span class="o">*</span><span class="n">statusBarWindow</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIApplication</span> <span class="n">sharedApplication</span><span class="p">]</span> <span class="nl">valueForKey</span><span class="p">:</span><span class="s">@&#34;statusBarWindow&#34;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">statusBarWindow</span> <span class="nl">addGestureRecognizer</span><span class="p">:</span><span class="n">tapGesture</span><span class="p">];</span>
+<span class="p">}</span>
 
-@end
-</code></pre>
-
+<span class="k">@end</span></code></pre></td></tr></table>
+</div>
+</div>
 <h2 id="结尾">结尾</h2>
 
 <p>将上面的代码放在一个文件里，引入到我们的项目中就可以在iOS11上使用苹果自带的悬浮窗UI调试工具了。这里上传了这个文件<a href="https://github.com/whf5566/UIDebuggingTool">UIDebuggingTool</a>，方便大家。笔者只测试了iOS11.0.1,欢迎大家帮忙测试下其他系统的情况并修改这个小工具。<br />

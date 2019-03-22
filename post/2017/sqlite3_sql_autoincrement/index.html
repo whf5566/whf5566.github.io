@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-08-28T16:42:12&#43;08:00" />
 <meta itemprop="dateModified" content="2017-08-28T16:42:12&#43;08:00" />
-<meta itemprop="wordCount" content="208">
+<meta itemprop="wordCount" content="211">
 
 
 
@@ -147,12 +147,18 @@
 如果要想在删除表里的数据后，再插入数据，主键的值仍然从最后一次的值开始增1，我们可以使用 AUTOINCREMENT 这个数据库字段属性。</p>
 
 <p>AUTOINCREMENT 有两种写法：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">Message</span><span class="p">(</span><span class="n">msgIndex</span> <span class="nb">INTEGER</span> <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="n">AUTOINCREMENT</span><span class="p">,</span> <span class="n">content</span> <span class="nb">TEXT</span><span class="p">);</span>  
 
-<pre><code class="language-sql">CREATE TABLE Message(msgIndex INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT);  
-
-CREATE TABLE Message(msgIndex INTEGER, content TEXT ,PRIMARY KEY (msgIndex AUTOINCREMENT));  
-</code></pre>
-
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">Message</span><span class="p">(</span><span class="n">msgIndex</span> <span class="nb">INTEGER</span><span class="p">,</span> <span class="n">content</span> <span class="nb">TEXT</span> <span class="p">,</span><span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">msgIndex</span> <span class="n">AUTOINCREMENT</span><span class="p">));</span>  </code></pre></td></tr></table>
+</div>
+</div>
 <p>AUTOINCREMENT 的官方文档：<a href="http://sqlite.org/autoinc.html">http://sqlite.org/autoinc.html</a></p>
 
     </div>

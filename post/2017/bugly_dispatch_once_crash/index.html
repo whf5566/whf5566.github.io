@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-08-25T16:52:20&#43;08:00" />
 <meta itemprop="dateModified" content="2017-08-25T16:52:20&#43;08:00" />
-<meta itemprop="wordCount" content="2449">
+<meta itemprop="wordCount" content="2537">
 
 
 
@@ -166,18 +166,30 @@
 
 <p>Bugly和dispatch_once使用不当，会造成UI界面卡死。笔者在前段时间碰见了这样的一个卡死的情况，特意记录下来。<br />
 iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK，用来捕捉App中的crash。对于dispatch_once大家就更熟悉了，现在大部分开发者用这个来创建单例。如：</p>
-
-<pre><code class="language-objectivec">+ (SingletonA *)sharedInstance {
-    static SingletonA *_singleton = nil;
-    static dispatch_once_t once;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">+</span> <span class="p">(</span><span class="n">SingletonA</span> <span class="o">*</span><span class="p">)</span><span class="nf">sharedInstance</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="n">SingletonA</span> <span class="o">*</span><span class="n">_singleton</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">once</span><span class="p">;</span>
     
-    dispatch_once(&amp;once, ^{
-        _singleton = [[SingletonA alloc] init];
-    });
-    return _singleton;
-}
-</code></pre>
-
+    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">once</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        <span class="n">_singleton</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SingletonA</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="n">_singleton</span><span class="p">;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>但是这两个在一起怎么会造成UI界面卡死呢？如果笔者不是亲眼所见，也不会相信Bugly会造成界面卡死。</p>
 
 <h2 id="现象">现象</h2>
@@ -197,31 +209,56 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
 
 <p>这下，我们才知道是卡在了dispatch_once这个地方。是我们的单例使用有问题吗？我们知道，
 如果dispatch_once递归调用就会产生死锁。示例代码如下：</p>
-
-<pre><code class="language-objectivec">+ (SingletonA *)sharedInstance {
-    static SingletonA *_singleton = nil;
-    static dispatch_once_t once;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">+</span> <span class="p">(</span><span class="n">SingletonA</span> <span class="o">*</span><span class="p">)</span><span class="nf">sharedInstance</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="n">SingletonA</span> <span class="o">*</span><span class="n">_singleton</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">once</span><span class="p">;</span>
     
-    dispatch_once(&amp;once, ^{
-        _singleton = [[SingletonA alloc] init];
-    });
-    return _singleton;
-}
+    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">once</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        <span class="n">_singleton</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SingletonA</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="n">_singleton</span><span class="p">;</span>
+<span class="p">}</span>
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        [self somethingInit];
-        // 这个方法里也调用了[SingletonA sharedInstance]，所以会产生死锁
-    }
-    return self;
-}
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">init</span> <span class="p">{</span>
+    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="nb">self</span> <span class="n">somethingInit</span><span class="p">];</span>
+        <span class="c1">// 这个方法里也调用了[SingletonA sharedInstance]，所以会产生死锁
+</span><span class="c1"></span>    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
 
-- (void)somethingInit {
-    [SingletonA sharedInstance];
-}
-</code></pre>
-
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">somethingInit</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">SingletonA</span> <span class="n">sharedInstance</span><span class="p">];</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>很有可能就是这个原因导致我们的App启动时卡死。于是我们开始排查dispatch_once的代码里会不会在某个条件下再次调用到相同的dispatch_once，形成递归调用，导致死锁。<br />
 就这样折腾了好久，也没有发现dispatch_once形成递归调用的可能性，就在调查快陷入僵局的时候，笔者在日志中发现了一些信息：</p>
 
@@ -241,63 +278,117 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
 笔者新建了一个demo工程，来测试这种情况。代码大致如下：</p>
 
 <p>SingletonA.m 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="k">@implementation</span> <span class="nc">SingletonA</span>
 
-<pre><code class="language-objectivec">@implementation SingletonA
-
-+ (SingletonA *)sharedInstance {
-    static SingletonA *_singleton = nil;
-    static dispatch_once_t once;
+<span class="p">+</span> <span class="p">(</span><span class="n">SingletonA</span> <span class="o">*</span><span class="p">)</span><span class="nf">sharedInstance</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="n">SingletonA</span> <span class="o">*</span><span class="n">_singleton</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+    <span class="k">static</span> <span class="n">dispatch_once_t</span> <span class="n">once</span><span class="p">;</span>
     
-    dispatch_once(&amp;once, ^{
-        _singleton = [[SingletonA alloc] init];
-    });
-    return _singleton;
-}
+    <span class="n">dispatch_once</span><span class="p">(</span><span class="o">&amp;</span><span class="n">once</span><span class="p">,</span> <span class="o">^</span><span class="p">{</span>
+        <span class="n">_singleton</span> <span class="o">=</span> <span class="p">[[</span><span class="n">SingletonA</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="n">_singleton</span><span class="p">;</span>
+<span class="p">}</span>
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        [self somethingInit];
-    }
-    return self;
-}
+<span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">init</span> <span class="p">{</span>
+    <span class="nb">self</span> <span class="o">=</span> <span class="p">[</span><span class="nb">super</span> <span class="n">init</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="nb">self</span> <span class="n">somethingInit</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">self</span><span class="p">;</span>
+<span class="p">}</span>
 
-- (void)somethingInit {
-    NSAssert(NO, @&quot;not support message type&quot;);
-}
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">somethingInit</span> <span class="p">{</span>
+    <span class="n">NSAssert</span><span class="p">(</span><span class="nb">NO</span><span class="p">,</span> <span class="s">@&#34;not support message type&#34;</span><span class="p">);</span>
+<span class="p">}</span>
 
-@end
-</code></pre>
-
+<span class="k">@end</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>使用这个单例的地方MainViewController.m :</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="k">@implementation</span> <span class="nc">MainViewController</span>
 
-<pre><code class="language-objectivec">@implementation MainViewController
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span> <span class="p">{</span>
+    <span class="p">[</span><span class="nb">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">SingletonA</span> <span class="n">sharedInstance</span><span class="p">];</span>
+<span class="p">}</span>
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [SingletonA sharedInstance];
-}
-
-@end
-</code></pre>
-
+<span class="k">@end</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>代码跑起来后，并没有死锁。难道是需要多线程访问[SingletonA sharedInstance]这个方法？<br />
 立马修改了下使用这个单例的地方</p>
-
-<pre><code class="language-objectivec">- (void)viewDidLoad {
-    [super viewDidLoad];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [SingletonA sharedInstance];
-    });
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span> <span class="p">{</span>
+    <span class="p">[</span><span class="nb">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
+        <span class="p">[</span><span class="n">SingletonA</span> <span class="n">sharedInstance</span><span class="p">];</span>
+    <span class="p">});</span>
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [SingletonA sharedInstance];
-    });
+    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
+        <span class="p">[</span><span class="n">SingletonA</span> <span class="n">sharedInstance</span><span class="p">];</span>
+    <span class="p">});</span>
 
-    [SingletonA sharedInstance];
-}
-</code></pre>
-
+    <span class="p">[</span><span class="n">SingletonA</span> <span class="n">sharedInstance</span><span class="p">];</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>在全局队列里也访问了这个单例，然而，并没有出现死锁的情况。
 太令人失望了，看来，在dispatch_once执行的代码中有crash，并不会造成dispatch_once死锁。<br />
 正当陷入僵局的时候，再次看了下当时我们App卡死时后的堆栈。如图：<br />
@@ -305,21 +396,36 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
 
 <p>发现了Bugly的身影，笔者立刻在Demo工程中加入了Bugly库，然后重新跑了下代码，还是没有死锁啊，怎么回事？
 又仔细端详了上面这张图，这次有新的发现。Bugly是在非主线程捕获到的这次Crash，而主线程也访问了这个出问题的单例，会不会是因为后台线程初始化这个单例的时候crash了，Bugly捕获了这个Crash在这个后台线程处理，然后主线程访问这个单例就在一直等待这个单例初始化完成。好了，笔者改了下调用单例的地方，让主线程休眠1s，方便后台线程提前初始化单例。</p>
-
-<pre><code class="language-objectivec">- (void)viewDidLoad {
-    [super viewDidLoad];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [SingletonA sharedInstance];
-    });
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidLoad</span> <span class="p">{</span>
+    <span class="p">[</span><span class="nb">super</span> <span class="n">viewDidLoad</span><span class="p">];</span>
+    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
+        <span class="p">[</span><span class="n">SingletonA</span> <span class="n">sharedInstance</span><span class="p">];</span>
+    <span class="p">});</span>
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [SingletonA sharedInstance];
-    });
-    sleep(1); // 让后台线程先去初始化SingletonA
-    [SingletonA sharedInstance];
-}
-</code></pre>
-
+    <span class="n">dispatch_async</span><span class="p">(</span><span class="n">dispatch_get_global_queue</span><span class="p">(</span><span class="n">DISPATCH_QUEUE_PRIORITY_DEFAULT</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">^</span><span class="p">{</span>
+        <span class="p">[</span><span class="n">SingletonA</span> <span class="n">sharedInstance</span><span class="p">];</span>
+    <span class="p">});</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="c1">// 让后台线程先去初始化SingletonA
+</span><span class="c1"></span>    <span class="p">[</span><span class="n">SingletonA</span> <span class="n">sharedInstance</span><span class="p">];</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>果然，死锁了！！！<br />
 主线程截图：<br />
 <img src="./../../../images/bugly_dispatch_once_crash_04.png" alt="image" /></p>

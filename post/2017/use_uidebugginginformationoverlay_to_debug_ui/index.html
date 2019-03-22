@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-06-08T09:58:10&#43;08:00" />
 <meta itemprop="dateModified" content="2017-06-08T09:58:10&#43;08:00" />
-<meta itemprop="wordCount" content="1420">
+<meta itemprop="wordCount" content="1424">
 
 
 
@@ -174,13 +174,20 @@
 <h2 id="如何开启">如何开启</h2>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;在 AppDelegate 的 didFinishLaunchingWithOptions 方法中加入以下代码就可以了。</p>
-
-<pre><code class="language-objectivec">#if DEBUG
-    id overlayClass = NSClassFromString(@&quot;UIDebuggingInformationOverlay&quot;);
-    [overlayClass performSelector:NSSelectorFromString(@&quot;prepareDebuggingOverlay&quot;)];
-#endif
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="cp">#if DEBUG
+</span><span class="cp"></span>    <span class="kt">id</span> <span class="n">overlayClass</span> <span class="o">=</span> <span class="n">NSClassFromString</span><span class="p">(</span><span class="s">@&#34;UIDebuggingInformationOverlay&#34;</span><span class="p">);</span>
+    <span class="p">[</span><span class="n">overlayClass</span> <span class="nl">performSelector</span><span class="p">:</span><span class="n">NSSelectorFromString</span><span class="p">(</span><span class="s">@&#34;prepareDebuggingOverlay&#34;</span><span class="p">)];</span>
+<span class="cp">#endif</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>运行后，用两个手指头在状态栏上同时点击下就可以显示出这个调试的悬浮层。</p>
 
 <h2 id="悬浮窗主界面">悬浮窗主界面</h2>

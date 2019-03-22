@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-04-24T09:59:57&#43;08:00" />
 <meta itemprop="dateModified" content="2017-04-24T09:59:57&#43;08:00" />
-<meta itemprop="wordCount" content="1810">
+<meta itemprop="wordCount" content="1832">
 
 
 
@@ -178,35 +178,61 @@
 <h2 id="如何判断现在接入了airpods">如何判断现在接入了AirPods</h2>
 
 <p>通过检查AVAudioSession的currentRoute中的输出port的名字，可以判断当前音频输出是否是AirPods</p>
-
-<pre><code class="language-objectivec">- (BOOL)isAirPods {
-    NSArray&lt;AVAudioSessionPortDescription *&gt; *outputPorts = [AVAudioSession sharedInstance].currentRoute.outputs;
-    for (AVAudioSessionPortDescription *desc in outputPorts) {
-        if ([desc.portName rangeOfString:@&quot;AirPods&quot;].length &gt; 0) {
-            return YES;
-        }
-    }
-    return NO;
-}
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isAirPods</span> <span class="p">{</span>
+    <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">AVAudioSessionPortDescription</span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">outputPorts</span> <span class="o">=</span> <span class="p">[</span><span class="n">AVAudioSession</span> <span class="n">sharedInstance</span><span class="p">].</span><span class="n">currentRoute</span><span class="p">.</span><span class="n">outputs</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">AVAudioSessionPortDescription</span> <span class="o">*</span><span class="n">desc</span> <span class="k">in</span> <span class="n">outputPorts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">([</span><span class="n">desc</span><span class="p">.</span><span class="n">portName</span> <span class="nl">rangeOfString</span><span class="p">:</span><span class="s">@&#34;AirPods&#34;</span><span class="p">].</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>这个代码在iOS10以下的系统也能工作，在iOS10以下AirPods表现如同蓝牙耳机，并且，portName 还是AirPods。<br />
 如果需要用户在戴上耳机的时候检查是否是AirPods，可以监听系统发出的AVAudioSessionRouteChangeNotification通知，在route改变时，通过上面的代码检查下，就可以知道是否是用户带上了AirPods耳机。<br />
 有时，我们需要检查当前输出音频设备是否有蓝牙，也可以像上面的代码一样</p>
-
-<pre><code class="language-objectivec">- (BOOL)isBluetooth {
-    NSArray&lt;AVAudioSessionPortDescription *&gt; *outputPorts = [AVAudioSession sharedInstance].currentRoute.outputs;
-    for (AVAudioSessionPortDescription *desc in outputPorts) {
-        if ([desc.portType isEqualToString:AVAudioSessionPortBluetoothA2DP]
-            || [desc.portType isEqualToString:AVAudioSessionPortBluetoothLE]
-            || [desc.portType isEqualToString:AVAudioSessionPortBluetoothHFP]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">isBluetooth</span> <span class="p">{</span>
+    <span class="n">NSArray</span><span class="o">&lt;</span><span class="n">AVAudioSessionPortDescription</span> <span class="o">*&gt;</span> <span class="o">*</span><span class="n">outputPorts</span> <span class="o">=</span> <span class="p">[</span><span class="n">AVAudioSession</span> <span class="n">sharedInstance</span><span class="p">].</span><span class="n">currentRoute</span><span class="p">.</span><span class="n">outputs</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">AVAudioSessionPortDescription</span> <span class="o">*</span><span class="n">desc</span> <span class="k">in</span> <span class="n">outputPorts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">([</span><span class="n">desc</span><span class="p">.</span><span class="n">portType</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="n">AVAudioSessionPortBluetoothA2DP</span><span class="p">]</span>
+            <span class="o">||</span> <span class="p">[</span><span class="n">desc</span><span class="p">.</span><span class="n">portType</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="n">AVAudioSessionPortBluetoothLE</span><span class="p">]</span>
+            <span class="o">||</span> <span class="p">[</span><span class="n">desc</span><span class="p">.</span><span class="n">portType</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="n">AVAudioSessionPortBluetoothHFP</span><span class="p">])</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
 <h2 id="airpods的远程控制">AirPods的远程控制</h2>
 
 <p>这里说的AirPods远程控制，不是通过AirPods唤起Siri或者接系统电话，而是通过AirPods播放、停止音乐。
@@ -235,17 +261,25 @@
 <ul>
 <li>iOS 10 以下<br /></li>
 </ul>
-
-<pre><code class="language-objectivec">[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionAllowBluetooth error:&amp;error]
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">[[</span><span class="n">AVAudioSession</span> <span class="n">sharedInstance</span><span class="p">]</span> <span class="nl">setCategory</span><span class="p">:</span><span class="n">AVAudioSessionCategoryPlayAndRecord</span> <span class="nl">withOptions</span><span class="p">:</span><span class="n">AVAudioSessionCategoryOptionAllowBluetooth</span> <span class="nl">error</span><span class="p">:</span><span class="o">&amp;</span><span class="n">error</span><span class="p">]</span></code></pre></td></tr></table>
+</div>
+</div>
 <ul>
 <li>iOS 10 以上</li>
 </ul>
-
-<pre><code class="language-objectivec">[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionAllowBluetoothA2DP error:&amp;error]   
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">[[</span><span class="n">AVAudioSession</span> <span class="n">sharedInstance</span><span class="p">]</span> <span class="nl">setCategory</span><span class="p">:</span><span class="n">AVAudioSessionCategoryPlayAndRecord</span> <span class="nl">withOptions</span><span class="p">:</span><span class="n">AVAudioSessionCategoryOptionAllowBluetoothA2DP</span> <span class="nl">error</span><span class="p">:</span><span class="o">&amp;</span><span class="n">error</span><span class="p">]</span>   </code></pre></td></tr></table>
+</div>
+</div>
 <p>AVAudioSessionCategoryOptionAllowBluetoothA2DP 这个option在iOS10系统后才有。</p>
 
 <h2 id="音频模式的设置">音频模式的设置</h2>

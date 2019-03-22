@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2018-08-23T09:34:52&#43;08:00" />
 <meta itemprop="dateModified" content="2018-08-23T09:34:52&#43;08:00" />
-<meta itemprop="wordCount" content="1154">
+<meta itemprop="wordCount" content="1192">
 
 
 
@@ -161,18 +161,27 @@
 <ol>
 <li>从原地址克隆一份裸版本库</li>
 </ol>
-
-<pre><code class="language-shell">git clone –bare git://github.com/username/project.git
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git clone –bare git://github.com/username/project.git</code></pre></td></tr></table>
+</div>
+</div>
 <ol>
 <li>以镜像推送的方式push到gitlab 服务器上</li>
 </ol>
-
-<pre><code class="language-shell">cd project.git
-git push –mirror ssh://git@gitlab.com/username/newproject.git
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">cd</span> project.git
+git push –mirror ssh://git@gitlab.com/username/newproject.git</code></pre></td></tr></table>
+</div>
+</div>
 <p>该方法比较简单，由于我们项目没有采用，也没有做更多的研究。</p>
 
 <h2 id="使用git的pull-push命令同步">使用git的pull，push命令同步</h2>
@@ -182,67 +191,117 @@ git push –mirror ssh://git@gitlab.com/username/newproject.git
 <h3 id="如何clone出所有远程分支">如何clone出所有远程分支</h3>
 
 <p>我们在使用git clone命令时默认是在本地仓库中新建一个master分支，跟踪远程的origin/master分支，但是我们是要同步整个git库，也就是所有分支都需要pull到本地，然后push到新的gitlab库上，这就带来一个问题，如何clone出所有远程分支。 先给出结果：</p>
-
-<pre><code class="language-shell">git branch -r --list &quot;origin/*&quot;  | grep -v HEAD | grep -v master | xargs -I @ git checkout -t @
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git branch -r --list <span class="s2">&#34;origin/*&#34;</span>  <span class="p">|</span> grep -v HEAD <span class="p">|</span> grep -v master <span class="p">|</span> xargs -I @ git checkout -t @</code></pre></td></tr></table>
+</div>
+</div>
 <p>这个命令步骤是先使用 git branch -r &ndash;list &ldquo;origin/*&rdquo; 命令，获取到所有的origin服务器上的远程分支。</p>
-
-<pre><code class="language-shell">git branch -r --list &quot;origin/*&quot;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git branch -r --list <span class="s2">&#34;origin/*&#34;</span>
 输出：
 origin/HEAD -&gt; origin/master
 origin/develop
-origin/master
-</code></pre>
-
+origin/master</code></pre></td></tr></table>
+</div>
+</div>
 <p>然后使用 grep 命令 过滤掉 HEAD 和 master。<br />
 最后使用 git checkout -t  命令新建和远程分支同名的本地分支，把这些命令串起来就是上面给出命令。</p>
 
 <h3 id="如何push所有本地分支到远端仓库">如何push所有本地分支到远端仓库</h3>
 
 <p>使用git clone命令后，在本地默认有个名为origin远端仓库。但是我们现在要将所有分支推送到gitlab的仓库，所以先要添加一个远端仓库。</p>
-
-<pre><code class="language-shell"># 添加一个名为gitlab的远端仓库
-git remote add gitlab ssh://git@gitlab.com/username/newproject.git
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># 添加一个名为gitlab的远端仓库</span>
+git remote add gitlab ssh://git@gitlab.com/username/newproject.git</code></pre></td></tr></table>
+</div>
+</div>
 <p>然后使用push命令推送所有分支及tag</p>
-
-<pre><code class="language-shell">git push -u gitlab --all
-git push -u gitlab --tags
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git push -u gitlab --all
+git push -u gitlab --tags</code></pre></td></tr></table>
+</div>
+</div>
 <h3 id="可用脚本">可用脚本</h3>
 
 <p>将上面的步骤串起来就是可以工作的脚本。在本地仓库目录下执行这个脚本就可以把仓库同步到远端的gitlab服务器上。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="nv">GITLAB_URL</span><span class="o">=</span><span class="s1">&#39;ssh://git@gitlab.com/username/newproject.git&#39;</span>
 
-<pre><code class="language-shell">#!/bin/bash
+<span class="c1"># 删除gitlab服务器</span>
+git remote <span class="p">|</span> grep gitlab <span class="p">|</span> xargs -I @ git remote remove @
 
-GITLAB_URL='ssh://git@gitlab.com/username/newproject.git'
-
-# 删除gitlab服务器
-git remote | grep gitlab | xargs -I @ git remote remove @
-
-# 更新master分支
+<span class="c1"># 更新master分支</span>
 git fetch --all
 git checkout master
-git branch --set-upstream-to=origin/master master
+git branch --set-upstream-to<span class="o">=</span>origin/master master
 git pull
 
-# 删除所有本地分支（保留master），拉取创建所有远程分支
-git branch  | grep -v HEAD | grep -v master | xargs -I @ git branch -D @
-git branch -r --list &quot;origin/*&quot;  | grep -v HEAD | grep -v master | xargs -I @ git checkout -t @
+<span class="c1"># 删除所有本地分支（保留master），拉取创建所有远程分支</span>
+git branch  <span class="p">|</span> grep -v HEAD <span class="p">|</span> grep -v master <span class="p">|</span> xargs -I @ git branch -D @
+git branch -r --list <span class="s2">&#34;origin/*&#34;</span>  <span class="p">|</span> grep -v HEAD <span class="p">|</span> grep -v master <span class="p">|</span> xargs -I @ git checkout -t @
 
-# 添加gitlab服务器
-git remote add gitlab $GITLAB_URL
+<span class="c1"># 添加gitlab服务器</span>
+git remote add gitlab <span class="nv">$GITLAB_URL</span>
 
 git push -u gitlab --all
 git push -u gitlab --tags
 
-# 删除gitlab服务器
-git remote remove gitlab
-</code></pre>
-
+<span class="c1"># 删除gitlab服务器</span>
+git remote remove gitlab</code></pre></td></tr></table>
+</div>
+</div>
 <h2 id="使用第三方工具来同步">使用第三方工具来同步</h2>
 
 <p>在网上还有一些使用第三方工具来做同步的，这个我们没有在现有项目上做尝试。大家有兴趣可以去试试。</p>

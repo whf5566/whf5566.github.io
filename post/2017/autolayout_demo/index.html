@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-05-03T09:51:08&#43;08:00" />
 <meta itemprop="dateModified" content="2017-05-03T09:51:08&#43;08:00" />
-<meta itemprop="wordCount" content="3007">
+<meta itemprop="wordCount" content="3069">
 
 
 
@@ -314,8 +314,26 @@ autoresizingMask的问题在于:</p>
 有viewA、viewB、viewC三个视图，他们顶部距父视图80pt，高度是父视图的1/2，并且宽度是父视图的1/3，在水平方向上均匀分布。</p>
 
 <p>通过分析，我们需要添加这几个约束</p>
-
-<pre><code>// A top 距 superview top 80pt
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">// A top 距 superview top 80pt
 // A left 距 superview left 0pt
 // A 高度 是 superview 的 0.5
 
@@ -329,15 +347,33 @@ autoresizingMask的问题在于:</p>
 // C 高度 同 A
 // C 宽度 同 A
 
-// C 的right 同superview 的right
-</code></pre>
-
+// C 的right 同superview 的right</pre></td></tr></table>
+</div>
+</div>
 <h3 id="代码示例-纯代码设置view的约束">代码示例（纯代码设置view的约束）</h3>
 
 <ul>
 <li><p>第一步 新建view，并add到父视图上</p>
-
-<pre><code>    // 添加view
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    // 添加view
     UIView *viewA = [[UIView alloc] init];
     viewA.translatesAutoresizingMaskIntoConstraints = NO;
     viewA.backgroundColor = [UIColor redColor];
@@ -351,12 +387,48 @@ autoresizingMask的问题在于:</p>
     UIView *viewC = [[UIView alloc] init];
     viewC.translatesAutoresizingMaskIntoConstraints = NO;
     viewC.backgroundColor = [UIColor blueColor];
-    [self.view addSubview:viewC];
-</code></pre></li>
+    [self.view addSubview:viewC];</pre></td></tr></table>
+</div>
+</div></li>
 
 <li><p>第二步 设置约束</p>
-
-<pre><code>    // 设置A的约束
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></pre></td>
+<td class="lntd">
+<pre class="chroma">    // 设置A的约束
     NSLayoutConstraint *a_top = [NSLayoutConstraint constraintWithItem:viewA attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:80.0];
 
     NSLayoutConstraint *a_leading =[NSLayoutConstraint constraintWithItem:viewA attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0];
@@ -387,8 +459,9 @@ autoresizingMask的问题在于:</p>
     NSLayoutConstraint *c_width =[NSLayoutConstraint constraintWithItem:viewC attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:viewA attribute:NSLayoutAttributeWidth multiplier:1 constant:0.0];
 
     NSLayoutConstraint *c_trailing =[NSLayoutConstraint constraintWithItem:viewC attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1 constant:0.0];
-    [self.view addConstraints:@[c_top,c_leading,c_height,c_width,c_trailing]];
-</code></pre></li>
+    [self.view addConstraints:@[c_top,c_leading,c_height,c_width,c_trailing]];</pre></td></tr></table>
+</div>
+</div></li>
 </ul>
 
 <p><a href="https://github.com/whf5566/AutoLayoutDemo">demo下载</a></p>

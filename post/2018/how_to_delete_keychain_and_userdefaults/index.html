@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2018-09-18T22:37:06&#43;08:00" />
 <meta itemprop="dateModified" content="2018-09-18T22:37:06&#43;08:00" />
-<meta itemprop="wordCount" content="1121">
+<meta itemprop="wordCount" content="1168">
 
 
 
@@ -142,65 +142,122 @@ UserDefaults是iOS设备上一个Key-Value的存储容器，最终数据会以pl
 <h2 id="如何清空keychain">如何清空Keychain</h2>
 
 <p>清空Keychain的思路很简单，就是遍历keychain中存储的数据，然后挨个删除。代码如下：</p>
-
-<pre><code class="language-objectivec">- (void)clearKeyChain {
-    NSMutableDictionary *query = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                  (__bridge id)kCFBooleanTrue, (__bridge id)kSecReturnAttributes,
-                                  (__bridge id)kSecMatchLimitAll, (__bridge id)kSecMatchLimit,
-                                  nil];
-    NSArray *secItemClasses = [NSArray arrayWithObjects:
-                               (__bridge id)kSecClassGenericPassword,
-                               (__bridge id)kSecClassInternetPassword,
-                               (__bridge id)kSecClassCertificate,
-                               (__bridge id)kSecClassKey,
-                               (__bridge id)kSecClassIdentity,
-                               nil];
-    for (id secItemClass in secItemClasses) {
-        [query setObject:secItemClass forKey:(__bridge id)kSecClass];
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">clearKeyChain</span> <span class="p">{</span>
+    <span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">query</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableDictionary</span> <span class="nl">dictionaryWithObjectsAndKeys</span><span class="p">:</span>
+                                  <span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">kCFBooleanTrue</span><span class="p">,</span> <span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">kSecReturnAttributes</span><span class="p">,</span>
+                                  <span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">kSecMatchLimitAll</span><span class="p">,</span> <span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">kSecMatchLimit</span><span class="p">,</span>
+                                  <span class="nb">nil</span><span class="p">];</span>
+    <span class="n">NSArray</span> <span class="o">*</span><span class="n">secItemClasses</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSArray</span> <span class="nl">arrayWithObjects</span><span class="p">:</span>
+                               <span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">kSecClassGenericPassword</span><span class="p">,</span>
+                               <span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">kSecClassInternetPassword</span><span class="p">,</span>
+                               <span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">kSecClassCertificate</span><span class="p">,</span>
+                               <span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">kSecClassKey</span><span class="p">,</span>
+                               <span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">kSecClassIdentity</span><span class="p">,</span>
+                               <span class="nb">nil</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">id</span> <span class="n">secItemClass</span> <span class="k">in</span> <span class="n">secItemClasses</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">query</span> <span class="nl">setObject</span><span class="p">:</span><span class="n">secItemClass</span> <span class="nl">forKey</span><span class="p">:(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">kSecClass</span><span class="p">];</span>
         
-        CFTypeRef result = NULL;
-        SecItemCopyMatching((__bridge CFDictionaryRef)query, &amp;result);
-        if (result != NULL) CFRelease(result);
+        <span class="n">CFTypeRef</span> <span class="n">result</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+        <span class="n">SecItemCopyMatching</span><span class="p">((</span><span class="k">__bridge</span> <span class="n">CFDictionaryRef</span><span class="p">)</span><span class="n">query</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">result</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="n">CFRelease</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
         
-        NSDictionary *spec = @{(__bridge id)kSecClass: secItemClass};
-        SecItemDelete((__bridge CFDictionaryRef)spec);
-    }
-}
-</code></pre>
-
+        <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">spec</span> <span class="o">=</span> <span class="l">@{</span><span class="p">(</span><span class="k">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="nl">kSecClass</span><span class="p">:</span> <span class="n">secItemClass</span><span class="l">}</span><span class="p">;</span>
+        <span class="n">SecItemDelete</span><span class="p">((</span><span class="k">__bridge</span> <span class="n">CFDictionaryRef</span><span class="p">)</span><span class="n">spec</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
 <h2 id="如何清空userdefaults">如何清空UserDefaults</h2>
 
 <p>清空默认的UserDefaults，这个有相应的接口可以调用。直接调用即可。</p>
-
-<pre><code class="language-objectivec">NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
-[[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
-[[NSUserDefaults standardUserDefaults] synchronize];
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="n">NSString</span> <span class="o">*</span><span class="n">appDomain</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="n">bundleIdentifier</span><span class="p">];</span>
+<span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">removePersistentDomainForName</span><span class="p">:</span><span class="n">appDomain</span><span class="p">];</span>
+<span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="n">synchronize</span><span class="p">];</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>然而，UserDefaults可以自己通过[NSUserDefaults initWithSuiteName:]方法生成一个plist文件，要清除自己生成的UserDefaulst文件，必须要知道suiteName，而suiteName可以通过遍历Preferences文件夹中的plist文件就可以知道。完整代码如下：</p>
-
-<pre><code class="language-objectivec">- (void)clearUserDefaults {
-    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
-    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">clearUserDefaults</span> <span class="p">{</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">appDomain</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="n">bundleIdentifier</span><span class="p">];</span>
+    <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">removePersistentDomainForName</span><span class="p">:</span><span class="n">appDomain</span><span class="p">];</span>
+    <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="n">synchronize</span><span class="p">];</span>
     
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).lastObject;
-    path = [path stringByAppendingPathComponent:@&quot;Preferences&quot;];
-    NSArray *fileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">path</span> <span class="o">=</span> <span class="n">NSSearchPathForDirectoriesInDomains</span><span class="p">(</span><span class="n">NSLibraryDirectory</span><span class="p">,</span> <span class="n">NSUserDomainMask</span><span class="p">,</span> <span class="nb">YES</span><span class="p">).</span><span class="n">lastObject</span><span class="p">;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span> <span class="nl">stringByAppendingPathComponent</span><span class="p">:</span><span class="s">@&#34;Preferences&#34;</span><span class="p">];</span>
+    <span class="n">NSArray</span> <span class="o">*</span><span class="n">fileList</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSFileManager</span> <span class="n">defaultManager</span><span class="p">]</span> <span class="nl">contentsOfDirectoryAtPath</span><span class="p">:</span><span class="n">path</span> <span class="nl">error</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
     
-    for (NSString * filename in fileList) {
-        NSString *filepath = [path stringByAppendingPathComponent:filename];
-        BOOL isDir = NO;
-        [[NSFileManager defaultManager] fileExistsAtPath:filepath isDirectory:(&amp;isDir)];
-        if (!isDir &amp;&amp; [filename hasSuffix:@&quot;.plist&quot;] &amp;&amp; (![filename isEqualToString:appDomain])) {
-            NSString *suitename = [filename stringByDeletingPathExtension];
-            NSUserDefaults *userDefaults = [[NSUserDefaults alloc] initWithSuiteName:suitename];
-            [userDefaults removePersistentDomainForName:suiteName];
-            [[NSFileManager defaultManager] removeItemAtPath:filepath error:nil];
-        }
-    }
-}
-</code></pre>
+    <span class="k">for</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span> <span class="n">filename</span> <span class="k">in</span> <span class="n">fileList</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSString</span> <span class="o">*</span><span class="n">filepath</span> <span class="o">=</span> <span class="p">[</span><span class="n">path</span> <span class="nl">stringByAppendingPathComponent</span><span class="p">:</span><span class="n">filename</span><span class="p">];</span>
+        <span class="kt">BOOL</span> <span class="n">isDir</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+        <span class="p">[[</span><span class="n">NSFileManager</span> <span class="n">defaultManager</span><span class="p">]</span> <span class="nl">fileExistsAtPath</span><span class="p">:</span><span class="n">filepath</span> <span class="nl">isDirectory</span><span class="p">:(</span><span class="o">&amp;</span><span class="n">isDir</span><span class="p">)];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">isDir</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">filename</span> <span class="nl">hasSuffix</span><span class="p">:</span><span class="s">@&#34;.plist&#34;</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="p">[</span><span class="n">filename</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="n">appDomain</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">suitename</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename</span> <span class="n">stringByDeletingPathExtension</span><span class="p">];</span>
+            <span class="n">NSUserDefaults</span> <span class="o">*</span><span class="n">userDefaults</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithSuiteName</span><span class="p">:</span><span class="n">suitename</span><span class="p">];</span>
+            <span class="p">[</span><span class="n">userDefaults</span> <span class="nl">removePersistentDomainForName</span><span class="p">:</span><span class="n">suiteName</span><span class="p">];</span>
+            <span class="p">[[</span><span class="n">NSFileManager</span> <span class="n">defaultManager</span><span class="p">]</span> <span class="nl">removeItemAtPath</span><span class="p">:</span><span class="n">filepath</span> <span class="nl">error</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
     

@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-07-13T09:42:08&#43;08:00" />
 <meta itemprop="dateModified" content="2017-07-13T09:42:08&#43;08:00" />
-<meta itemprop="wordCount" content="1899">
+<meta itemprop="wordCount" content="1908">
 
 
 
@@ -183,10 +183,14 @@
 </ul>
 
 <p>安装libimobiledevice很简单，在命令行输入：</p>
-
-<pre><code class="language-shell">brew install libimobiledevice --HEAD  
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">brew install libimobiledevice --HEAD  </code></pre></td></tr></table>
+</div>
+</div>
 <p>注意，需要加上 &ndash;HEAD 选项，如果不加，安装是老版本，不支持iOS10的手机，所以安装时，需要加上 &ndash;HEAD 选项, 如图:</p>
 
 <p><img src="./../../../images/how_to_view_app_log_3.png" alt="libimobiledevice安装" /></p>
@@ -196,10 +200,14 @@
 <ul>
 <li><p>如何使用idevicesyslog<br />
 很简单，在命令行输入：</p>
-
-<pre><code class="language-shell">idevicesyslog 
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">idevicesyslog </code></pre></td></tr></table>
+</div>
+</div>
 <p>就可以在屏幕上看见手机上所有的日志了。
 <img src="./../../../images/how_to_view_app_log_4.png" alt="idevicesyslog" /></p></li>
 
@@ -207,18 +215,27 @@
 </ul>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;1）将设备日志重定向到文件</p>
-
-<pre><code class="language-shell">idevicesyslog &gt;&gt; iphone.log &amp; 
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">idevicesyslog &gt;&gt; iphone.log <span class="p">&amp;</span> </code></pre></td></tr></table>
+</div>
+</div>
 <p>该命令是将日志导入到iphone.log这个文件，并且是在后台执行。</p>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;2）用tail -f和grep查看log</p>
-
-<pre><code class="language-shell">tail -f iphone.log
-tail -f iphone.log | grep 'QQ’  # 查看包含QQ的行
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">tail -f iphone.log
+tail -f iphone.log <span class="p">|</span> grep <span class="err">&#39;</span>QQ’  <span class="c1"># 查看包含QQ的行</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>如图：</p>
 
 <p><img src="./../../../images/how_to_view_app_log_5.png" alt="idevicesyslog使用" /></p>

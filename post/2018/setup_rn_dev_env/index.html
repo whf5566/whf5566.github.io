@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2018-03-02T19:05:20&#43;08:00" />
 <meta itemprop="dateModified" content="2018-03-02T19:05:20&#43;08:00" />
-<meta itemprop="wordCount" content="1332">
+<meta itemprop="wordCount" content="1344">
 
 
 
@@ -177,46 +177,76 @@
 <h4 id="homebrew">Homebrew</h4>
 
 <p><a href="http://brew.sh/">Homebrew</a>, Mac系统的包管理器，用于安装NodeJS和一些其他必需的工具软件。</p>
-
-<pre><code class="language-shell">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">/usr/bin/ruby -e <span class="s2">&#34;</span><span class="k">$(</span>curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="k">)</span><span class="s2">&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>在Max OS X 10.11（El Capitan)版本中，homebrew在安装软件时可能会碰到/usr/local目录不可写的权限问题。可以使用下面的命令修复：</p>
-
-<pre><code class="language-shell">sudo chown -R `whoami` /usr/local
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">sudo chown -R <span class="sb">`</span>whoami<span class="sb">`</span> /usr/local</code></pre></td></tr></table>
+</div>
+</div>
 <h4 id="node">Node</h4>
 
 <p>使用Homebrew来安装<a href="https://nodejs.org/">Node.js</a>.</p>
-
-<pre><code class="language-shell">brew install node
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">brew install node</code></pre></td></tr></table>
+</div>
+</div>
 <p>安装完node后建议设置npm镜像以加速后面的过程（或使用科学上网工具）。注意：不要使用cnpm！cnpm安装的模块路径比较奇怪，packager不能正常识别！</p>
-
-<pre><code class="language-shell">npm config set registry https://registry.npm.taobao.org --global
-npm config set disturl https://npm.taobao.org/dist --global
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">npm config <span class="nb">set</span> registry https://registry.npm.taobao.org --global
+npm config <span class="nb">set</span> disturl https://npm.taobao.org/dist --global</code></pre></td></tr></table>
+</div>
+</div>
 <h4 id="yarn-react-native的命令行工具-react-native-cli">Yarn、React Native的命令行工具（react-native-cli）</h4>
 
 <p><a href="http://yarnpkg.com/">Yarn</a>是Facebook提供的替代npm的工具，可以加速node模块的下载。React Native的命令行工具用于执行创建、初始化、更新项目、运行打包服务（packager）等任务。</p>
-
-<pre><code class="language-shell">npm install -g yarn react-native-cli
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">npm install -g yarn react-native-cli</code></pre></td></tr></table>
+</div>
+</div>
 <p>安装完yarn后同理也要设置镜像源：</p>
-
-<pre><code class="language-shell">yarn config set registry https://registry.npm.taobao.org --global
-yarn config set disturl https://npm.taobao.org/dist --global
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">yarn config <span class="nb">set</span> registry https://registry.npm.taobao.org --global
+yarn config <span class="nb">set</span> disturl https://npm.taobao.org/dist --global</code></pre></td></tr></table>
+</div>
+</div>
 <p>如果你看到EACCES: permission denied这样的权限报错，那么请参照上文的homebrew译注，修复/usr/local目录的所有权：</p>
-
-<pre><code class="language-shell">sudo chown -R `whoami` /usr/local
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">sudo chown -R <span class="sb">`</span>whoami<span class="sb">`</span> /usr/local</code></pre></td></tr></table>
+</div>
+</div>
 <p>安装完yarn之后就可以用yarn代替npm了，例如用yarn代替npm install命令，用yarn add 某第三方库名代替npm install &ndash;save 某第三方库名。</p>
 
 <h4 id="xcode">Xcode</h4>
@@ -235,12 +265,18 @@ yarn config set disturl https://npm.taobao.org/dist --global
 
 <p>！！！注意！！！：init命令默认会创建最新的版本，而目前最新的0.45及以上版本需要下载boost等几个第三方库编译。这些库在国内即便翻墙也很难下载成功，导致很多人无法运行iOS项目！！！中文网在论坛中提供了这些库的国内下载链接。如果你嫌麻烦，又没有对新版本的需求，那么可以暂时创建0.44.3的版本。
 &gt; 提示：你可以使用&ndash;version参数（注意是两个杠）创建指定版本的项目。例如react-native init MyApp &ndash;version 0.44.3。注意版本号必须精确到两个小数点。</p>
-
-<pre><code class="language-shell">react-native init AwesomeProject
-cd AwesomeProject
-react-native run-ios
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">react-native init AwesomeProject
+<span class="nb">cd</span> AwesomeProject
+react-native run-ios</code></pre></td></tr></table>
+</div>
+</div>
 <blockquote>
 <p>提示：如果run-ios无法正常运行，请使用Xcode运行来查看具体错误（run-ios的报错没有任何具体信息）。</p>
 </blockquote>

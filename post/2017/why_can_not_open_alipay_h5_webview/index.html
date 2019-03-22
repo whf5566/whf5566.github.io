@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-07-11T11:16:30&#43;08:00" />
 <meta itemprop="dateModified" content="2017-07-11T11:16:30&#43;08:00" />
-<meta itemprop="wordCount" content="1150">
+<meta itemprop="wordCount" content="1161">
 
 
 
@@ -162,17 +162,28 @@
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;首先想到的是支付宝SDK集成出了问题。但是试了下，如果手机上安装有支付宝，会跳转到支付宝应用，支付成功或者手动取消返回都能正常的跳回我们的App。安装有支付宝应用的手机的支付流程是没有问题，能正常工作。可以排除支付宝SDK集成应该没有问题，但是为什么在没有安装支付宝应用的手机上，H5的支付页面显示不出来呢？<br />
 &nbsp;&nbsp;&nbsp;&nbsp;是不是我们自己的页面上调用方法的原因？我们的支付下单页面也是一个web页面，native代码通过&rdquo;WebViewJavascriptBridge&rdquo; 这个库开了一个支付的接口给web页面调用。web页面调用alipay接口代码如下：</p>
-
-<pre><code class="language-objectivec">[bridge registerHandler:@&quot;alipay&quot; handler:^(id data, WVJBResponseCallback responseCallback) {
-        NSLog(@&quot;alipay called: %@&quot;, data);
-        // 调用支付宝接口支付
-        [AlipayUtil  pay:data competion:^(PayResult reslut) {
-            // 支付结果返回
-            responseCallback(@(result));
-        }];
-}];
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="p">[</span><span class="n">bridge</span> <span class="nl">registerHandler</span><span class="p">:</span><span class="s">@&#34;alipay&#34;</span> <span class="nl">handler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">id</span> <span class="n">data</span><span class="p">,</span> <span class="n">WVJBResponseCallback</span> <span class="n">responseCallback</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&#34;alipay called: %@&#34;</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+        <span class="c1">// 调用支付宝接口支付
+</span><span class="c1"></span>        <span class="p">[</span><span class="n">AlipayUtil</span>  <span class="nl">pay</span><span class="p">:</span><span class="n">data</span> <span class="nl">competion</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="n">PayResult</span> <span class="n">reslut</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// 支付结果返回
+</span><span class="c1"></span>            <span class="n">responseCallback</span><span class="p">(</span><span class="l">@(</span><span class="n">result</span><span class="l">)</span><span class="p">);</span>
+        <span class="p">}];</span>
+<span class="p">}];</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;我们详细比对了整个流程中打印出的日志，完全看不出任何问题，但H5的支付页面就是不能显示出来。怎么办？现在只有查找提交记录，看是哪次提交引起的。最后发现是在合入我们自己的聊天SDK后，H5的支付页面就不能正常工作了。到这里，笔者开始怀疑人生了，我们的聊天SDK完全没有和支付宝相关的东西啊，为什么会这样？<br />
 &nbsp;&nbsp;&nbsp;&nbsp;支付宝的H5支付页面也是一个webview，添加到我们的window之上的，会不会是没有显示，或者被挪到我们的view下面被盖住了？我们使用<a href="https://wellphone.me/post/2017/use_uidebugginginformationoverlay_to_debug_ui/">iOS自带悬浮窗调试工具使用详解</a>中的View调试工具查看了一下，果然还是有些异常的：</p>
 
@@ -187,12 +198,18 @@
 <h2 id="问题定位">问题定位</h2>
 
 <p>&nbsp;&nbsp;&nbsp;&nbsp;找到了消失的H5支付页面后，问题变得清晰起来，可以确定的是支付宝SDK集成没有问题，我们web页面调用的native支付接口没有问题，问题出在集成聊天SDK后，出现了两个window，而支付宝SDK在显示H5支付页面时，把页面添加到另外一个window上了。在查看聊天SDK源码后发现了问题所在：</p>
-
-<pre><code class="language-objectivec">    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = [NavigationController rootViewController];;
-    [self.window makeKeyAndVisible];
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec">    <span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="o">=</span> <span class="p">[[</span><span class="n">UIWindow</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithFrame</span><span class="p">:[[</span><span class="n">UIScreen</span> <span class="n">mainScreen</span><span class="p">]</span> <span class="n">bounds</span><span class="p">]];</span>
+    <span class="nb">self</span><span class="p">.</span><span class="n">window</span><span class="p">.</span><span class="n">rootViewController</span> <span class="o">=</span> <span class="p">[</span><span class="n">NavigationController</span> <span class="n">rootViewController</span><span class="p">];;</span>
+    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">window</span> <span class="n">makeKeyAndVisible</span><span class="p">];</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>在聊天SDK初始化时，有这几行代码，然后就有两个window了~~~~~</p>
 
     </div>

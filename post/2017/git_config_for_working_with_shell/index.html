@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2017-11-14T17:12:20&#43;08:00" />
 <meta itemprop="dateModified" content="2017-11-14T17:12:20&#43;08:00" />
-<meta itemprop="wordCount" content="2113">
+<meta itemprop="wordCount" content="2139">
 
 
 
@@ -175,60 +175,95 @@ system是系统级别的全局设置，对所有电脑用户生效，文件在/e
 global是个人用户的全局配置，对所有个人用户的代码库生效，文件在$HOME/.config/git/config或者~/.gitconfig；<br />
 local是代码库的设置，仅对设置的代码库生效，文件在代码库的.git/config。<br />
 git config常用命令</p>
-
-<pre><code class="language-shell"># 显示全局配置信息
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># 显示全局配置信息</span>
 git config --global --list
-# 设置全局的用户名和邮箱
-git config --global user.name &quot;wellphone&quot;
+<span class="c1"># 设置全局的用户名和邮箱</span>
+git config --global user.name <span class="s2">&#34;wellphone&#34;</span>
 git config --global user.email wellphone@example.com
-# 开启颜色
-git config --global color.ui true
-</code></pre>
-
+<span class="c1"># 开启颜色</span>
+git config --global color.ui true</code></pre></td></tr></table>
+</div>
+</div>
 <p>更加详细的配置信息见<a href="https://git-scm.com/book/zh/v1/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-%E9%85%8D%E7%BD%AE-Git">Git-配置</a></p>
 
 <h2 id="设置别名">设置别名</h2>
 
 <p>git 命令一般较长，如果想少输入几个字可以设置别名，如下：</p>
-
-<pre><code class="language-shell">git config --global alias.st status
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git config --global alias.st status
 
 git config --global alias.ci commit
 
 git config --global alias.co checkout
 
-git config --global alias.br branch
-
-</code></pre>
-
+git config --global alias.br branch</code></pre></td></tr></table>
+</div>
+</div>
 <p>经常敲命令的话，可以感受下使用别名带来的高效率。
 除此之外，还可以创造自己的命令。比方说取消暂存文件时的输入比较繁琐，可以自己设置一下：</p>
-
-<pre><code class="language-shell">git config --global alias.unstage 'reset HEAD --'
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git config --global alias.unstage <span class="s1">&#39;reset HEAD --&#39;</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>然后，取消暂存文件的时候，只需要输入：</p>
-
-<pre><code class="language-shell">git unstage file
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git unstage file</code></pre></td></tr></table>
+</div>
+</div>
 <h2 id="自定义log显示">自定义log显示</h2>
 
 <p>默认不用任何参数的话，git log会按提交时间列出所有的更新，最近的更新排在最上面。每次更新都有一个SHA-1校验和、作者的名字和电子邮件地址、提交时间，最后缩进一个段落显示提交说明。但是没有图形化的分支图表来的直接美观。还好，git给我们提供了一个常用的 &ndash;pretty选项，可以指定使用完全不同于默认格式的方式展示提交历史。比如用 oneline将每个提交放在一行显示，这在提交数很大时非常有用。另外还有 short，full 和 fuller 可以用，展示的信息完全可以按照自己的喜好来。</p>
 
 <p>比如笔者自己配置的这条命令：</p>
-
-<pre><code class="language-shell">git log --color --graph --pretty=format:'%C(yellow)%h%Creset%C(cyan)%C(bold)%C(red)%d%Creset %s %C(green)[%cn] %Creset%C(cyan)[%cd]%Creset' --date=format-local:'%m-%d %H:%M'
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git log --color --graph --pretty<span class="o">=</span>format:<span class="s1">&#39;%C(yellow)%h%Creset%C(cyan)%C(bold)%C(red)%d%Creset %s %C(green)[%cn] %Creset%C(cyan)[%cd]%Creset&#39;</span> --date<span class="o">=</span>format-local:<span class="s1">&#39;%m-%d %H:%M&#39;</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>图：<br />
 <img src="./../../../images/git_config_for_working_with_shell_1.png" alt="image" /></p>
 
 <p>当然，我们可以使用别名的方法来使用这条命令：</p>
-
-<pre><code class="language-shell">git config --global alias.lg &quot;log --color --graph --pretty=format:'%C(yellow)%h%Creset%C(cyan)%C(bold)%C(red)%d%Creset %s %C(green)[%cn] %Creset%C(cyan)[%cd]%Creset' --date=format-local:'%m-%d %H:%M'&quot;
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">git config --global alias.lg <span class="s2">&#34;log --color --graph --pretty=format:&#39;%C(yellow)%h%Creset%C(cyan)%C(bold)%C(red)%d%Creset %s %C(green)[%cn] %Creset%C(cyan)[%cd]%Creset&#39; --date=format-local:&#39;%m-%d %H:%M&#39;&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>输入上条命令后，以后只需要输入git lg就可以看到自定义显示的log。</p>
 
 <p>更多关于log配置信息可以查看<a href="https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2">Git-基础-查看提交历史</a></p>
@@ -237,10 +272,14 @@ git config --global alias.br branch
 
 <p>git 命令没有自动补全功能，这个在命令行下让人非常抓狂，尤其是在各个分支间切换的时候，狂按tab键也不能补全分支的名字。还好，有git的资深开发为我等小白准备好了自动补全功能。<br />
 如果用的是Bash shell,到git的官方源码库中的git/contrib/compleion文件夹<a href="https://github.com/git/git/tree/35f6318d44379452d8d33e880d8df0267b4a0cd0/contrib/completion">git compleiton</a>下载git-completion.bash文件。  将该文件复制到你自己的用户主目录中（译注：按照下面的示例，还应改名加上点：cp git-completion.bash ~/.git-completion.bash），并把下面一行内容添加到你的 .bashrc 文件中：</p>
-
-<pre><code class="language-shell">source ~/.git-completion.bash
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">source</span> ~/.git-completion.bash</code></pre></td></tr></table>
+</div>
+</div>
 <p>在输入 Git 命令的时候可以敲两次跳格键（Tab），就会看到列出所有匹配的可用命令建议。</p>
 
 <p>如图:<br />
@@ -252,25 +291,41 @@ git config --global alias.br branch
 同样的我们需要在git官方代码库中下载<a href="https://github.com/git/git/blob/35f6318d44379452d8d33e880d8df0267b4a0cd0/contrib/completion/git-prompt.sh">git-prompt.sh</a>文件。<br />
 1.将下载下来的文件复制到～目录下。（e.g. ~/.git-prompt.sh）
 2.将以下命令加入到~/.bash_profile或者是~/.bashrc文件里</p>
-
-<pre><code class="language-shell">source ~/.git-prompt.sh
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">source</span> ~/.git-prompt.sh</code></pre></td></tr></table>
+</div>
+</div>
 <p>3.修改自己的环境变量中的PS1值，PROMPT_COMMAND值</p>
-
-<pre><code class="language-shell">export PS1='[\u@\h \W$(__git_ps1 &quot; (%s)&quot;)]\$ '
-export PROMPT_COMMAND='__git_ps1 &quot;\u@\h:\W&quot; &quot;\\\$ &quot;'
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">export</span> <span class="nv">PS1</span><span class="o">=</span><span class="s1">&#39;[\u@\h \W$(__git_ps1 &#34; (%s)&#34;)]\$ &#39;</span>
+<span class="nb">export</span> <span class="nv">PROMPT_COMMAND</span><span class="o">=</span><span class="s1">&#39;__git_ps1 &#34;\u@\h:\W&#34; &#34;\\\$ &#34;&#39;</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>这时，在命令行提示符上已经可以显示当前的分支名了。
 4.设置如下环境变量值</p>
-
-<pre><code class="language-shell">export GIT_PS1_SHOWDIRTYSTATE=true
-export GIT_PS1_SHOWCOLORHINTS=true
-export GIT_PS1_SHOWUNTRACKEDFILES=true
-export GIT_PS1_SHOWUPSTREAM=&quot;auto&quot;
-</code></pre>
-
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell"><span class="nb">export</span> <span class="nv">GIT_PS1_SHOWDIRTYSTATE</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">export</span> <span class="nv">GIT_PS1_SHOWCOLORHINTS</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">export</span> <span class="nv">GIT_PS1_SHOWUNTRACKEDFILES</span><span class="o">=</span><span class="nb">true</span>
+<span class="nb">export</span> <span class="nv">GIT_PS1_SHOWUPSTREAM</span><span class="o">=</span><span class="s2">&#34;auto&#34;</span></code></pre></td></tr></table>
+</div>
+</div>
 <p>如果设置GIT_PS1_SHOWDIRTYSTATE为非空值，则会使用（*）表示有文件未放入暂存区(unstaged files)，（+）表示暂存区有文件(staged files)。<br />
 如果设置GIT_PS1_SHOWUNTRACKEDFILES为非空值，则会使用（%）表示有没有加入到git中的文件（untracked files）。<br />
 如果设置GIT_PS1_SHOWCOLORHINTS为非空值，则会显示颜色。
