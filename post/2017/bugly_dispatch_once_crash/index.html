@@ -506,7 +506,23 @@ iOS开发者或多或少都听过或用过Bugly。它是腾讯开发的一个SDK
     </footer>
   </article>
         </div>
-        
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2017-08-25 16:52:20 \x2b0800 CST',
+        title: '腾讯Bugly的巨坑：使用不当会造成UI界面卡死',
+        clientID: 'c931a54cad3e4636d03a',
+        clientSecret: '393102b73eea4b09a2873bb2e455d439c2bf4d89',
+        repo: 'wellphone',
+        owner: 'whf5566',
+        admin: ['whf5566'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
 
       </div>
     </main>
