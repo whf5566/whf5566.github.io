@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://www.netlify.com/&#39; target=&#39;_blank&#39;&gt;Netlify&lt;/a&gt;</copyright>
-    <lastBuildDate>Thu, 04 Apr 2019 14:55:19 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 12 Apr 2019 20:04:30 +0800</lastBuildDate>
     
 	<atom:link href="https://www.wellphone.me/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>iOS如何区分App和SDK内部crash</title>
+      <link>https://www.wellphone.me/post/2019/how_to_distinguish_crash_in_sdk/</link>
+      <pubDate>Fri, 12 Apr 2019 20:04:30 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/post/2019/how_to_distinguish_crash_in_sdk/</guid>
+      <description>最近在开发iOS平台上的SDK，提供给合作方使用。为了监控SDK自身的崩溃率，我们在SDK中加入了抓取crash的功能。但收集上来的日志中有</description>
+    </item>
     
     <item>
       <title>iOS平台常见日志库简介</title>

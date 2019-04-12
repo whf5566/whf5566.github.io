@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>iOS如何区分App和SDK内部crash - Wellphone - blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="wellphone" /><meta name="description" content="最近在开发iOS平台上的SDK，提供给合作方使用。为了监控SDK自身的崩溃率，我们在SDK中加入了抓取crash的功能。但收集上来的日志中有" /><meta name="keywords" content="sdk, crash, distinguish, app crash, ios crash" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.wellphone.me/post/2019/how_to_distinguish_crash_in_sdk/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="iOS如何区分App和SDK内部crash" />
+<meta property="og:description" content="最近在开发iOS平台上的SDK，提供给合作方使用。为了监控SDK自身的崩溃率，我们在SDK中加入了抓取crash的功能。但收集上来的日志中有" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.wellphone.me/post/2019/how_to_distinguish_crash_in_sdk/" />
+<meta property="article:published_time" content="2019-04-12T20:04:30&#43;08:00"/>
+<meta property="article:modified_time" content="2019-04-12T20:04:30&#43;08:00"/>
+
+<meta itemprop="name" content="iOS如何区分App和SDK内部crash">
+<meta itemprop="description" content="最近在开发iOS平台上的SDK，提供给合作方使用。为了监控SDK自身的崩溃率，我们在SDK中加入了抓取crash的功能。但收集上来的日志中有">
+
+
+<meta itemprop="datePublished" content="2019-04-12T20:04:30&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-12T20:04:30&#43;08:00" />
+<meta itemprop="wordCount" content="3719">
+
+
+
+<meta itemprop="keywords" content="crash,sdk," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="iOS如何区分App和SDK内部crash"/>
+<meta name="twitter:description" content="最近在开发iOS平台上的SDK，提供给合作方使用。为了监控SDK自身的崩溃率，我们在SDK中加入了抓取crash的功能。但收集上来的日志中有"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Wellphone</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Wellphone</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">iOS如何区分App和SDK内部crash</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-04-12 </span>
+        <div class="post-category">
+            <a href="/categories/2019/"> 2019 </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#ios-crash日志格式">iOS crash日志格式</a></li>
+<li><a href="#如何确定动态库的crash">如何确定动态库的crash</a></li>
+<li><a href="#如何确定静态库的crash">如何确定静态库的crash</a>
+<ul>
+<li><a href="#通过符号来判断"><strong>通过符号来判断</strong></a></li>
+<li><a href="#通过地址来判断"><strong>通过地址来判断</strong></a>
+<ul>
+<li><a href="#静态库sdk二进制文件结构"><strong>静态库SDK二进制文件结构</strong></a></li>
+<li><a href="#app可执行文件结构"><strong>App可执行文件结构</strong></a></li>
+<li><a href="#如何确定sdk代码起始和结束地址"><strong>如何确定SDK代码起始和结束地址</strong></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#总结">总结</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>最近在开发iOS平台上的SDK，提供给合作方使用。为了监控SDK自身的崩溃率，我们在SDK中加入了抓取crash的功能。但收集上来的日志中有较多合作方App的crash，并且接入SDK的App数量很多，产生的崩溃日志量非常大。靠人力从海量的日志中筛选出我们SDK的crash日志非常困难。</p>
+
+<p><strong>于是就有了这个问题，如何自动区分SDK内部的crash和App的crash？</strong></p>
+
+<h2 id="ios-crash日志格式">iOS crash日志格式</h2>
+
+<p>想区分不同类型的crash，需要先了解iOS的crash日志格式。iOS的crash报告日志可以分为头部(Header)、异常信息(Exception Information)、诊断信息(Additional Diagnostic Information)、线程堆栈(Backtraces)、线程状态(Thread State)、库信息(Binary Images)这六个部分。如图：</p>
+
+<p><img src="./../../../images/distinguish_crash/crash_format_intro.png" alt="堆栈信息图" /></p>
+
+<p>其中:</p>
+
+<blockquote>
+<ol>
+<li><p>头部(Header): 硬件型号，系统版本，进程名称、id，bundleid，崩溃时间，crash日志报告格式版本号等信息。</p></li>
+
+<li><p>异常信息(Exception Information):  崩溃类型、崩溃代码及触发崩溃的线程等信息。</p></li>
+
+<li><p>诊断信息(Additional Diagnostic Information): 非常简略的诊断信息。不是每个崩溃都会有诊断信息。</p></li>
+
+<li><p>线程堆栈(Backtraces):  崩溃发生时，各个线程的方法调用栈的详细信息。触发崩溃的线程会被标记上Crashed。</p></li>
+
+<li><p>线程状态(Thread State): 崩溃时寄存器的状态。</p></li>
+
+<li><p>库信息(Binary Images):  加载的动态库信息。</p></li>
+</ol>
+</blockquote>
+
+<p>查看crash日志时，首先会在【异常信息(Exception Information)】中通过名叫“Triggered by Thread”的字段查看是哪个线程发了crash。例如上图中的“Triggered by Thread:  0”表示是0号线程也就是主线程发生了crash。在【线程堆栈(Backtraces)】信息中，也会看的线程号下面会用“Thread xx Crashed”标记该线程发生了crash。</p>
+
+<p>在【线程堆栈(Backtraces)】信息中，有方法编号，方法所属的模块名，方法地址，方法符号信息或者方法所在的段地址及偏移量。每个方法的地址是包含在所属模块的地址范围内。如图：</p>
+
+<p><img src="./../../../images/distinguish_crash/crash_stack.png" alt="堆栈信息图" /></p>
+
+<p>图中显示，0号线程即主线程发生了crash，地址是0x00000001000effdc，在TheElements这个模块内。在【库信息(Binary Images)】信息中可以找到这个二进制模块，也就是App可执行文件TheElements，其他的模块是系统加载的动态库，比如UIKit、CoreFoundation等（这张图并没有显示出来，在第一张图中可以看到另外两个系统的动态库，其他系统库的太多了，图中并没有展示）。</p>
+
+<h2 id="如何确定动态库的crash">如何确定动态库的crash</h2>
+
+<p>熟悉了crash日志报告的格式，我们知道动态库的crash的方法栈中是带有动态库的名字的，一眼就能看出是哪个模块发生了crash。通过格式化好的crash日志，就能够区分App的crash和引入的动态SDK的crash。如果要在App运行时crash后立即判断，可以通过crash的地址，找到包含这个地址的二进制模块就行了。</p>
+
+<h2 id="如何确定静态库的crash">如何确定静态库的crash</h2>
+
+<p>通过Crash的地址可以找到该方法所属的二进制模块。然而，如果SDK是静态库引入的，其代码会被加入到App的代码段中，SDK的代码和App的代码属于同一个二进制模块，这样就不容易判断了。例如第一张图中的crash在 [TestCrash illegalAccess], 这段代码是在SDK中的，而所属的模块是TestSDKApp，即App的代码段，这样就不知道是App还是SDK内部crash了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-javascript" data-lang="javascript"><span class="nx">Thread</span> <span class="mi">0</span> <span class="nx">Crashed</span><span class="o">:</span>
+<span class="mi">0</span>   <span class="nx">TestSDKApp</span>                    	<span class="mh">0x00000001021529d4</span> <span class="o">+</span><span class="p">[</span><span class="nx">TestCrash</span> <span class="nx">illegalAccess</span><span class="p">]</span> <span class="o">+</span> <span class="mi">27092</span> <span class="p">(</span><span class="nx">TestCrash</span><span class="p">.</span><span class="nx">m</span><span class="o">:</span><span class="mi">21</span><span class="p">)</span>
+<span class="mi">1</span>   <span class="nx">UIKitCore</span>                     	<span class="mh">0x000000020df86768</span> <span class="o">-</span><span class="p">[</span><span class="nx">UIApplication</span> <span class="nx">sendAction</span><span class="o">:</span><span class="nx">to</span><span class="o">:</span><span class="nx">from</span><span class="o">:</span><span class="nx">forEvent</span><span class="o">:</span><span class="p">]</span> <span class="o">+</span> <span class="mi">96</span>
+
+<span class="nx">Binary</span> <span class="nx">Images</span><span class="o">:</span>
+<span class="mh">0x10214c000</span> <span class="o">-</span> <span class="mh">0x102153fff</span> <span class="nx">TestSDKApp</span> <span class="nx">arm64</span>  <span class="o">&lt;</span><span class="mi">3</span><span class="nx">f44b26a30f93ebd8f79abd1fe7e0ac9</span><span class="o">&gt;</span>  <span class="err">/var/containers/Bundle/Application/9293836E-A3C3-4C61-BDAD-BEED79AC9EDE/TestSDKApp.app/TestSDKApp</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+<p>对于这个问题，当时我们有这几个选择： 一个是服务端收集到crash日志后，通过符号文件解析出对应的堆栈信息，然后通过crash的符号来判断是app的crash还是sdk的内部的crash。另一个方法就是通过地址来判断。</p>
+
+<h3 id="通过符号来判断"><strong>通过符号来判断</strong></h3>
+
+<p>这个思路很简单，就是人查看crash日志识别不同crash的过程。大致步骤如下：</p>
+
+<ol>
+<li>符号化服务端crash日志</li>
+<li>收集SDK中所有的特征符号，比如类名，方法名等等</li>
+<li>处理crash日志，对比SDK中的特征符号，确定该crash是SDK内部crash<br /></li>
+</ol>
+
+<p>思路简单，但是会带来很多问题。如收集SDK中类名费时费力；SDK中某些引入的第三方库没有符号信息；不同版本的SDK符号特征不一样。每个问题都能折磨人。</p>
+
+<h3 id="通过地址来判断"><strong>通过地址来判断</strong></h3>
+
+<p>既然都知道了crash发生的地址，为什么不通过地址来判断是否在SDK内部呢，就像动态库的crash一样？于是问题就变为了如何确定SDK代码被连接进App后的起始地址和结束地址。</p>
+
+<h4 id="静态库sdk二进制文件结构"><strong>静态库SDK二进制文件结构</strong></h4>
+
+<p>这里对SDK的文件格式不详细介绍，看图：<br />
+<img src="./../../../images/distinguish_crash/sdk_file_format.png" alt="SDK文件结构" /></p>
+
+<p>图中红框中标出的是该SDK包含的object文件内容，即文件编译后的产物。这里的顺序是如何确定的呢？看下xcode中【Targets-&gt;Build Phases-&gt;Complie Sources】就明白了，是xcode编译这些源文件的顺序。如图：</p>
+
+<p><img src="./../../../images/distinguish_crash/compline_sources.png" alt="Complie Sources" /></p>
+
+<p>也就说，SDK的文件相当于一个object文件的容器，把源文件的编译产物按顺序打包组织在一起就是SDK的二进制文件了。把SDK二进制连接进App可执行文件后是什么样的？我们先看下App可执行文件的结构。</p>
+
+<h4 id="app可执行文件结构"><strong>App可执行文件结构</strong></h4>
+
+<p>同样的，我们对App可执行文件的格式不详细展开，只看连接进App的SDK是如何组织的。如图：</p>
+
+<p><img src="./../../../images/distinguish_crash/app_text_1.png" alt="Complie Sources" /><br />
+<img src="./../../../images/distinguish_crash/app_text_2.png" alt="Complie Sources" /><br />
+这两张图是App可执行文件中反汇编后，获取的方法地址列表。SDK中方法太多，只截取了开始部分和结束部分。可以看出，SDK中的方法都是集中在一块，并且是按照SDK文件中的object文件顺序排列。<br />
+于是可以得出这样一个结论</p>
+
+<blockquote>
+<p>SDK中文件的编译顺序最终体现在连接进App可执行文件中方法的地址顺序。也就是，SDK连接进App可执行文件后，基本上是在一块连续的地址上；App执行时，加载进内存也会在一块连续的内存地址上。</p>
+</blockquote>
+
+<p>这样我们就通过crash方法地址就能确定是否是SDK内部的crash。于是乎我们就剩下最后一个问题了，如何确定SDK代码段的起始地址和结束地址？</p>
+
+<h4 id="如何确定sdk代码起始和结束地址"><strong>如何确定SDK代码起始和结束地址</strong></h4>
+
+<p>细心的人可能已经从前面的图片中看出来怎么做了。对，就是在编译文件最前面添加一个文件，最后面添加一个文件。比如图片中的CodeTextBegin.m 和 CodeTextEnd.m ，然后第一个文件的第一个方法地址就是SDK编译文件中所有方法的起始地址，最后一个文件的最后一个方法地址就是SDK编译文件中所有方法的结束地址。例如：<br />
+CodeTextBegin.m放在所有编译文件的最前面，里面的第一个方法是获取该方法自身的地址。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="c1">// CodeTextBegin.m
+</span><span class="c1"></span><span class="cp">#import &#34;CodeAddress.h&#34;
+</span><span class="cp"></span>
+<span class="c1">// 返回这个方法的地址
+</span><span class="c1"></span><span class="k">extern</span> <span class="kt">void</span> <span class="o">*</span> <span class="nf">getSDKStartAddress</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="n">getSDKStartAddress</span><span class="p">;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>CodeTextEnd.m放在所有编译文件的最后面，里面的最后一个方法是获取该方法自身的地址。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="c1">// CodeTextEnd.m
+</span><span class="c1"></span><span class="cp">#import &#34;CodeAddress.h&#34;
+</span><span class="cp"></span>
+<span class="c1">// 返回这个方法的地址
+</span><span class="c1"></span><span class="k">extern</span> <span class="kt">void</span> <span class="o">*</span> <span class="nf">getSDKEndAddress</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="o">&amp;</span><span class="n">getSDKEndAddress</span><span class="p">;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>这样我们调用这个两个方法就能都到所有编译文件中的方法的起止地址。</p>
+
+<p>为什么是SDK编译文件中的所有方法呢？因为，SDK中还可以引入其他SDK。这个时候，引入的其他SDK的所有方法会添加在编译文件的最后一个方法后面。所以，如果我们要包含SDK所有方法时，应该在SDK中引入一个SDK，并且放在所有引入的SDK最后面，这个最后面的SDK中，有个方法可以返回自身的地址。</p>
+
+<p>这样，我们就能通过crash时的方法地址来判断是否是SDK内部的crash了。</p>
+
+<p>在根据上面的方法做完后测试，SDK运行时获取的方法地址和在MachOView工具中看到的App可执行文件中的地址对应不上，这是为什么？<br />
+其实是iOS系统引入了ASLR机制，即Address space layout randomization。在App运行时，iOS系统会给加载进内存的二进制模块一个随机的偏移地址，我们只需要把运行时的地址减掉这个偏移地址好了
+代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="c1">// 获取可执行模块的slide
+</span><span class="c1"></span><span class="k">extern</span> <span class="kt">long</span> <span class="nf">getExecuteImageSlide</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">long</span> <span class="n">slide</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">_dyld_image_count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">_dyld_get_image_header</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">filetype</span> <span class="o">==</span> <span class="n">MH_EXECUTE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">slide</span> <span class="o">=</span> <span class="n">_dyld_get_image_vmaddr_slide</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">slide</span><span class="p">;</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>用获取到的方法地址减去偏移值就是App可执行文件中的地址：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-objectivec" data-lang="objectivec"><span class="c1">// 真实的起始地址
+</span><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="n">startAddr</span> <span class="o">=</span>  <span class="n">getSDKStartAddress</span><span class="p">()</span> <span class="o">-</span>  <span class="n">getExecuteImageSlide</span><span class="p">();</span>
+
+<span class="c1">// 真实的结束地址
+</span><span class="c1"></span><span class="kt">void</span><span class="o">*</span> <span class="n">endAddr</span> <span class="o">=</span> <span class="n">getSDKEndAddress</span><span class="p">()</span> <span class="o">-</span>  <span class="n">getExecuteImageSlide</span><span class="p">();</span></code></pre></td></tr></table>
+</div>
+</div>
+<h2 id="总结">总结</h2>
+
+<p>前面按照解决问题的步骤贴图讲的，比较混乱。这里总结下，我们可以通过SDK的起止地址是否包含crash的方法地址来判断crash是否发生在SDK内部。  具体如下：</p>
+
+<blockquote>
+<ol>
+<li>动态库有明确的起止地址，可以用crash方法的地址直接来判断。<br /></li>
+<li>静态库中的方法会按编译时的顺序连接进App可执行文件。<br /></li>
+<li>在第一个编译文件最前面添加一个方法，返回其自身地址，作为SDK的起始地址<br /></li>
+<li>在最后一个编译文件的最后面添加一个方法，返回其自身地址，作为SDK的所有编译文件方法的结束地址，如果SDK中有引入其他第三方库则需步骤5<br /></li>
+<li>在最后一个被引入SDK的三方库后面，添加一个库，库中导出一个（4）中一样的方法，作为SDK的结束地址<br /></li>
+<li>crash时，把获取到的crash地址与SDK的起止地址进行比较就能知道是否是SDK内部的crash。主要比较地址时，如果crash地址减去了slide，则对应的SDK起止地址也应减去slide。</li>
+</ol>
+</blockquote>
+
+<p><a href="https://github.com/whf5566/TestSDKCrash">Demo地址</a><br />
+<a href="https://github.com/gdbinit/MachOView">查看二进制文件工具MachOView地址</a></p>
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/crash/">crash</a>
+          <a href="/tags/sdk/">sdk</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2019/introduction_to_the_log_library_of_ios_platform/">
+            <span class="next-text nav-default">iOS平台常见日志库简介</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2019-04-12 20:04:30 \x2b0800 CST',
+        title: 'iOS如何区分App和SDK内部crash',
+        clientID: 'c931a54cad3e4636d03a',
+        clientSecret: '393102b73eea4b09a2873bb2e455d439c2bf4d89',
+        repo: 'wellphone',
+        owner: 'whf5566',
+        admin: ['whf5566'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/whf5566" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.wellphone.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Wellphone's blog @ <a href='https://www.netlify.com/' target='_blank'>Netlify</a></span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+</body>
+</html>

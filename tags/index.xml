@@ -184,6 +184,15 @@
     </item>
     
     <item>
+      <title>crash</title>
+      <link>https://www.wellphone.me/tags/crash/</link>
+      <pubDate>Fri, 12 Apr 2019 20:04:30 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/crash/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>dispatch_once</title>
       <link>https://www.wellphone.me/tags/dispatch_once/</link>
       <pubDate>Fri, 25 Aug 2017 16:52:20 +0800</pubDate>
@@ -231,7 +240,7 @@
     <item>
       <title>iOS</title>
       <link>https://www.wellphone.me/tags/ios/</link>
-      <pubDate>Sat, 08 Jul 2017 22:28:48 +0800</pubDate>
+      <pubDate>Thu, 04 Apr 2019 14:55:19 +0800</pubDate>
       
       <guid>https://www.wellphone.me/tags/ios/</guid>
       <description></description>
@@ -243,6 +252,24 @@
       <pubDate>Tue, 28 Aug 2018 19:47:44 +0800</pubDate>
       
       <guid>https://www.wellphone.me/tags/ios-sdk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>log</title>
+      <link>https://www.wellphone.me/tags/log/</link>
+      <pubDate>Thu, 04 Apr 2019 14:55:19 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/log/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sdk</title>
+      <link>https://www.wellphone.me/tags/sdk/</link>
+      <pubDate>Fri, 12 Apr 2019 20:04:30 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/sdk/</guid>
       <description></description>
     </item>
     
