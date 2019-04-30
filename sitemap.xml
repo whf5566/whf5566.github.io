@@ -3,6 +3,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.wellphone.me/post/2019/determine_if_it_is_the_same_day/</loc>
+    <lastmod>2019-04-30T17:37:21+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://www.wellphone.me/post/2019/how_to_distinguish_crash_in_sdk/</loc>
     <lastmod>2019-04-12T20:04:30+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -129,6 +136,13 @@
   </url>
   
   <url>
+    <loc>https://www.wellphone.me/tags/</loc>
+    <lastmod>2019-04-30T17:37:21+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://www.wellphone.me/categories/2017/</loc>
     <lastmod>2017-12-06T17:15:20+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -144,7 +158,7 @@
   
   <url>
     <loc>https://www.wellphone.me/categories/2019/</loc>
-    <lastmod>2019-04-12T20:04:30+08:00</lastmod>
+    <lastmod>2019-04-30T17:37:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -256,7 +270,7 @@
   
   <url>
     <loc>https://www.wellphone.me/post/</loc>
-    <lastmod>2019-04-12T20:04:30+08:00</lastmod>
+    <lastmod>2019-04-30T17:37:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -298,7 +312,7 @@
   
   <url>
     <loc>https://www.wellphone.me/tags/</loc>
-    <lastmod>2017-08-28T16:42:12+08:00</lastmod>
+    <lastmod>2019-04-30T17:37:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -340,7 +354,7 @@
   
   <url>
     <loc>https://www.wellphone.me/</loc>
-    <lastmod>2019-04-12T20:04:30+08:00</lastmod>
+    <lastmod>2019-04-30T17:37:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -403,14 +417,14 @@
   
   <url>
     <loc>https://www.wellphone.me/tags/ios/</loc>
-    <lastmod>2019-04-04T14:55:19+08:00</lastmod>
+    <lastmod>2019-04-30T17:37:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.wellphone.me/categories/ios/</loc>
-    <lastmod>2018-03-02T19:05:20+08:00</lastmod>
+    <lastmod>2019-04-30T17:37:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -451,8 +465,22 @@
   </url>
   
   <url>
+    <loc>https://www.wellphone.me/categories/swift/</loc>
+    <lastmod>2019-04-30T17:37:21+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://www.wellphone.me/categories/trouble-shooting/</loc>
     <lastmod>2017-08-25T16:52:20+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.wellphone.me/tags/%E6%80%A7%E8%83%BD/</loc>
+    <lastmod>2019-04-30T17:37:21+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>

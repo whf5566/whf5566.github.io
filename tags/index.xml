@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://www.netlify.com/&#39; target=&#39;_blank&#39;&gt;Netlify&lt;/a&gt;</copyright>
-    <lastBuildDate>Mon, 28 Aug 2017 16:42:12 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 30 Apr 2019 17:37:21 +0800</lastBuildDate>
     
 	<atom:link href="https://www.wellphone.me/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title></title>
+      <link>https://www.wellphone.me/tags/</link>
+      <pubDate>Tue, 30 Apr 2019 17:37:21 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>AUTOINCREMENT</title>
@@ -240,7 +249,7 @@
     <item>
       <title>iOS</title>
       <link>https://www.wellphone.me/tags/ios/</link>
-      <pubDate>Thu, 04 Apr 2019 14:55:19 +0800</pubDate>
+      <pubDate>Tue, 30 Apr 2019 17:37:21 +0800</pubDate>
       
       <guid>https://www.wellphone.me/tags/ios/</guid>
       <description></description>
@@ -288,6 +297,15 @@
       <pubDate>Mon, 28 Aug 2017 16:42:12 +0800</pubDate>
       
       <guid>https://www.wellphone.me/tags/sqlite/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>性能</title>
+      <link>https://www.wellphone.me/tags/%E6%80%A7%E8%83%BD/</link>
+      <pubDate>Tue, 30 Apr 2019 17:37:21 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/tags/%E6%80%A7%E8%83%BD/</guid>
       <description></description>
     </item>
     

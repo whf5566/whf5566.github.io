@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>如何高效判断日期是否是同一天 - Wellphone - blog</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="wellphone" /><meta name="description" content="很多同学都写过判断两个日期是否是同一天或者同一年这样的方法。方法需求很简单，直接使用系统库的方法来判断就可以了。近期做了这样的一个UI界面，" /><meta name="keywords" content="日期, 同一天, Date, 性能" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://www.wellphone.me/post/2019/determine_if_it_is_the_same_day/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<link href="/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="如何高效判断日期是否是同一天" />
+<meta property="og:description" content="很多同学都写过判断两个日期是否是同一天或者同一年这样的方法。方法需求很简单，直接使用系统库的方法来判断就可以了。近期做了这样的一个UI界面，" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.wellphone.me/post/2019/determine_if_it_is_the_same_day/" />
+<meta property="article:published_time" content="2019-04-30T17:37:21&#43;08:00"/>
+<meta property="article:modified_time" content="2019-04-30T17:37:21&#43;08:00"/>
+
+<meta itemprop="name" content="如何高效判断日期是否是同一天">
+<meta itemprop="description" content="很多同学都写过判断两个日期是否是同一天或者同一年这样的方法。方法需求很简单，直接使用系统库的方法来判断就可以了。近期做了这样的一个UI界面，">
+
+
+<meta itemprop="datePublished" content="2019-04-30T17:37:21&#43;08:00" />
+<meta itemprop="dateModified" content="2019-04-30T17:37:21&#43;08:00" />
+<meta itemprop="wordCount" content="1613">
+
+
+
+<meta itemprop="keywords" content="iOS,性能,," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="如何高效判断日期是否是同一天"/>
+<meta name="twitter:description" content="很多同学都写过判断两个日期是否是同一天或者同一年这样的方法。方法需求很简单，直接使用系统库的方法来判断就可以了。近期做了这样的一个UI界面，"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">Wellphone</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">Wellphone</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">Categories</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">如何高效判断日期是否是同一天</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-04-30 </span>
+        <div class="post-category">
+            <a href="/categories/ios/"> iOS </a>
+            <a href="/categories/swift/"> swift </a>
+            <a href="/categories/2019/"> 2019 </a>
+            </div>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> times read </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#判断日期是否是同一天的几个方法">判断日期是否是同一天的几个方法</a></li>
+<li><a href="#几种方法对比">几种方法对比</a></li>
+<li><a href="#引申问题">引申问题</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p>很多同学都写过判断两个日期是否是同一天或者同一年这样的方法。方法需求很简单，直接使用系统库的方法来判断就可以了。近期做了这样的一个UI界面，如图，所有图片通过拍摄时间以天为单位分成一个个大组，然后，再按拍摄地点分成小组；然后同一年的第一个section节头上要突出显示年份。但是，界面在首次滑动时，总有卡顿感。使用Xcode自带的 Instruments&rsquo; Time Profiler 测量了下时间，主要耗时居然是判断日期是否是同一天的方法。<br />
+<img src="./../../../images/same_day/same_day_ui.mp4" alt="UI界面" /></p>
+
+<h2 id="判断日期是否是同一天的几个方法">判断日期是否是同一天的几个方法</h2>
+
+<p>卡顿必须要优化，于是在网上找到了这样几个判断日期是否是同一天的方法，如下：</p>
+
+<ol>
+<li><p>格式成日期字符串后比较</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">isSameDay1</span><span class="p">(</span><span class="kc">_</span> <span class="n">date1</span><span class="p">:</span><span class="n">Date</span><span class="p">,</span> <span class="kc">_</span> <span class="n">date2</span><span class="p">:</span><span class="n">Date</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">Bool</span> <span class="p">{</span>
+<span class="kd">let</span> <span class="nv">formatter</span> <span class="p">=</span> <span class="n">DateFormatter</span><span class="p">()</span>
+<span class="n">formatter</span><span class="p">.</span><span class="n">dateFormat</span> <span class="p">=</span> <span class="s">&#34;yyyyMMdd&#34;</span>
+<span class="k">return</span> <span class="n">formatter</span><span class="p">.</span><span class="n">string</span><span class="p">(</span><span class="n">from</span><span class="p">:</span> <span class="n">date1</span><span class="p">)</span> <span class="p">==</span> <span class="n">formatter</span><span class="p">.</span><span class="n">string</span><span class="p">(</span><span class="n">from</span><span class="p">:</span> <span class="n">date2</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>取出日期的年月日比较</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">isSameDay2</span><span class="p">(</span><span class="kc">_</span> <span class="n">date1</span><span class="p">:</span><span class="n">Date</span><span class="p">,</span> <span class="kc">_</span> <span class="n">date2</span><span class="p">:</span><span class="n">Date</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">Bool</span> <span class="p">{</span>
+<span class="kd">let</span> <span class="nv">calendar</span> <span class="p">=</span> <span class="n">Calendar</span><span class="p">.</span><span class="n">current</span>
+<span class="kd">let</span> <span class="nv">d1</span> <span class="p">=</span> <span class="n">calendar</span><span class="p">.</span><span class="n">dateComponents</span><span class="p">([.</span><span class="n">year</span><span class="p">,.</span><span class="n">month</span><span class="p">,.</span><span class="n">day</span><span class="p">],</span> <span class="n">from</span><span class="p">:</span> <span class="n">date1</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">d2</span> <span class="p">=</span> <span class="n">calendar</span><span class="p">.</span><span class="n">dateComponents</span><span class="p">([.</span><span class="n">year</span><span class="p">,.</span><span class="n">month</span><span class="p">,.</span><span class="n">day</span><span class="p">],</span> <span class="n">from</span><span class="p">:</span> <span class="n">date2</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">d1</span><span class="p">.</span><span class="n">year</span> <span class="p">==</span> <span class="n">d2</span><span class="p">.</span><span class="n">year</span> <span class="o">&amp;&amp;</span> <span class="n">d1</span><span class="p">.</span><span class="n">month</span> <span class="p">==</span> <span class="n">d2</span><span class="p">.</span><span class="n">month</span> <span class="o">&amp;&amp;</span> <span class="n">d1</span><span class="p">.</span><span class="n">day</span> <span class="p">==</span> <span class="n">d2</span><span class="p">.</span><span class="n">day</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div></li>
+
+<li><p>使用Calendar的isDate(_:Date, inSameDayAs:Date)方法进行判断
+这个方法是最简单的，直接使用系统库的方法，不用写其他代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">isSameDay3</span><span class="p">(</span><span class="kc">_</span> <span class="n">date1</span><span class="p">:</span><span class="n">Date</span><span class="p">,</span> <span class="kc">_</span> <span class="n">date2</span><span class="p">:</span><span class="n">Date</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">Bool</span> <span class="p">{</span>
+<span class="k">return</span> <span class="n">Calendar</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">isDate</span><span class="p">(</span><span class="n">date1</span><span class="p">,</span> <span class="n">inSameDayAs</span><span class="p">:</span> <span class="n">date2</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>笔者在试过这几个方法后，发现主要耗时还是在判断是否是同一天的方法上。没办法，图片分组时，必须要判断是否是同一天，这个方法是绕不过去的，于是硬着头皮找到另外一种判断是否是同一天的方法，如下：</p></li>
+
+<li><p>直接通过天数来判断是否是同一天<br />
+时间戳是从1970年的1月1日开始的秒数。如果，两个时间戳相差超过一天，那它们肯定不是同一天；如果相差少于一天，则计算这两个时间戳在该时区的天数，比较天数是否相等。比如，在+0的时区，我们用时间戳直接除以864000，得到的整数就是天数，在+8时区，由于第一天开始的时间戳是 8*3600，所以我们计算天数的时候加上这个值就可以了。系统也给我们提供了这个方法secondsFromGMT()来获取不同时区与标准时区的时间戳差值。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">func</span> <span class="nf">isSameDay4</span><span class="p">(</span><span class="kc">_</span> <span class="n">date1</span><span class="p">:</span><span class="n">Date</span><span class="p">,</span> <span class="kc">_</span> <span class="n">date2</span><span class="p">:</span><span class="n">Date</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">Bool</span> <span class="p">{</span>
+<span class="kd">let</span> <span class="nv">secondesPerDay</span><span class="p">:</span><span class="nb">Int</span> <span class="p">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span>
+<span class="kd">let</span> <span class="nv">t1</span><span class="p">:</span><span class="nb">Int</span> <span class="p">=</span> <span class="nb">Int</span><span class="p">(</span><span class="n">date1</span><span class="p">.</span><span class="n">timeIntervalSince1970</span><span class="p">)</span>
+<span class="kd">let</span> <span class="nv">t2</span><span class="p">:</span><span class="nb">Int</span> <span class="p">=</span> <span class="nb">Int</span><span class="p">(</span><span class="n">date2</span><span class="p">.</span><span class="n">timeIntervalSince1970</span><span class="p">)</span>
+<span class="k">if</span> <span class="bp">abs</span><span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">secondesPerDay</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span>
+<span class="kd">let</span> <span class="nv">offset</span><span class="p">:</span><span class="nb">Int</span> <span class="p">=</span> <span class="n">Calendar</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">timeZone</span><span class="p">.</span><span class="n">secondsFromGMT</span><span class="p">()</span>
+<span class="k">return</span> <span class="p">(</span><span class="n">t1</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">secondesPerDay</span><span class="p">)</span> <span class="p">==</span>  <span class="p">(</span><span class="n">t2</span> <span class="o">+</span> <span class="n">offset</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">secondesPerDay</span><span class="p">)</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+
+<h2 id="几种方法对比">几种方法对比</h2>
+
+<p>在iPhoneX上执行了20000次比较，结果如下：<br />
+两个日期是同一天的比较结果：<br />
+<img src="./../../../images/same_day/same_day_function_time.png" alt="两个日期是同一天的比较结果" /></p>
+
+<p>两个日期不是同一天的比较结果：<br />
+<img src="./../../../images/same_day/same_day_function_time2.png" alt="两个日期不是同一天的比较结果" /></p>
+
+<p>从上面结果可以看出，方法4比前三个方法要好不少，尤其是要比较的两个日期不是同一天的情况下。方法3是系统API，其性能也比前两种方法好。</p>
+
+<h2 id="引申问题">引申问题</h2>
+
+<p>既然判断同一天的方法如此高效，那是否能够用来判断两个日期是否是同一年呢？<br />
+同一天可以通过这个方法判断，是因为没有闰秒，也就是说一天总是3600*24秒（在实际当中是有闰秒的，但没有规律，POSIX的计时没有算闰秒），而一年的时间不是固定的365天，所以这个方法不能简单的套用。但是可以通过日期当前的年份数，再比较年份数就可以了。代码如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-swift" data-lang="swift"><span class="kd">class</span> <span class="nc">func</span> <span class="n">getYear</span><span class="p">(</span><span class="kc">_</span> <span class="n">date</span><span class="p">:</span><span class="n">Date</span><span class="p">?)</span> <span class="p">-&gt;</span> <span class="nb">Int</span><span class="p">?</span> <span class="p">{</span>
+    <span class="k">guard</span> <span class="kd">let</span> <span class="nv">date</span> <span class="p">=</span> <span class="n">date</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span>
+    <span class="p">}</span>
+    <span class="kd">let</span> <span class="nv">timeInterval</span><span class="p">:</span><span class="n">TimeInterval</span> <span class="p">=</span> <span class="n">date</span><span class="p">.</span><span class="n">timeIntervalSince1970</span>
+    <span class="kd">let</span> <span class="nv">secondsFromGMT</span> <span class="p">=</span> <span class="n">Calendar</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">timeZone</span><span class="p">.</span><span class="n">secondsFromGMT</span><span class="p">()</span>
+    <span class="c1">// 如果时间戳为负，或者在32位机器上超过Int类型最大值，直接调用系统的获取年份的方法</span>
+    <span class="c1">// 下面的方法对于时间戳为负也是可以处理的</span>
+    <span class="c1">// 这里考虑到大部分日期都是1970年以后，对于1970年以前的日期就直接调用系统方法进行处理</span>
+    <span class="k">if</span> <span class="n">timeInterval</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">timeInterval</span> <span class="o">&lt;</span> <span class="nb">Double</span><span class="p">(</span><span class="nb">Int</span><span class="p">.</span><span class="bp">max</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="kd">var</span> <span class="nv">days</span><span class="p">:</span><span class="nb">Int</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Int</span><span class="p">(</span><span class="n">timeInterval</span><span class="p">)</span> <span class="o">+</span> <span class="n">secondsFromGMT</span> <span class="p">)</span> <span class="o">/</span> <span class="mi">86400</span>
+        <span class="kd">var</span> <span class="nv">year</span><span class="p">:</span><span class="nb">Int</span> <span class="p">=</span> <span class="mi">1970</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">days</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">days</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="n">isLeapYear</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="p">?</span> <span class="mi">366</span> <span class="p">:</span> <span class="mi">365</span><span class="p">))</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nv">guessYear</span><span class="p">:</span><span class="nb">Int</span> <span class="p">=</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="n">days</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">{</span>
+                <span class="n">guessYear</span> <span class="p">=</span> <span class="n">year</span> <span class="o">+</span> <span class="n">days</span><span class="o">/</span><span class="mi">365</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">guessYear</span> <span class="p">=</span> <span class="n">year</span> <span class="o">-</span> <span class="p">(</span><span class="bp">abs</span><span class="p">(</span><span class="n">days</span><span class="p">)</span><span class="o">/</span><span class="mi">365</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="n">days</span> <span class="o">-=</span> <span class="p">(</span><span class="n">guessYear</span> <span class="o">-</span> <span class="n">year</span><span class="p">)</span> <span class="o">*</span> <span class="mi">365</span> <span class="o">+</span> <span class="n">leapsEndOfYear</span><span class="p">(</span><span class="n">guessYear</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">leapsEndOfYear</span><span class="p">(</span><span class="n">year</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">year</span> <span class="p">=</span> <span class="n">guessYear</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">year</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">Calendar</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">dateComponents</span><span class="p">([.</span><span class="n">year</span><span class="p">,.</span><span class="n">month</span><span class="p">,.</span><span class="n">day</span><span class="p">],</span> <span class="n">from</span><span class="p">:</span> <span class="n">date</span><span class="p">).</span><span class="n">year</span>
+<span class="p">}</span>
+
+<span class="c1">/// 获取该年份前所有闰年数</span>
+<span class="kd">class</span> <span class="nc">func</span> <span class="n">leapsEndOfYear</span><span class="p">(</span><span class="kc">_</span> <span class="n">year</span><span class="p">:</span><span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">Int</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">year</span><span class="o">/</span><span class="mi">4</span> <span class="o">-</span> <span class="n">year</span><span class="o">/</span><span class="mi">100</span> <span class="o">+</span> <span class="n">year</span><span class="o">/</span><span class="mi">400</span>
+<span class="p">}</span>
+
+<span class="c1">/// 判断闰年 能过被4整除，但不能被100整除；或者能被400整除的年份</span>
+<span class="kd">class</span> <span class="nc">func</span> <span class="n">isLeapYear</span><span class="p">(</span><span class="kc">_</span> <span class="n">year</span><span class="p">:</span><span class="nb">Int</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nb">Bool</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">year</span> <span class="o">%</span> <span class="mi">4</span> <span class="p">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">year</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">year</span> <span class="o">%</span> <span class="mi">400</span> <span class="p">==</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="p">}</span></code></pre></td></tr></table>
+</div>
+</div>
+<p>大致思路是，先将时间戳转换为该时区的天数，再通过每年365天猜测一个年份，算出该年份的天数，然后用实际天数减去猜测的年份的天数，计算出剩余的天数，如果剩余天数少于该猜测的年份的天数（365或者366）则退出循环，返回该猜测的年份
+如果剩余天数大于该猜测的年份的天数（365或者366），则再对剩余的天数进行同样的处理。</p>
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/ios/">iOS</a>
+          <a href="/tags/%E6%80%A7%E8%83%BD/">性能</a>
+          <a href="/tags//"></a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/2019/how_to_distinguish_crash_in_sdk/">
+            <span class="next-text nav-default">iOS如何区分App和SDK内部crash</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2019-04-30 17:37:21 \x2b0800 CST',
+        title: '如何高效判断日期是否是同一天',
+        clientID: 'c931a54cad3e4636d03a',
+        clientSecret: '393102b73eea4b09a2873bb2e455d439c2bf4d89',
+        repo: 'wellphone',
+        owner: 'whf5566',
+        admin: ['whf5566'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/whf5566" class="iconfont icon-github" title="github"></a>
+  <a href="https://www.wellphone.me/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> site pv: <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> site uv: <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2017 - 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Wellphone's blog @ <a href='https://www.netlify.com/' target='_blank'>Netlify</a></span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/dist/even.26188efa.min.js"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?47e26498d0e986733b9ee8988dd29530";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<script id="baidu_push">
+  (function(){
+    if (window.location.hostname === 'localhost') return;
+    var bp = document.createElement('script'); bp.async = true;
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+      bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+      bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+  })();
+</script>
+
+
+
+
+</body>
+</html>
