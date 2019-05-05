@@ -51,7 +51,7 @@
 
 <meta itemprop="datePublished" content="2019-04-30T17:37:21&#43;08:00" />
 <meta itemprop="dateModified" content="2019-04-30T17:37:21&#43;08:00" />
-<meta itemprop="wordCount" content="1613">
+<meta itemprop="wordCount" content="1610">
 
 
 
@@ -150,11 +150,7 @@
   </div>
 </div>
     <div class="post-content">
-      <p>很多同学都写过判断两个日期是否是同一天或者同一年这样的方法。方法需求很简单，直接使用系统库的方法来判断就可以了。近期做了这样的一个UI界面，如图，所有图片通过拍摄时间以天为单位分成一个个大组，然后，再按拍摄地点分成小组；然后同一年的第一个section节头上要突出显示年份。但是，界面在首次滑动时，总有卡顿感。使用Xcode自带的 Instruments&rsquo; Time Profiler 测量了下时间，主要耗时居然是判断日期是否是同一天的方法。</p>
-
-<video width="443" height="960" controls autoplay >
-<source src="./../../../images/same_day/same_day_ui.mp4">
-</video>
+      <p>很多同学都写过判断两个日期是否是同一天或者同一年这样的方法。方法需求很简单，直接使用系统库的方法来判断就可以了。近期做了这样的一个UI界面，所有图片通过拍摄时间以天为单位分成一个个大组，然后，再按拍摄地点分成小组；然后同一年的第一个section节头上要突出显示年份。但是，界面在首次滑动时，总有卡顿感。使用Xcode自带的 Instruments&rsquo; Time Profiler 测量了下时间，主要耗时居然是判断日期是否是同一天的方法。</p>
 
 <h2 id="判断日期是否是同一天的几个方法">判断日期是否是同一天的几个方法</h2>
 
