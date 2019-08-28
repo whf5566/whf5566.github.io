@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Wellphone&#39;s blog @ &lt;a href=&#39;https://www.netlify.com/&#39; target=&#39;_blank&#39;&gt;Netlify&lt;/a&gt;</copyright>
-    <lastBuildDate>Tue, 30 Apr 2019 17:37:21 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 28 Aug 2019 19:25:13 +0800</lastBuildDate>
     
 	<atom:link href="https://www.wellphone.me/categories/2019/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SwiftUI学习小结</title>
+      <link>https://www.wellphone.me/post/2019/learn_swiftui/</link>
+      <pubDate>Wed, 28 Aug 2019 19:25:13 +0800</pubDate>
+      
+      <guid>https://www.wellphone.me/post/2019/learn_swiftui/</guid>
+      <description>SwiftUI优点： 声明式语法编写UI，简洁方便，类似React，Flutter等UI布局方式 实时预览UI界面，效率高 适配WatchOS, TVOS,</description>
+    </item>
     
     <item>
       <title>如何高效判断日期是否是同一天</title>
