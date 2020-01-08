@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+<meta name="generator" content="Hugo 0.54.0 with theme even" />
 
 
 <link rel="canonical" href="https://www.wellphone.me/post/2018/how_reduce_ios_sdk_file_size/" />
@@ -132,35 +132,7 @@
       </div>
     </header>
 
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#ios平台上库文件格式">iOS平台上库文件格式</a></li>
-<li><a href="#游戏sdk文件格式">游戏SDK文件格式</a></li>
-<li><a href="#相关命令行工具使用">相关命令行工具使用</a>
-<ul>
-<li><a href="#查看sdk的架构信息">查看SDK的架构信息</a></li>
-<li><a href="#导出-a文件">导出.a文件</a></li>
-<li><a href="#查看-a文件中-o文件大小">查看.a文件中.o文件大小</a></li>
-<li><a href="#查看-o文件中代码段-数据段等详细的大小信息">查看.o文件中代码段、数据段等详细的大小信息</a></li>
-</ul></li>
-<li><a href="#如何比较sdk大小变化">如何比较SDK大小变化</a></li>
-<li><a href="#如何精简sdk包大小">如何精简SDK包大小</a>
-<ul>
-<li><a href="#删除符号文件">删除符号文件</a></li>
-<li><a href="#删除无用类">删除无用类</a></li>
-<li><a href="#删除无用代码">删除无用代码</a></li>
-<li><a href="#精简sdk引用的第三方库">精简SDK引用的第三方库</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav>
-  </div>
-</div>
+    
     <div class="post-content">
       <p>我们的SDK项目随着各种功能的加入，SDK文件也越来越大。Objective-C的库最终会把用到的，没有用到类和方法都连接进App里，所以精简SDK大小很有必要，有助于减少最终App的size。</p>
 
@@ -606,6 +578,10 @@ rm ./temp_all_symbols.txt</code></pre></td></tr></table>
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
 
+  
+
+  
+
       </div>
     </main>
 
@@ -634,7 +610,7 @@ rm ./temp_all_symbols.txt</code></pre></td></tr></table>
   <span class="copyright-year">
     &copy; 
     2017 - 
-    2019
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

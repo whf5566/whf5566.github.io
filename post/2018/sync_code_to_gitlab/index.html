@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+<meta name="generator" content="Hugo 0.54.0 with theme even" />
 
 
 <link rel="canonical" href="https://www.wellphone.me/post/2018/sync_code_to_gitlab/" />
@@ -133,26 +133,7 @@
       </div>
     </header>
 
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#使用git-clone命令同步">使用git clone命令同步</a></li>
-<li><a href="#使用git的pull-push命令同步">使用git的pull，push命令同步</a>
-<ul>
-<li><a href="#如何clone出所有远程分支">如何clone出所有远程分支</a></li>
-<li><a href="#如何push所有本地分支到远端仓库">如何push所有本地分支到远端仓库</a></li>
-<li><a href="#可用脚本">可用脚本</a></li>
-</ul></li>
-<li><a href="#使用第三方工具来同步">使用第三方工具来同步</a></li>
-</ul></li>
-</ul>
-</nav>
-  </div>
-</div>
+    
     <div class="post-content">
       <p>最近我们需要把正在使用的git库在自建的gitlab服务上做个备份。我们有一台Gerrit服务器，一个jenkins服务器。代码开发、review都在Gerrit服务器上，而集成发布是通过jenkins服务器完成的。现在新建了一个gitlab服务器，准备将代码迁移到gitlab作为备份。于是就有了这样的一个需求，如何在两个git仓库之间同步。在网上找到一些方法，大致是这三种思路，使用git clone命令同步、使用git的pull，push命令同步和使用第三方工具来同步。</p>
 
@@ -363,7 +344,7 @@ git remote remove gitlab</code></pre></td></tr></table>
   <span class="copyright-year">
     &copy; 
     2017 - 
-    2019
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>

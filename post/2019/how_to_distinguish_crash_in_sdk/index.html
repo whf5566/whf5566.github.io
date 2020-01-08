@@ -23,7 +23,7 @@
 
 
 
-<meta name="generator" content="Hugo 0.54.0 with even 4.0.0" />
+<meta name="generator" content="Hugo 0.54.0 with theme even" />
 
 
 <link rel="canonical" href="https://www.wellphone.me/post/2019/how_to_distinguish_crash_in_sdk/" />
@@ -132,31 +132,7 @@
       </div>
     </header>
 
-    <div class="post-toc" id="post-toc">
-  <h2 class="post-toc-title">Contents</h2>
-  <div class="post-toc-content always-active">
-    <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#ios-crash日志格式">iOS crash日志格式</a></li>
-<li><a href="#如何确定动态库的crash">如何确定动态库的crash</a></li>
-<li><a href="#如何确定静态库的crash">如何确定静态库的crash</a>
-<ul>
-<li><a href="#通过符号来判断"><strong>通过符号来判断</strong></a></li>
-<li><a href="#通过地址来判断"><strong>通过地址来判断</strong></a>
-<ul>
-<li><a href="#静态库sdk二进制文件结构"><strong>静态库SDK二进制文件结构</strong></a></li>
-<li><a href="#app可执行文件结构"><strong>App可执行文件结构</strong></a></li>
-<li><a href="#如何确定sdk代码起始和结束地址"><strong>如何确定SDK代码起始和结束地址</strong></a></li>
-</ul></li>
-</ul></li>
-<li><a href="#总结">总结</a></li>
-</ul></li>
-</ul>
-</nav>
-  </div>
-</div>
+    
     <div class="post-content">
       <p>最近在开发iOS平台上的SDK，提供给合作方使用。为了监控SDK自身的崩溃率，我们在SDK中加入了抓取crash的功能。但收集上来的日志中有较多合作方App的crash，并且接入SDK的App数量很多，产生的崩溃日志量非常大。靠人力从海量的日志中筛选出我们SDK的crash日志非常困难。</p>
 
@@ -421,6 +397,10 @@ CodeTextBegin.m放在所有编译文件的最前面，里面的第一个方法�
     </script>
     <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
 
+  
+
+  
+
       </div>
     </main>
 
@@ -449,7 +429,7 @@ CodeTextBegin.m放在所有编译文件的最前面，里面的第一个方法�
   <span class="copyright-year">
     &copy; 
     2017 - 
-    2019
+    2020
     <span class="heart">
       <i class="iconfont icon-heart"></i>
     </span>
